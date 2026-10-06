@@ -18,6 +18,4 @@ cover: assets/domain-cert.png
 
 有效期一年，到明年六月。中间还得记得续费，别让窝没了。
 
-证书里涉及个人信息的地方都打码了，图放下面。
-
-![zixuann.top 域名证书](assets/domain-cert.png)
+![](assets/domain-cert.png)
