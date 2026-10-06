@@ -186,7 +186,7 @@ def nav_html(prefix: str = "", active: str = "主页") -> str:
         cls = ' class="active"' if name == active else ""
         links.append(f'<a href="{prefix}{href}"{cls}>{name}</a>')
     return f"""<header class="site-nav">
-  <a class="brand" href="{prefix}index.html"><span class="brand-mark"></span>{html.escape(SITE_NAME)}</a>
+  <a class="brand" href="{prefix}index.html"><span class="brand-mark"><img src="{prefix}assets/avatar.jpg" alt=""></span>{html.escape(SITE_NAME)}</a>
   <nav class="nav-links">{''.join(links)}</nav>
   <div class="nav-actions">
     <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索">{icon('search')}</button>
