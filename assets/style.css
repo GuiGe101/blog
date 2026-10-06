@@ -10,7 +10,7 @@
   --line: #e6ecf4;
   --radius: 16px;
   --shadow: 0 8px 28px rgba(42, 49, 64, 0.07);
-  --font: "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+  --font: "LXGW WenKai", "霞鹜文楷", "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
   --font-ui: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
   --font-code: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
   --max: 1120px;
@@ -61,13 +61,10 @@ html.theme-anim .series-nav {
 body {
   margin: 0;
   font-family: var(--font-ui);
-  font-weight: 500;
   color: var(--ink);
   background: var(--bg);
   line-height: 1.85;
   min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
 a { color: var(--accent); text-decoration: none; }
@@ -151,7 +148,7 @@ img { max-width: 100%; display: block; }
 }
 .hero-title {
   margin: 0 0 12px; font-family: var(--font);
-  font-size: clamp(2.1rem, 5vw, 3.3rem); font-weight: 900; letter-spacing: 0.05em;
+  font-size: clamp(2.1rem, 5vw, 3.3rem); font-weight: 800; letter-spacing: 0.05em;
   color: #fff; text-shadow: 0 12px 40px rgba(0,0,0,0.35);
 }
 .hero-sub {
@@ -190,7 +187,7 @@ img { max-width: 100%; display: block; }
   width: 104px; height: 104px; margin: 0 auto 12px; border-radius: 28px; overflow: hidden;
   box-shadow: 0 12px 28px rgba(126,182,255,0.25);
 }
-.profile-name { margin: 0; font-size: 1.25rem; font-family: var(--font); font-weight: 800; }
+.profile-name { margin: 0; font-size: 1.25rem; font-family: var(--font); }
 .profile-name::after {
   content: ""; display: block; width: 28px; height: 3px; margin: 10px auto 12px;
   border-radius: 99px; background: var(--accent);
@@ -220,7 +217,7 @@ img { max-width: 100%; display: block; }
 .badge.series { background: var(--accent-soft); color: var(--accent); }
 
 .section-title {
-  font-family: var(--font); font-size: 1.25rem; font-weight: 800; margin: 8px 4px 14px;
+  font-family: var(--font); font-size: 1.25rem; margin: 8px 4px 14px;
   display: flex; align-items: center; gap: 10px;
 }
 .section-title::before {
@@ -234,7 +231,7 @@ img { max-width: 100%; display: block; }
   margin-bottom: 16px; transition: transform .18s ease, box-shadow .18s ease;
 }
 .post-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(42,49,64,0.12); }
-.post-title { margin: 0 0 8px; font-size: 1.22rem; line-height: 1.4; font-family: var(--font); font-weight: 800; }
+.post-title { margin: 0 0 8px; font-size: 1.22rem; line-height: 1.4; font-family: var(--font); }
 .post-title a { color: var(--ink); }
 .post-title a:hover { color: var(--accent); text-decoration: none; }
 .post-meta {
@@ -288,16 +285,16 @@ img { max-width: 100%; display: block; }
   padding: 36px 34px 28px; border: 1px solid var(--line);
 }
 .article-header h1 {
-  margin: 0 0 12px; font-family: var(--font); font-size: 2rem; font-weight: 900; line-height: 1.35;
+  margin: 0 0 12px; font-family: var(--font); font-size: 2rem; line-height: 1.35;
 }
 .article-header .post-meta {
   margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--line);
 }
 .article-body {
-  font-family: var(--font); font-size: 1.06rem; font-weight: 500; max-width: var(--read);
+  font-family: var(--font); font-size: 1.06rem; max-width: var(--read);
 }
-.article-body h2 { font-size: 1.45rem; font-weight: 800; margin: 1.8em 0 0.7em; }
-.article-body h3 { font-size: 1.2rem; font-weight: 800; margin: 1.5em 0 0.55em; }
+.article-body h2 { font-size: 1.45rem; margin: 1.8em 0 0.7em; }
+.article-body h3 { font-size: 1.2rem; margin: 1.5em 0 0.55em; }
 .article-body p { margin: 0 0 1.15em; }
 .article-body ul, .article-body ol { margin: 0 0 1.15em; padding-left: 1.4em; }
 .article-body blockquote {
