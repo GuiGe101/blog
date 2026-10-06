@@ -29,4 +29,4 @@ title: 关于我
 
 - 小米 17 Pro Max（root）
 - 小米 Pad 7U
-- PC：i5-12600KF + RTX 3060 Ti
+- PC：i5-14600KF + RTX 5070
