@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>归舸的大窝 · 归舸</title>
-<meta name="description" content="想开这个站挺久了。以前写的东西散在各处，干脆认真记一下——这里慢慢同步技术、生活，和一些还没想完的想法。">
+<title>今日劳动小结：把博客从零拧到现在 · 归舸</title>
+<meta name="description" content="从 init 到改副标题、删友链、调阅读时长，再到评论系统和部署。今天一整天都在折腾这个站，记一笔。">
 <meta name="author" content="归舸">
-<link rel="canonical" href="https://zixuann.top/归舸的大窝">
-<meta property="og:title" content="归舸的大窝 · 归舸">
-<meta property="og:description" content="想开这个站挺久了。以前写的东西散在各处，干脆认真记一下——这里慢慢同步技术、生活，和一些还没想完的想法。">
+<link rel="canonical" href="https://zixuann.top/今日劳动小结：把博客从零拧到现在">
+<meta property="og:title" content="今日劳动小结：把博客从零拧到现在 · 归舸">
+<meta property="og:description" content="从 init 到改副标题、删友链、调阅读时长，再到评论系统和部署。今天一整天都在折腾这个站，记一笔。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://zixuann.top/">
 <meta property="og:image" content="../assets/valorant/hero-jett.jpg">
@@ -59,27 +59,42 @@
           <span class="badge">思考</span>
           
         </div>
-        <h1>归舸的大窝</h1>
+        <h1>今日劳动小结：把博客从零拧到现在</h1>
         <div class="post-meta">
-          <span>2026-10-06</span>
-          <span>18 分钟</span>
-          <span>374 字</span>
-          <span>阅读 <b id="stat-page-pv" data-key="2026-10-06-hello">…</b></span>
+          <span>2026-10-07</span>
+          <span>6 分钟</span>
+          <span>1321 字</span>
+          <span>阅读 <b id="stat-page-pv" data-key="2026-10-07-work-log">…</b></span>
         </div>
       </header>
       
-      <div class="article-body"><p>这是我博客的第一篇。</p>
-<p>其实想开这个站挺久了。以前写的东西散在各种地方——备忘录、聊天记录、某个草稿文件夹的角落里，过一阵自己都找不着。后来就想，干脆认真记一下吧，有个固定的地方，以后回看也方便。</p>
-<p>我这个人平时就是写写代码、打打无畏契约，偶尔脑子里会冒出一些有的没的。技术上踩了坑、折腾明白了什么，想记下来；生活里有意思的片段，也想留两句。不保证多深刻，但保证是自己真实想过的。</p>
-<p>所以这个站大概会有点杂：技术、生活、思考，可能还会开几个系列慢慢写。不追求日更，也不硬凑字数，有值得记的就写。长的分篇，短的就丢进碎片。</p>
-<p>如果你也是第一次来，随便逛逛就好。<a href="../about.html">关于我</a>和<a href="../projects.html">项目</a>里能多了解一点我是谁，也可以直接往下翻。文章底下有「回声」，想说什么都行。</p>
-<p>就先记一笔在这里。以后回看，应该会挺有意思的。</p></div>
+      <div class="article-body"><p>今天算是把这个站从零拧到了现在这个样子。睡前觉得该记一笔，不然过两天肯定忘。</p>
+<h2 id="从空仓库到能打开">从空仓库到能打开</h2>
+<p>凌晨零点多从 <code>init blog</code> 开始。先把 GitHub Pages 的部署流程搭起来，不然改完只能本地看。接着上了 Giscus 评论和点赞，那时候还觉得评论区有个能说话的地方就够了。</p>
+<p>真正开始有感觉是改成「记忆终端」那套视觉之后。先是换掉原来的剪贴画，改用渐变主视觉；后来又换成无畏契约官方壁纸当头图和封面，整站才有点我自己的味道。导航图标也从 emoji 换成了干净的 SVG，细节上顺眼很多。</p>
+<p>功能那一段是集中补的。全文搜索和 RSS 先上，暗色模式、目录、阅读进度跟上，字数和预计阅读时间也算了进去，系列连载也开了。补完之后它才像一个能长期用的博客，之前不过是首页的壳子。</p>
+<p>域名这块踩过坑。一开始想用 GitHub Actions 直接发，后来为了稳妥改成 <code>docs/</code> 目录部署，CNAME 也配好了，现在是 <code>zixuann.top</code>。中途还出过一次 CNAME 丢掉的事故，构建输出里重新加回去才好。</p>
+<h2 id="站名-头像和一些零碎">站名、头像和一些零碎</h2>
+<p>后面几笔都是「看起来小、改起来烦」的活。站名从 zixuann 换成归舸，页脚叫「归舸的大窝」。头像从默认图换成自己的，品牌位和侧栏资料卡都跟着换了。年龄也改成了 16。</p>
+<p>访问统计原来用的不蒜子，后来换成了 Abacus 计数。这个改动不大，但加载上干净一点。</p>
+<p>首页那句副标题改过好几次。最后定成「打瓦、想东想西——慢慢记下来」。原来那句「正在同步生活、技术、灵感与未命名的片段」太像说明书了，不像我。写代码这仨字后来也去掉了，副标题就留打瓦和想东想西，更像平时说话。</p>
+<h2 id="友链-删掉">友链，删掉</h2>
+<p>友链页整页删了，没保留。导航、侧栏、站点地图、关于页里那句「欢迎加友链」，一起清干净。现在连 <code>friends.html</code> 都会 404。</p>
+<p>删的时候踩了一个挺有意思的坑。本地 <code>dist</code> 明明已经是新的，线上 <code>friends.html</code> 还是 200。查下来是 GitHub Pages 实际在吃 <code>docs/</code> 目录，而 <code>docs</code> 那份还留着旧页面。把 <code>docs</code> 同步成无友链版本再推，线上才真正没了。这种「改了 A，生效的是 B」的情况，今天遇到了不止一次。</p>
+<h2 id="阅读时长和评论">阅读时长和评论</h2>
+<p>「归舸的大窝」那篇阅读时长原来显示 1 分钟，我给改成了 18 分钟。字数没变，时长是单独写的，后来在 frontmatter 里加了 <code>minutes</code> 字段，想写多少写多少，不用再改构建脚本。</p>
+<p>评论区也换了。从 Giscus 换成 Waline，支持 QQ 邮箱登录，数据存在 GitHub 上。客户端后来从 jsDelivr 拉，国内访问快一些。</p>
+<h2 id="一点感想">一点感想</h2>
+<p>今天大概推了二十多次，每一笔都不大，叠起来就很多。中间有几段时间全在处理部署和缓存：本地改好了，网页打开还是旧的；推上去了，Actions 跑完，还要再等一会儿；有时候是浏览器缓存，Ctrl+F5 才看见新东西。</p>
+<p>也碰到过 git 身份没配、本地分支叫 master 远端叫 main 这种事。好在最后都通了。</p>
+<p>写博客这件事，花在写内容上的时间，今天其实不算多。大部分时候是在搭架子、调样式、修部署。不过这些活干完，以后写东西应该会顺手一点。架子稳了，人才有心思往里填。</p>
+<p>就先记到这里。明天应该继续写内容，少折腾一点界面。</p></div>
       <div class="article-foot">
-        <div class="post-tags"><a class="tag-chip" href="../tags.html#随笔">#随笔</a><a class="tag-chip" href="../tags.html#首页">#首页</a></div>
+        <div class="post-tags"><a class="tag-chip" href="../tags.html#随笔">#随笔</a><a class="tag-chip" href="../tags.html#劳动小结">#劳动小结</a></div>
         <p class="copyright">© 2026 归舸 · 转载请注明出处</p>
       </div>
     </div>
-    <section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list"><li><a href="2026-10-07-work-log.html">今日劳动小结：把博客从零拧到现在</a></li></ul></section>
+    <section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list"><li><a href="2026-10-06-hello.html">归舸的大窝</a></li></ul></section>
     
 <section class="echo">
   <h2 class="echo-title">回声</h2>
@@ -100,7 +115,7 @@
   </script>
 </section>
   </article>
-  <aside class="side-col"></aside>
+  <aside class="side-col"><nav class="toc"><div class="toc-title">目录</div><a class="toc-h2" href="#从空仓库到能打开">从空仓库到能打开</a><a class="toc-h2" href="#站名-头像和一些零碎">站名、头像和一些零碎</a><a class="toc-h2" href="#友链-删掉">友链，删掉</a><a class="toc-h2" href="#阅读时长和评论">阅读时长和评论</a><a class="toc-h2" href="#一点感想">一点感想</a></nav></aside>
 </div>
 <footer class="site-footer">
   <div>© 2026 归舸 · 归舸的大窝</div>
