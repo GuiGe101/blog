@@ -22,7 +22,7 @@ if PREVIEW_DIR.resolve() == ROOT.resolve():
 
 SITE_NAME = "归舸"
 SITE_TITLE = "归舸的记忆终端"
-SITE_SUB = "正在同步生活、技术、灵感与未命名的片段"
+SITE_SUB = "打瓦、想东想西——慢慢记下来"
 SITE_DESC = "记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。"
 SITE_BIO = "19 岁，在写代码、打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。"
 SITE_URL = "https://zixuann.top"
@@ -206,7 +206,7 @@ def hero_html(post_count: int = 0) -> str:
     <h1 class="hero-title">{html.escape(SITE_TITLE)}</h1>
     <p class="hero-sub">{html.escape(SITE_SUB)}</p>
     <div class="hero-stats">
-      <span id="busuanzi_container_site_pv">访问 <b id="busuanzi_value_site_pv">…</b></span>
+      <span>访问 <b id="stat-site-pv-hero">…</b></span>
       <span>文章 <b>{post_count}</b></span>
       <span>自 {START_DATE}</span>
     </div>
@@ -257,7 +257,7 @@ def stats_card(posts: list[dict], prefix: str = "") -> str:
     return f"""<section class="card">
   <h3 class="side-title">站点统计</h3>
   {body}
-  <div class="side-note">不蒜子统计中，刷新页面数字会跳。</div>
+  <div class="side-note">访问统计由 Abacus 提供，刷新页面数字会跳。</div>
 </section>"""
 
 
@@ -364,8 +364,8 @@ def page(
   <div class="footer-meta">
     <a href="{prefix}feed.xml">RSS</a>
     <a href="{prefix}sitemap.xml">Sitemap</a>
-    <span id="busuanzi_container_site_uv">访客 <b id="busuanzi_value_site_uv">…</b></span>
-    <span id="busuanzi_container_site_pv">访问 <b id="busuanzi_value_site_pv">…</b></span>
+    <span>访客 <b id="stat-site-uv">…</b></span>
+    <span>访问 <b id="stat-site-pv">…</b></span>
   </div>
 </footer>
 <div class="search-modal" id="search-modal" hidden>
@@ -375,7 +375,51 @@ def page(
   </div>
 </div>
 <script src="{prefix}assets/app.js"></script>
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+(function () {{
+  var NS = "zixuann.top";
+  var API = "https://abacus.jasoncameron.dev";
+  function set(id, v) {{
+    var n = document.getElementById(id);
+    if (n && v != null) n.textContent = v;
+  }}
+  function jsonp(url) {{
+    return new Promise(function (resolve) {{
+      var name = "abacus_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+      window[name] = function (data) {{ resolve(data); cleanup(); }};
+      var s = document.createElement("script");
+      s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + name;
+      s.onerror = function () {{ resolve(null); cleanup(); }};
+      function cleanup() {{
+        try {{ delete window[name]; }} catch (e) {{ window[name] = undefined; }}
+        if (s.parentNode) s.parentNode.removeChild(s);
+      }}
+      document.head.appendChild(s);
+    }});
+  }}
+  function hit(key) {{ return jsonp(API + "/hit/" + NS + "/" + key); }}
+  function get(key) {{ return jsonp(API + "/get/" + NS + "/" + key); }}
+
+  var pageEl = document.getElementById("stat-page-pv");
+  if (pageEl) {{
+    var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\\W+/g, "-");
+    hit("page-" + pageKey).then(function (d) {{ if (d) set("stat-page-pv", d.value); }});
+  }}
+
+  hit("site-pv").then(function (d) {{
+    if (!d) return;
+    set("stat-site-pv", d.value);
+    set("stat-site-pv-hero", d.value);
+  }});
+
+  var uvSeenKey = "zixuann-uv-seen";
+  var seen = false;
+  try {{ seen = localStorage.getItem(uvSeenKey) === "1"; }} catch (e) {{}}
+  var uvCall = seen ? get("site-uv") : hit("site-uv");
+  if (!seen) {{ try {{ localStorage.setItem(uvSeenKey, "1"); }} catch (e) {{}} }}
+  uvCall.then(function (d) {{ if (d) set("stat-site-uv", d.value); }});
+}})();
+</script>
 </body>
 </html>
 """
@@ -641,7 +685,7 @@ def build() -> None:
           <span>{html.escape(p['date'])}</span>
           <span>{p['minutes']} 分钟</span>
           <span>{p['words']} 字</span>
-          <span>阅读 <span id="busuanzi_container_page_pv">…</span></span>
+          <span>阅读 <b id="stat-page-pv" data-key="{html.escape(p["slug"])}">…</b></span>
         </div>
       </header>
       {ser_html}

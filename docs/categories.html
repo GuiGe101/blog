@@ -40,14 +40,14 @@
 </header>
 <div class="mobile-nav" id="mobile-nav"><a href="index.html">主页</a><a href="archive.html">归档</a><a href="categories.html" class="active">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="friends.html">友链</a><a href="about.html">关于</a></div>
 
-<div class="page single"><h2 class="section-title" id="思考">思考 <small>1</small></h2><ul class="arch-list"><li><span>2026-10-06</span><a href="posts/2026-10-06-hello.html">你好，欢迎来到记忆终端</a></li></ul></div>
+<div class="page single"><h2 class="section-title" id="思考">思考 <small>2</small></h2><ul class="arch-list"><li><span>2026-10-07</span><a href="posts/2026-10-07-notes.html">一点碎片：关于「记录」</a></li><li><span>2026-10-06</span><a href="posts/2026-10-06-hello.html">你好，欢迎来到记忆终端</a></li></ul><h2 class="section-title" id="技术">技术 <small>2</small></h2><ul class="arch-list"><li><span>2026-10-06</span><a href="posts/2026-10-06-blog-series-2.html">博客搭建日志（下）：评论、样式与细节</a></li><li><span>2026-10-06</span><a href="posts/2026-10-06-blog-series-1.html">博客搭建日志（上）：从零到能打开</a></li></ul><h2 class="section-title" id="生活">生活 <small>1</small></h2><ul class="arch-list"><li><span>2026-10-07</span><a href="posts/2026-10-07-valorant-wallpaper.html">今天把博客头图换成了无畏契约</a></li></ul></div>
 <footer class="site-footer">
   <div>© 2026 归舸 · 记忆终端</div>
   <div class="footer-meta">
     <a href="feed.xml">RSS</a>
     <a href="sitemap.xml">Sitemap</a>
-    <span id="busuanzi_container_site_uv">访客 <b id="busuanzi_value_site_uv">…</b></span>
-    <span id="busuanzi_container_site_pv">访问 <b id="busuanzi_value_site_pv">…</b></span>
+    <span>访客 <b id="stat-site-uv">…</b></span>
+    <span>访问 <b id="stat-site-pv">…</b></span>
   </div>
 </footer>
 <div class="search-modal" id="search-modal" hidden>
@@ -57,6 +57,50 @@
   </div>
 </div>
 <script src="assets/app.js"></script>
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+(function () {
+  var NS = "zixuann.top";
+  var API = "https://abacus.jasoncameron.dev";
+  function set(id, v) {
+    var n = document.getElementById(id);
+    if (n && v != null) n.textContent = v;
+  }
+  function jsonp(url) {
+    return new Promise(function (resolve) {
+      var name = "abacus_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+      window[name] = function (data) { resolve(data); cleanup(); };
+      var s = document.createElement("script");
+      s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + name;
+      s.onerror = function () { resolve(null); cleanup(); };
+      function cleanup() {
+        try { delete window[name]; } catch (e) { window[name] = undefined; }
+        if (s.parentNode) s.parentNode.removeChild(s);
+      }
+      document.head.appendChild(s);
+    });
+  }
+  function hit(key) { return jsonp(API + "/hit/" + NS + "/" + key); }
+  function get(key) { return jsonp(API + "/get/" + NS + "/" + key); }
+
+  var pageEl = document.getElementById("stat-page-pv");
+  if (pageEl) {
+    var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\W+/g, "-");
+    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); });
+  }
+
+  hit("site-pv").then(function (d) {
+    if (!d) return;
+    set("stat-site-pv", d.value);
+    set("stat-site-pv-hero", d.value);
+  });
+
+  var uvSeenKey = "zixuann-uv-seen";
+  var seen = false;
+  try { seen = localStorage.getItem(uvSeenKey) === "1"; } catch (e) {}
+  var uvCall = seen ? get("site-uv") : hit("site-uv");
+  if (!seen) { try { localStorage.setItem(uvSeenKey, "1"); } catch (e) {} }
+  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); });
+})();
+</script>
 </body>
 </html>

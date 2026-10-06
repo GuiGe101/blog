@@ -5,10 +5,34 @@
 <description>记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。</description>
 <language>zh-cn</language>
 <item>
+  <title>今天把博客头图换成了无畏契约</title>
+  <link>https://zixuann.top/posts/2026-10-07-valorant-wallpaper.html</link>
+  <guid>https://zixuann.top/posts/2026-10-07-valorant-wallpaper.html</guid>
+  <pubDate>2026-10-07</pubDate>
+  <description>官方媒体库的壁纸拿来做头图，个人站随便用。</description>
+</item><item>
+  <title>一点碎片：关于「记录」</title>
+  <link>https://zixuann.top/posts/2026-10-07-notes.html</link>
+  <guid>https://zixuann.top/posts/2026-10-07-notes.html</guid>
+  <pubDate>2026-10-07</pubDate>
+  <description>不是所有想法都要长篇大论。短的也算数。</description>
+</item><item>
   <title>你好，欢迎来到记忆终端</title>
   <link>https://zixuann.top/posts/2026-10-06-hello.html</link>
   <guid>https://zixuann.top/posts/2026-10-06-hello.html</guid>
   <pubDate>2026-10-06</pubDate>
   <description>想开这个站挺久了。以前写的东西散在各处，干脆认真记一下——这里慢慢同步技术、生活，和一些还没想完的想法。</description>
+</item><item>
+  <title>博客搭建日志（下）：评论、样式与细节</title>
+  <link>https://zixuann.top/posts/2026-10-06-blog-series-2.html</link>
+  <guid>https://zixuann.top/posts/2026-10-06-blog-series-2.html</guid>
+  <pubDate>2026-10-06</pubDate>
+  <description>giscus 评论点赞、无畏契约视觉、暗色模式、搜索和 RSS。</description>
+</item><item>
+  <title>博客搭建日志（上）：从零到能打开</title>
+  <link>https://zixuann.top/posts/2026-10-06-blog-series-1.html</link>
+  <guid>https://zixuann.top/posts/2026-10-06-blog-series-1.html</guid>
+  <pubDate>2026-10-06</pubDate>
+  <description>用免费方案把个人站跑起来：静态生成、GitHub Pages、自定义域名。</description>
 </item>
 </channel></rss>
