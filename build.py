@@ -38,7 +38,7 @@ GISCUS = {
 
 # Waline 服务地址，部署完成后填入（例如 https://waline-xxx.vercel.app）
 # 为空时暂时回退到 Giscus
-WALINE_SERVER = ""
+WALINE_SERVER = "https://waline-gamma-ruddy.vercel.app"
 
 NAV = [
     ("主页", "index.html"),
