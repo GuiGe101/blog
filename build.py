@@ -221,7 +221,7 @@ def hero_html(post_count: int = 0) -> str:
 
 def profile_card(prefix: str = "") -> str:
     return f"""<section class="card profile">
-  <div class="profile-avatar"><img src="{prefix}assets/avatar.svg" alt="avatar" loading="lazy"></div>
+  <div class="profile-avatar"><img src="{prefix}assets/avatar.jpg" alt="avatar" loading="lazy"></div>
   <h2 class="profile-name">{html.escape(SITE_NAME)}</h2>
   <p class="profile-bio">{html.escape(SITE_BIO)}</p>
   <div class="profile-links">
@@ -341,7 +341,7 @@ def page(
 <meta property="og:image" content="{og}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="{html.escape(SITE_NAME)}" href="{prefix}feed.xml">
-<link rel="icon" href="{prefix}assets/avatar.svg" type="image/svg+xml">
+<link rel="icon" href="{prefix}assets/avatar.jpg" type="image/jpeg">
 <link rel="stylesheet" href="{prefix}assets/style.css">
 <script>
   (function () {{
