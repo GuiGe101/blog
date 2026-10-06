@@ -42,7 +42,6 @@ NAV = [
     ("分类", "categories.html"),
     ("标签", "tags.html"),
     ("项目", "projects.html"),
-    ("友链", "friends.html"),
     ("关于", "about.html"),
 ]
 
@@ -227,7 +226,6 @@ def profile_card(prefix: str = "") -> str:
   <div class="profile-links">
     <a href="{prefix}about.html">关于</a>
     <a href="{prefix}projects.html">项目</a>
-    <a href="{prefix}friends.html">友链</a>
     <a href="{prefix}feed.xml">RSS</a>
   </div>
 </section>"""
@@ -593,7 +591,6 @@ def build() -> None:
     for name, fname, active in [
         ("关于", "about", "关于"),
         ("项目", "projects", "项目"),
-        ("友链", "friends", "友链"),
     ]:
         md_path = ROOT / f"{fname}.md"
         if md_path.exists():
@@ -730,7 +727,7 @@ def build() -> None:
     (DIST / "feed.xml").write_text(feed, encoding="utf-8")
 
     # sitemap
-    urls = ["", "about.html", "archive.html", "categories.html", "tags.html", "projects.html", "friends.html"]
+    urls = ["", "about.html", "archive.html", "categories.html", "tags.html", "projects.html"]
     urls += [f"posts/{p['slug']}.html" for p in posts]
     sm = ["<?xml version=\"1.0\" encoding=\"UTF-8\"?>", '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for u in urls:

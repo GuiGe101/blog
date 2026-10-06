@@ -24,7 +24,6 @@ title: 关于我
 
 - GitHub：[GuiGe101](https://github.com/GuiGe101)
 - 留言板：文章底部的「回声」
-- 也欢迎加友链
 
 ## 设备
 
