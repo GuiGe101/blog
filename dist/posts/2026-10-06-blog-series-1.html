@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>你好，欢迎来到记忆终端 · zixuann</title>
-<meta name="description" content="博客开张。这里会慢慢同步生活、技术、灵感，以及一些未命名的片段。">
+<title>博客搭建日志（上）：从零到能打开 · zixuann</title>
+<meta name="description" content="用免费方案把个人站跑起来：静态生成、GitHub Pages、自定义域名。">
 <meta name="author" content="zixuann">
-<link rel="canonical" href="https://zixuann.top/你好，欢迎来到记忆终端">
-<meta property="og:title" content="你好，欢迎来到记忆终端 · zixuann">
-<meta property="og:description" content="博客开张。这里会慢慢同步生活、技术、灵感，以及一些未命名的片段。">
+<link rel="canonical" href="https://zixuann.top/博客搭建日志（上）：从零到能打开">
+<meta property="og:title" content="博客搭建日志（上）：从零到能打开 · zixuann">
+<meta property="og:description" content="用免费方案把个人站跑起来：静态生成、GitHub Pages、自定义域名。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://zixuann.top/">
 <meta property="og:image" content="../assets/valorant/hero-jett.jpg">
@@ -57,31 +57,35 @@
     <div class="article-card">
       <header class="article-header">
         <div class="badges">
-          <span class="badge">思考</span>
-          
+          <span class="badge">技术</span>
+          <span class="badge series">博客搭建日志</span>
         </div>
-        <h1>你好，欢迎来到记忆终端</h1>
+        <h1>博客搭建日志（上）：从零到能打开</h1>
         <div class="post-meta">
           <span>📅 2026-10-06</span>
           <span>⏱ 1 分钟</span>
-          <span>📝 224 字</span>
+          <span>📝 347 字</span>
           <span>👁 <span id="busuanzi_container_page_pv">…</span></span>
         </div>
       </header>
-      
-      <div class="article-body"><p>这是 <strong>zixuann 的记忆终端</strong> 第一篇。</p>
-<p>如果你是第一次来，可以看看<a href="../about.html">关于我</a>、<a href="../projects.html">项目</a>，或者直接往下翻文章。</p>
-<h2 id="这个站有什么">这个站有什么</h2>
-<ul><li><strong>技术</strong>：踩坑记录、折腾过程</li><li><strong>生活</strong>：日常切片</li><li><strong>思考</strong>：一点乱七八糟的想法</li><li><strong>系列</strong>：像小专栏一样连载</li></ul>
-<h2 id="怎么互动">怎么互动</h2>
-<p>文章底部有「回声」，可以留言、点赞。也可以订阅 <a href="../feed.xml">RSS</a>。</p>
-<blockquote><p>先记一笔。以后回看，会很有意思。</p></blockquote></div>
+      <nav class="series-nav"><span></span><b>博客搭建日志 · 1/2</b><a href="2026-10-06-blog-series-2.html">下一篇：博客搭建日志（下）：评论、样式与细节 →</a></nav>
+      <div class="article-body"><p>本篇讲 <strong>怎么把一个博客从零弄到能打开</strong>。下一篇讲评论、样式和细节能打的部分。</p>
+<h2 id="目标">目标</h2>
+<ul><li>不花钱（或极少钱）</li><li>自己能发文章</li><li>别人能看、能留言、点赞</li></ul>
+<h2 id="方案">方案</h2>
+<ol><li>本地 Markdown 写文章</li><li>一个小构建脚本生成静态 HTML</li><li>推到 GitHub，用 Pages 发布</li><li>域名解析到 <code>zixuann.top</code></li></ol>
+<pre><code class="lang-text">posts/*.md  -&gt;  build.py  -&gt;  dist/  -&gt;  GitHub Pages</code></pre>
+<h2 id="关键点">关键点</h2>
+<ul><li><strong>静态站</strong>很稳，没有服务器也行</li><li><strong>Actions</strong> 可以自动构建，推一下就更新</li><li><strong>域名</strong>用 A 记录指向 GitHub Pages 的 IP</li></ul>
+<h2 id="踩坑">踩坑</h2>
+<ul><li>家宽没有公网 IP，别指望拿自己电脑当服务器</li><li>中文 GitHub 界面翻译可能把 <code>main</code> 译成「主要角色」，别慌</li></ul>
+<p>下一篇：评论、点赞和阅读体验。</p></div>
       <div class="article-foot">
-        <div class="post-tags"><a class="tag-chip" href="../tags.html#随笔">#随笔</a><a class="tag-chip" href="../tags.html#首页">#首页</a></div>
+        <div class="post-tags"><a class="tag-chip" href="../tags.html#技术">#技术</a><a class="tag-chip" href="../tags.html#博客">#博客</a></div>
         <p class="copyright">© 2026 zixuann · 转载请注明出处</p>
       </div>
     </div>
-    <section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list"><li><a href="2026-10-07-notes.html">一点碎片：关于「记录」</a></li></ul></section>
+    <section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list"><li><a href="2026-10-06-blog-series-2.html">博客搭建日志（下）：评论、样式与细节</a></li></ul></section>
     
 <section class="echo">
   <h2 class="echo-title">回声</h2>
@@ -102,7 +106,7 @@
     async></script>
 </section>
   </article>
-  <aside class="side-col"><nav class="toc"><div class="toc-title">目录</div><a class="toc-h2" href="#这个站有什么">这个站有什么</a><a class="toc-h2" href="#怎么互动">怎么互动</a></nav></aside>
+  <aside class="side-col"><nav class="toc"><div class="toc-title">目录</div><a class="toc-h2" href="#目标">目标</a><a class="toc-h2" href="#方案">方案</a><a class="toc-h2" href="#关键点">关键点</a><a class="toc-h2" href="#踩坑">踩坑</a></nav></aside>
 </div>
 <footer class="site-footer">
   <div>© 2026 zixuann · 记忆终端</div>

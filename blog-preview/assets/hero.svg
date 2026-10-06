@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 720" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7EB6FF"/>
+      <stop offset="35%" stop-color="#A78BFA"/>
+      <stop offset="70%" stop-color="#F0ABFC"/>
+      <stop offset="100%" stop-color="#FDBA74"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0.2" cy="0.25" r="0.5">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0.78" cy="0.3" r="0.48">
+      <stop offset="0%" stop-color="#FFE4F0" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#FFE4F0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowC" cx="0.55" cy="0.8" r="0.5">
+      <stop offset="0%" stop-color="#C4B5FD" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#C4B5FD" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="28"/>
+    </filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0"/>
+    </filter>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="720" fill="url(#base)"/>
+  <rect width="1440" height="720" fill="url(#glowA)"/>
+  <rect width="1440" height="720" fill="url(#glowB)"/>
+  <rect width="1440" height="720" fill="url(#glowC)"/>
+  <!-- soft orbs -->
+  <g filter="url(#soft)" opacity="0.75">
+    <circle cx="220" cy="180" r="120" fill="#FFFFFF" opacity="0.35"/>
+    <circle cx="1180" cy="160" r="150" fill="#FFD6E8" opacity="0.5"/>
+    <circle cx="980" cy="420" r="180" fill="#B8A6FF" opacity="0.35"/>
+    <circle cx="360" cy="480" r="110" fill="#9CD6FF" opacity="0.4"/>
+  </g>
+  <!-- light ribbons -->
+  <path d="M-40 220 C 300 120, 700 320, 1480 180" stroke="url(#ribbon)" stroke-width="90" fill="none" opacity="0.45"/>
+  <path d="M-40 460 C 360 380, 820 560, 1480 400" stroke="url(#ribbon)" stroke-width="50" fill="none" opacity="0.3"/>
+  <!-- sparkles -->
+  <g fill="#FFFFFF" opacity="0.55">
+    <circle cx="180" cy="120" r="3"/>
+    <circle cx="320" cy="260" r="2.5"/>
+    <circle cx="520" cy="140" r="2"/>
+    <circle cx="760" cy="220" r="3.5"/>
+    <circle cx="900" cy="100" r="2"/>
+    <circle cx="1100" cy="280" r="3"/>
+    <circle cx="1280" cy="150" r="2.5"/>
+    <circle cx="1360" cy="360" r="2"/>
+    <circle cx="640" cy="520" r="2.5"/>
+    <circle cx="420" cy="600" r="2"/>
+  </g>
+  <!-- glass panel -->
+  <rect x="860" y="120" width="380" height="240" rx="28" fill="#FFFFFF" opacity="0.12"/>
+  <rect x="860" y="120" width="380" height="240" rx="28" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.5"/>
+  <rect x="140" y="300" width="280" height="180" rx="24" fill="#FFFFFF" opacity="0.1"/>
+  <rect x="140" y="300" width="280" height="180" rx="24" fill="none" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.5"/>
+  <rect width="1440" height="720" filter="url(#grain)" opacity="0.55"/>
+</svg>

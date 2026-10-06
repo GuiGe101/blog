@@ -1,33 +1,50 @@
 # -*- coding: utf-8 -*-
-"""个人博客构建脚本：posts/*.md -> dist/*.html"""
+"""zixuann 记忆终端 · 完整静态博客构建器"""
 from __future__ import annotations
 
 import html
+import json
 import re
 import shutil
 from datetime import datetime
 from pathlib import Path
+from xml.sax.saxutils import escape as xesc
 
 ROOT = Path(__file__).parent.resolve()
 POSTS_DIR = ROOT / "posts"
 ASSETS_DIR = ROOT / "assets"
 DIST = ROOT / "dist"
+# 预览输出到会话工作目录（index.html 可直接浏览器打开）
+SESSION_CWD = Path(r"E:\AI\MIMO DESKTOP\XiangMu\.mimo-sessions\2026\10\06\new-chat")
+PREVIEW_DIR = SESSION_CWD if SESSION_CWD.exists() else Path.cwd()
+if PREVIEW_DIR.resolve() == ROOT.resolve():
+    PREVIEW_DIR = DIST
 
 SITE_NAME = "zixuann"
 SITE_TITLE = "zixuann 的记忆终端"
 SITE_SUB = "正在同步生活、技术、灵感与未命名的片段"
-SITE_DESC = "记录生活、技术、灵感与未命名的片段"
-SITE_BIO = "记录生活、技术、灵感与未命名的片段"
-ABOUT_FILE = ROOT / "about.md"
+SITE_DESC = "记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。"
+SITE_BIO = "19 岁，在写代码、打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。"
+SITE_URL = "https://zixuann.top"
 START_DATE = "2026-10-06"
+AUTHOR = "zixuann"
 
-# giscus 配置（部署后到 https://giscus.app 填你的 GitHub 仓库再替换）
 GISCUS = {
     "repo": "GuiGe101/blog",
     "repo_id": "R_kgDOU-a8Mw",
     "category": "Announcements",
     "category_id": "DIC_kwDOU-a8M84DHMCl",
 }
+
+NAV = [
+    ("主页", "index.html"),
+    ("归档", "archive.html"),
+    ("分类", "categories.html"),
+    ("标签", "tags.html"),
+    ("项目", "projects.html"),
+    ("友链", "friends.html"),
+    ("关于", "about.html"),
+]
 
 
 # ---------- Markdown ----------
@@ -48,7 +65,7 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
 def inline(text: str) -> str:
     text = html.escape(text, quote=False)
     text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
-    text = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", r'<img alt="\1" src="\2">', text)
+    text = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", r'<img loading="lazy" alt="\1" src="\2">', text)
     text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', text)
     text = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", text)
@@ -58,13 +75,9 @@ def inline(text: str) -> str:
 def md_to_html(text: str) -> str:
     lines = text.replace("\r\n", "\n").split("\n")
     out: list[str] = []
-    i = 0
-    n = len(lines)
-
+    i, n = 0, len(lines)
     while i < n:
         line = lines[i]
-
-        # 代码块
         if line.strip().startswith("```"):
             lang = line.strip()[3:].strip()
             i += 1
@@ -76,26 +89,22 @@ def md_to_html(text: str) -> str:
             cls = f' class="lang-{html.escape(lang)}"' if lang else ""
             out.append(f"<pre><code{cls}>{html.escape(chr(10).join(code_lines))}</code></pre>")
             continue
-
-        # 标题
         hm = re.match(r"^(#{1,6})\s+(.*)$", line)
         if hm:
             level = len(hm.group(1))
-            out.append(f"<h{level}>{inline(hm.group(2).strip())}</h{level}>")
+            title = hm.group(2).strip()
+            hid = re.sub(r"[^\w一-鿿-]+", "-", title).strip("-").lower() or f"h{level}"
+            out.append(f'<h{level} id="{hid}">{inline(title)}</h{level}>')
             i += 1
             continue
-
-        # 引用
         if line.startswith(">"):
-            quote_lines: list[str] = []
+            quote: list[str] = []
             while i < n and lines[i].startswith(">"):
-                quote_lines.append(lines[i].lstrip("> ").rstrip())
+                quote.append(lines[i].lstrip("> ").rstrip())
                 i += 1
-            inner = "<br>".join(inline(x) for x in quote_lines if x.strip())
+            inner = "<br>".join(inline(x) for x in quote if x.strip())
             out.append(f"<blockquote><p>{inner}</p></blockquote>")
             continue
-
-        # 无序列表
         if re.match(r"^[-*+]\s+", line):
             items: list[str] = []
             while i < n and re.match(r"^[-*+]\s+", lines[i]):
@@ -103,8 +112,6 @@ def md_to_html(text: str) -> str:
                 i += 1
             out.append("<ul>" + "".join(items) + "</ul>")
             continue
-
-        # 有序列表
         if re.match(r"^\d+\.\s+", line):
             items = []
             while i < n and re.match(r"^\d+\.\s+", lines[i]):
@@ -112,13 +119,9 @@ def md_to_html(text: str) -> str:
                 i += 1
             out.append("<ol>" + "".join(items) + "</ol>")
             continue
-
-        # 空行
         if not line.strip():
             i += 1
             continue
-
-        # 段落（合并连续非空行）
         para: list[str] = []
         while i < n and lines[i].strip() and not re.match(
             r"^(#{1,6}\s|>|[-*+]\s|\d+\.\s|```)", lines[i]
@@ -126,109 +129,139 @@ def md_to_html(text: str) -> str:
             para.append(lines[i].strip())
             i += 1
         out.append(f"<p>{inline(' '.join(para))}</p>")
-
     return "\n".join(out)
 
 
-# ---------- 模板 ----------
-def nav_html(active: str = "", home: str = "{{HOME}}", about: str = "{{ABOUT}}") -> str:
-    def cls(name: str) -> str:
-        return ' class="active"' if name == active else ""
+def extract_toc(html_text: str) -> str:
+    heads = re.findall(r'<h([23]) id="([^"]+)">([^<]+)</h\1>', html_text)
+    if not heads:
+        return ""
+    items = []
+    for level, hid, title in heads:
+        cls = "toc-h3" if level == "3" else "toc-h2"
+        items.append(f'<a class="{cls}" href="#{hid}">{html.escape(title)}</a>')
+    return f'<nav class="toc"><div class="toc-title">目录</div>{"".join(items)}</nav>'
 
+
+def word_count(md: str) -> int:
+    return len(re.sub(r"\s", "", md))
+
+
+def reading_minutes(words: int) -> int:
+    return max(1, round(words / 400))
+
+
+def split_tags(tags: str) -> list[str]:
+    return [t.strip() for t in re.split(r"[,，、/|]", tags or "") if t.strip()]
+
+
+# ---------- 片段 ----------
+def nav_html(prefix: str = "", active: str = "主页") -> str:
+    links = []
+    for name, href in NAV:
+        cls = ' class="active"' if name == active else ""
+        links.append(f'<a href="{prefix}{href}"{cls}>{name}</a>')
     return f"""<header class="site-nav">
-  <a class="brand" href="{home}"><span class="brand-mark"></span>{html.escape(SITE_NAME)}</a>
-  <nav class="nav-links">
-    <a href="{home}"{cls("home")}>主页</a>
-    <a href="{home}"{cls("archive")}>归档</a>
-    <a href="{about}"{cls("about")}>关于</a>
-    <a href="{home}#posts">其他</a>
-  </nav>
-</header>"""
+  <a class="brand" href="{prefix}index.html"><span class="brand-mark"></span>{html.escape(SITE_NAME)}</a>
+  <nav class="nav-links">{''.join(links)}</nav>
+  <div class="nav-actions">
+    <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索">🔍</button>
+    <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换">◐</button>
+    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单">☰</button>
+  </div>
+</header>
+<div class="mobile-nav" id="mobile-nav">{''.join(links)}</div>"""
 
 
-def hero_html(home: str = "{{HOME}}") -> str:
+def hero_html(post_count: int = 0) -> str:
     return f"""
 <div class="hero">
-  <div class="hero-deco">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
+  <div class="hero-shade"></div>
   <div class="hero-copy">
+    <p class="hero-kicker">MEMORY TERMINAL</p>
     <h1 class="hero-title">{html.escape(SITE_TITLE)}</h1>
     <p class="hero-sub">{html.escape(SITE_SUB)}</p>
+    <div class="hero-stats">
+      <span id="busuanzi_container_site_pv">访问 <b id="busuanzi_value_site_pv">…</b></span>
+      <span>文章 <b>{post_count}</b></span>
+      <span>自 {START_DATE}</span>
+    </div>
   </div>
   <div class="hero-wave">
     <svg viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
-      <path fill="#ffffff" d="M0,48 C240,90 420,10 720,42 C1020,74 1200,18 1440,50 L1440,90 L0,90 Z"></path>
+      <path fill="var(--paper)" d="M0,48 C240,90 420,10 720,42 C1020,74 1200,18 1440,50 L1440,90 L0,90 Z"></path>
     </svg>
   </div>
 </div>"""
 
 
-def profile_html() -> str:
+def profile_card(prefix: str = "") -> str:
     return f"""<section class="card profile">
-  <div class="profile-avatar">
-    <img src="{{{{ASSETS}}}}/avatar.svg" alt="avatar">
-  </div>
+  <div class="profile-avatar"><img src="{prefix}assets/avatar.svg" alt="avatar" loading="lazy"></div>
   <h2 class="profile-name">{html.escape(SITE_NAME)}</h2>
   <p class="profile-bio">{html.escape(SITE_BIO)}</p>
+  <div class="profile-links">
+    <a href="{prefix}about.html">关于</a>
+    <a href="{prefix}projects.html">项目</a>
+    <a href="{prefix}friends.html">友链</a>
+    <a href="{prefix}feed.xml">RSS</a>
+  </div>
 </section>"""
 
 
-def stats_html(posts: list[dict]) -> str:
-    total_words = sum(len(re.sub(r"\s", "", p["source"])) for p in posts)
+def stats_card(posts: list[dict], prefix: str = "") -> str:
+    words = sum(p["words"] for p in posts)
     tags: set[str] = set()
     cats: set[str] = set()
     for p in posts:
-        if p["tags"]:
-            for t in re.split(r"[,，、/|]", p["tags"]):
-                t = t.strip()
-                if t:
-                    tags.add(t)
-        if p.get("category"):
-            cats.add(p["category"])
-        else:
-            cats.add(p["tags"] or "随笔")
+        tags.update(p["tag_list"])
+        cats.add(p["category"] or "随笔")
     days = 1
     try:
-        start = datetime.strptime(START_DATE, "%Y-%m-%d")
-        days = max(1, (datetime.now() - start).days + 1)
+        days = max(1, (datetime.now() - datetime.strptime(START_DATE, "%Y-%m-%d")).days + 1)
     except Exception:
         pass
-    last = posts[0]["date"] if posts else START_DATE
+    rows = [
+        ("文章", str(len(posts))),
+        ("分类", str(len(cats))),
+        ("标签", str(len(tags))),
+        ("总字数", f"{words}"),
+        ("运行天数", f"{days} 天"),
+        ("最后活动", html.escape(posts[0]["date"] if posts else START_DATE)),
+    ]
+    body = "".join(f'<div class="stat-row"><span>{k}</span><b>{v}</b></div>' for k, v in rows)
     return f"""<section class="card">
   <h3 class="side-title">站点统计</h3>
-  <div class="stat-row"><span>文章</span><b>{len(posts)}</b></div>
-  <div class="stat-row"><span>分类</span><b>{len(cats)}</b></div>
-  <div class="stat-row"><span>标签</span><b>{len(tags)}</b></div>
-  <div class="stat-row"><span>总字数</span><b>{total_words}</b></div>
-  <div class="stat-row"><span>运行天数</span><b>{days} 天</b></div>
-  <div class="stat-row"><span>最后活动</span><b>{html.escape(last)}</b></div>
-  <div class="side-note">这是一个还在慢慢同步的记忆终端。</div>
+  {body}
+  <div class="side-note">不蒜子统计中，刷新页面数字会跳。</div>
 </section>"""
 
 
-def page(title: str, body: str, active: str = "", *, hero: bool = True) -> str:
-    page_title = SITE_NAME if title == SITE_NAME else f"{title} · {SITE_NAME}"
-    hero_block = hero_html() if hero else ""
-    return f"""<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{html.escape(page_title)}</title>
-<meta name="description" content="{html.escape(SITE_DESC)}">
-<link rel="stylesheet" href="{{{{ASSETS}}}}/style.css">
-</head>
-<body>
-{nav_html(active=active)}
-{hero_block}
-{body}
-<footer class="site-footer">© {datetime.now().year} {html.escape(SITE_NAME)} · 记忆终端</footer>
-</body>
-</html>
-"""
+def categories_card(posts: list[dict], prefix: str = "") -> str:
+    from collections import Counter
+
+    c = Counter(p["category"] or "随笔" for p in posts)
+    chips = "".join(
+        f'<a class="tag-chip" href="{prefix}categories.html#{html.escape(k)}">{html.escape(k)}<b>{v}</b></a>'
+        for k, v in c.most_common()
+    )
+    return f'<section class="card"><h3 class="side-title">分类</h3><div class="tagbar">{chips}</div></section>'
+
+
+def tags_card(posts: list[dict], prefix: str = "") -> str:
+    from collections import Counter
+
+    c = Counter(t for p in posts for t in p["tag_list"])
+    chips = "".join(
+        f'<a class="tag-chip" href="{prefix}tags.html#{html.escape(k)}">#{html.escape(k)}<b>{v}</b></a>'
+        for k, v in c.most_common(16)
+    )
+    return f'<section class="card"><h3 class="side-title">标签</h3><div class="tagbar">{chips}</div></section>'
+
+
+def toc_and_meta(p: dict) -> str:
+    toc = extract_toc(p["html"])
+    return toc
 
 
 def giscus_html() -> str:
@@ -249,16 +282,90 @@ def giscus_html() -> str:
     data-theme="preferred_color_scheme"
     data-lang="zh-CN"
     crossorigin="anonymous"
-    async>
-  </script>
-</section>
+    async></script>
+</section>"""
+
+
+def page(
+    title: str,
+    body: str,
+    *,
+    prefix: str = "",
+    active: str = "主页",
+    desc: str = "",
+    hero: bool = True,
+    hero_count: int = 0,
+    og_image: str = "",
+) -> str:
+    page_title = SITE_NAME if title == SITE_NAME else f"{title} · {SITE_NAME}"
+    desc = desc or SITE_DESC
+    og = og_image or f"{prefix}assets/valorant/hero-jett.jpg"
+    hero_block = hero_html(post_count=hero_count) if hero else ""
+    return f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{html.escape(page_title)}</title>
+<meta name="description" content="{html.escape(desc)}">
+<meta name="author" content="{AUTHOR}">
+<link rel="canonical" href="{SITE_URL}/{title if title != SITE_NAME else ''}">
+<meta property="og:title" content="{html.escape(page_title)}">
+<meta property="og:description" content="{html.escape(desc)}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{SITE_URL}/">
+<meta property="og:image" content="{og}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="{html.escape(SITE_NAME)}" href="{prefix}feed.xml">
+<link rel="icon" href="{prefix}assets/avatar.svg" type="image/svg+xml">
+<link rel="stylesheet" href="{prefix}assets/style.css">
+<script>
+  (function () {{
+    try {{
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {{
+        document.documentElement.classList.add('dark');
+      }}
+    }} catch (e) {{}}
+  }})();
+</script>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+{nav_html(prefix=prefix, active=active)}
+{hero_block}
+{body}
+<footer class="site-footer">
+  <div>© {datetime.now().year} {html.escape(SITE_NAME)} · 记忆终端</div>
+  <div class="footer-meta">
+    <a href="{prefix}feed.xml">RSS</a>
+    <a href="{prefix}sitemap.xml">Sitemap</a>
+    <span id="busuanzi_container_site_uv">访客 <b id="busuanzi_value_site_uv">…</b></span>
+    <span id="busuanzi_container_site_pv">访问 <b id="busuanzi_value_site_pv">…</b></span>
+  </div>
+</footer>
+<div class="search-modal" id="search-modal" hidden>
+  <div class="search-box">
+    <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+</div>
+<script src="{prefix}assets/app.js"></script>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
 """
 
 
+# ---------- 内容 ----------
 def load_posts() -> list[dict]:
     posts: list[dict] = []
-    for path in sorted(POSTS_DIR.glob("*.md"), reverse=True):
+    if not POSTS_DIR.exists():
+        return posts
+    for path in POSTS_DIR.glob("*.md"):
         meta, body = parse_frontmatter(path.read_text(encoding="utf-8"))
+        words = word_count(body)
+        tag_list = split_tags(meta.get("tags", ""))
         posts.append(
             {
                 "slug": path.stem,
@@ -266,138 +373,326 @@ def load_posts() -> list[dict]:
                 "date": meta.get("date", ""),
                 "summary": meta.get("summary", ""),
                 "tags": meta.get("tags", ""),
+                "tag_list": tag_list,
+                "category": meta.get("category", tag_list[0] if tag_list else "随笔"),
                 "cover": meta.get("cover", "assets/valorant/cover-sage.jpg"),
+                "featured": meta.get("featured", "").lower() in {"1", "true", "yes", "y"},
+                "series": meta.get("series", ""),
+                "series_order": int(meta.get("series_order", "0") or 0),
                 "html": md_to_html(body),
                 "source": body,
+                "words": words,
+                "minutes": reading_minutes(words),
             }
         )
-    posts.sort(key=lambda p: p["date"] or "0000-00-00", reverse=True)
+    posts.sort(key=lambda p: (p["date"] or "0000-00-00", p["slug"]), reverse=True)
     return posts
 
 
-def post_card_html(p: dict, prefix: str = "posts/") -> str:
-    summary = p["summary"] or _first_text(p["source"])
-    tags = ""
-    if p["tags"]:
-        tags = "".join(
-            f"<span>#{html.escape(t.strip())}</span>"
-            for t in re.split(r"[,，、/|]", p["tags"])
-            if t.strip()
-        )
-        tags = f'<div class="post-tags">{tags}</div>'
-    cover = ""
-    if p["cover"]:
-        cover = f'<div class="post-cover"><img src="{html.escape(p["cover"])}" alt=""></div>'
-    else:
-        cover = '<div class="post-cover"></div>'
+def post_card(p: dict, prefix: str = "posts/") -> str:
+    tags = "".join(f"<span>#{html.escape(t)}</span>" for t in p["tag_list"])
+    featured = '<span class="badge">精选</span>' if p["featured"] else ""
+    series = f'<span class="badge series">{html.escape(p["series"])}</span>' if p["series"] else ""
     return f"""<article class="card post-card">
   <div>
+    <div class="badges">{featured}{series}</div>
     <h2 class="post-title"><a href="{prefix}{p['slug']}.html">{html.escape(p['title'])}</a></h2>
-    <div class="post-meta"><span>📅 {html.escape(p['date'])}</span><span>✍️ {html.escape(p['tags'] or '随笔')}</span><span>📝 {len(re.sub(r'\\s', '', p['source']))} 字</span></div>
-    <p class="post-summary">{html.escape(summary)}</p>
-    {tags}
+    <div class="post-meta">
+      <span>📅 {html.escape(p['date'])}</span>
+      <span>📁 {html.escape(p['category'])}</span>
+      <span>⏱ {p['minutes']} 分钟</span>
+      <span>📝 {p['words']} 字</span>
+    </div>
+    <p class="post-summary">{html.escape(p['summary'])}</p>
+    <div class="post-tags">{tags}</div>
   </div>
-  {cover}
+  <a class="post-cover" href="{prefix}{p['slug']}.html">
+    <img src="{p['cover']}" alt="" loading="lazy">
+  </a>
 </article>"""
 
 
 def build() -> None:
+    posts = load_posts()
     if DIST.exists():
         shutil.rmtree(DIST)
     (DIST / "posts").mkdir(parents=True)
     shutil.copytree(ASSETS_DIR, DIST / "assets")
 
-    posts = load_posts()
-    cards = "\n".join(post_card_html(p) for p in posts) if posts else "<p>还没有文章。</p>"
-    tagbar = """<div class="tagbar">
-  <a class="tag-chip active" href="index.html">🏠 主页<b>{n}</b></a>
-  <a class="tag-chip" href="index.html">📁 归档<b>{n}</b></a>
-  <a class="tag-chip" href="index.html">🧠 记忆<b>1</b></a>
-  <a class="tag-chip" href="index.html">🛠 技术<b>1</b></a>
-  <a class="tag-chip" href="index.html">🎨 设计<b>1</b></a>
-</div>""".replace("{n}", str(len(posts)))
+    # 搜索索引
+    index = [
+        {
+            "title": p["title"],
+            "url": f"/posts/{p['slug']}.html",
+            "summary": p["summary"],
+            "tags": p["tag_list"],
+            "category": p["category"],
+            "date": p["date"],
+        }
+        for p in posts
+    ]
+    (DIST / "search-index.json").write_text(
+        json.dumps(index, ensure_ascii=False), encoding="utf-8"
+    )
 
+    # 首页
+    featured = [p for p in posts if p["featured"]]
+    rest = [p for p in posts if not p["featured"]]
+    feat_html = ""
+    if featured:
+        items = "".join(post_card(p) for p in featured)
+        feat_html = f'<h2 class="section-title">精选</h2>{items}'
+    stream = "".join(post_card(p) for p in rest) or "<p>暂无更多文章。</p>"
     index_body = f"""
 <div class="page">
-  <aside class="left-col">{profile_html()}</aside>
+  <aside class="left-col">{profile_card()}<div class="stack">{categories_card(posts)}</div></aside>
   <section class="main-col" id="posts">
-    {tagbar}
-    {cards}
+    {feat_html}
+    <h2 class="section-title">最新</h2>
+    {stream}
   </section>
-  <aside class="side-col">{stats_html(posts)}</aside>
-</div>
-"""
+  <aside class="side-col">
+    {stats_card(posts)}
+    {tags_card(posts)}
+  </aside>
+</div>"""
     _write(
         DIST / "index.html",
-        page(SITE_NAME, index_body, active="home"),
-        assets_prefix=".",
-        home="index.html",
-        about="about.html",
+        page(SITE_NAME, index_body, active="主页", hero_count=len(posts)),
+        prefix="",
     )
 
-    about_src = ""
-    if ABOUT_FILE.exists():
-        meta, body = parse_frontmatter(ABOUT_FILE.read_text(encoding="utf-8"))
-        about_src = md_to_html(body)
-    else:
-        about_src = "<p>这里是关于页。</p>"
-    about_body = f"""
-<div class="article-shell">
-  <div class="about-card">
-    <h1 style="margin-top:0">关于</h1>
-    <div class="article-body">{about_src}</div>
-  </div>
-</div>
-"""
-    _write(
-        DIST / "about.html",
-        page("关于", about_body, active="about"),
-        assets_prefix=".",
-        home="index.html",
-        about="about.html",
-    )
-
+    # 归档
+    by_year: dict[str, list[dict]] = {}
     for p in posts:
-        tags = f"<span>{html.escape(p['tags'])}</span>" if p["tags"] else ""
-        body = f"""
-<div class="article-shell">
-  <article class="article-card">
-    <header class="article-header">
-      <h1>{html.escape(p['title'])}</h1>
-      <div class="post-meta"><span>📅 {html.escape(p['date'])}</span>{tags}</div>
-    </header>
-    <div class="article-body">
-{p['html']}
-    </div>
-  </article>
-  {giscus_html()}
-</div>
-"""
+        y = (p["date"] or "0000")[:4]
+        by_year.setdefault(y, []).append(p)
+    arch = []
+    for y in sorted(by_year.keys(), reverse=True):
+        lis = "".join(
+            f'<li><span>{html.escape(p["date"])}</span><a href="posts/{p["slug"]}.html">{html.escape(p["title"])}</a></li>'
+            for p in by_year[y]
+        )
+        arch.append(f'<h2 class="section-title">{y}</h2><ul class="arch-list">{lis}</ul>')
+    _write(
+        DIST / "archive.html",
+        page("归档", f'<div class="page single">{"".join(arch)}</div>', active="归档", hero=False),
+        prefix="",
+    )
+
+    # 分类
+    from collections import defaultdict
+
+    by_cat: dict[str, list[dict]] = defaultdict(list)
+    for p in posts:
+        by_cat[p["category"] or "随笔"].append(p)
+    cat_html = []
+    for cat, items in sorted(by_cat.items(), key=lambda kv: -len(kv[1])):
+        lis = "".join(
+            f'<li><span>{html.escape(p["date"])}</span><a href="posts/{p["slug"]}.html">{html.escape(p["title"])}</a></li>'
+            for p in items
+        )
+        cat_html.append(f'<h2 class="section-title" id="{html.escape(cat)}">{html.escape(cat)} <small>{len(items)}</small></h2><ul class="arch-list">{lis}</ul>')
+    _write(
+        DIST / "categories.html",
+        page("分类", f'<div class="page single">{"".join(cat_html)}</div>', active="分类", hero=False),
+        prefix="",
+    )
+
+    # 标签
+    by_tag: dict[str, list[dict]] = defaultdict(list)
+    for p in posts:
+        for t in p["tag_list"]:
+            by_tag[t].append(p)
+    tag_cloud = "".join(
+        f'<a class="tag-chip" href="#{html.escape(t)}">#{html.escape(t)}<b>{len(v)}</b></a>'
+        for t, v in sorted(by_tag.items(), key=lambda kv: -len(kv[1]))
+    )
+    tag_html = [f'<div class="tagbar">{tag_cloud}</div>']
+    for t, items in sorted(by_tag.items(), key=lambda kv: -len(kv[1])):
+        lis = "".join(
+            f'<li><span>{html.escape(p["date"])}</span><a href="posts/{p["slug"]}.html">{html.escape(p["title"])}</a></li>'
+            for p in items
+        )
+        tag_html.append(f'<h2 class="section-title" id="{html.escape(t)}">#{html.escape(t)}</h2><ul class="arch-list">{lis}</ul>')
+    _write(
+        DIST / "tags.html",
+        page("标签", f'<div class="page single">{"".join(tag_html)}</div>', active="标签", hero=False),
+        prefix="",
+    )
+
+    # 静态页
+    for name, fname, active in [
+        ("关于", "about", "关于"),
+        ("项目", "projects", "项目"),
+        ("友链", "friends", "友链"),
+    ]:
+        md_path = ROOT / f"{fname}.md"
+        if md_path.exists():
+            meta, body = parse_frontmatter(md_path.read_text(encoding="utf-8"))
+            content = md_to_html(body)
+            title = meta.get("title", name)
+        else:
+            content = "<p>内容准备中。</p>"
+            title = name
         _write(
-            DIST / "posts" / f"{p['slug']}.html",
-            page(p["title"], body, active="home"),
-            assets_prefix="..",
-            home="../index.html",
-            about="../about.html",
+            DIST / f"{fname}.html",
+            page(
+                title,
+                f'<div class="page single"><div class="card pad">{content}</div></div>',
+                active=active,
+                hero=False,
+            ),
+            prefix="",
         )
 
-    print(f"构建完成：{len(posts)} 篇文章 -> {DIST}")
-
-
-def _first_text(md: str, limit: int = 80) -> str:
-    for line in md.splitlines():
-        s = re.sub(r"[#>*`\[\]!]", "", line).strip()
-        if s:
-            return s[:limit] + ("…" if len(s) > limit else "")
-    return ""
-
-
-def _write(path: Path, html_text: str, *, assets_prefix: str, home: str, about: str) -> None:
-    html_text = (
-        html_text.replace("{{ASSETS}}", f"{assets_prefix}/assets")
-        .replace("{{HOME}}", home)
-        .replace("{{ABOUT}}", about)
+    # 404
+    _write(
+        DIST / "404.html",
+        page(
+            "页面不存在",
+            """<div class="page single"><div class="card pad center">
+  <h1>404</h1><p>你走进了未命名的片段。</p>
+  <p><a class="btn" href="index.html">回首页</a></p>
+</div></div>""",
+            active="",
+            hero=False,
+        ),
+        prefix="",
     )
+
+    # 文章页
+    # 系列导航
+    series_map: dict[str, list[dict]] = defaultdict(list)
+    for p in posts:
+        if p["series"]:
+            series_map[p["series"]].append(p)
+    for s in series_map.values():
+        s.sort(key=lambda x: x["series_order"])
+
+    for p in posts:
+        toc = extract_toc(p["html"])
+        tags = "".join(f'<a class="tag-chip" href="../tags.html#{html.escape(t)}">#{html.escape(t)}</a>' for t in p["tag_list"])
+        # 相关
+        related = [
+            x
+            for x in posts
+            if x["slug"] != p["slug"]
+            and (x["category"] == p["category"] or set(x["tag_list"]) & set(p["tag_list"]))
+        ][:3]
+        rel_html = "".join(
+            f'<li><a href="{x["slug"]}.html">{html.escape(x["title"])}</a></li>' for x in related
+        )
+        # 系列
+        ser_html = ""
+        if p["series"] and p["series"] in series_map:
+            sibs = series_map[p["series"]]
+            idx = next(i for i, x in enumerate(sibs) if x["slug"] == p["slug"])
+            prev = sibs[idx - 1] if idx > 0 else None
+            nxt = sibs[idx + 1] if idx + 1 < len(sibs) else None
+            ser_html = '<nav class="series-nav">'
+            if prev:
+                ser_html += f'<a href="{prev["slug"]}.html">← 上一篇：{html.escape(prev["title"])}</a>'
+            else:
+                ser_html += "<span></span>"
+            ser_html += f'<b>{html.escape(p["series"])} · {idx + 1}/{len(sibs)}</b>'
+            if nxt:
+                ser_html += f'<a href="{nxt["slug"]}.html">下一篇：{html.escape(nxt["title"])} →</a>'
+            else:
+                ser_html += "<span></span>"
+            ser_html += "</nav>"
+
+        body = f"""
+<div class="page article-page">
+  <aside class="left-col">{profile_card(prefix="../")}</aside>
+  <article class="article-shell">
+    <div class="article-card">
+      <header class="article-header">
+        <div class="badges">
+          <span class="badge">{html.escape(p['category'])}</span>
+          {f'<span class="badge series">{html.escape(p["series"])}</span>' if p["series"] else ''}
+        </div>
+        <h1>{html.escape(p['title'])}</h1>
+        <div class="post-meta">
+          <span>📅 {html.escape(p['date'])}</span>
+          <span>⏱ {p['minutes']} 分钟</span>
+          <span>📝 {p['words']} 字</span>
+          <span>👁 <span id="busuanzi_container_page_pv">…</span></span>
+        </div>
+      </header>
+      {ser_html}
+      <div class="article-body">{p['html']}</div>
+      <div class="article-foot">
+        <div class="post-tags">{tags}</div>
+        <p class="copyright">© {datetime.now().year} {html.escape(SITE_NAME)} · 转载请注明出处</p>
+      </div>
+    </div>
+    {f'<section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list">{rel_html}</ul></section>' if rel_html else ''}
+    {giscus_html()}
+  </article>
+  <aside class="side-col">{toc}</aside>
+</div>"""
+        _write(
+            DIST / "posts" / f"{p['slug']}.html",
+            page(p["title"], body, prefix="../", active="主页", desc=p["summary"], hero=False),
+            prefix="../",
+        )
+
+    # RSS
+    items = []
+    for p in posts[:20]:
+        items.append(
+            f"""<item>
+  <title>{xesc(p['title'])}</title>
+  <link>{SITE_URL}/posts/{p['slug']}.html</link>
+  <guid>{SITE_URL}/posts/{p['slug']}.html</guid>
+  <pubDate>{p['date']}</pubDate>
+  <description>{xesc(p['summary'])}</description>
+</item>"""
+        )
+    feed = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+<title>{xesc(SITE_NAME)}</title>
+<link>{SITE_URL}</link>
+<description>{xesc(SITE_DESC)}</description>
+<language>zh-cn</language>
+{''.join(items)}
+</channel></rss>
+"""
+    (DIST / "feed.xml").write_text(feed, encoding="utf-8")
+
+    # sitemap
+    urls = ["", "about.html", "archive.html", "categories.html", "tags.html", "projects.html", "friends.html"]
+    urls += [f"posts/{p['slug']}.html" for p in posts]
+    sm = ["<?xml version=\"1.0\" encoding=\"UTF-8\"?>", '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for u in urls:
+        sm.append(f"<url><loc>{SITE_URL}/{u}</loc></url>")
+    sm.append("</urlset>")
+    (DIST / "sitemap.xml").write_text("\n".join(sm), encoding="utf-8")
+
+    # robots
+    (DIST / "robots.txt").write_text(
+        f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8"
+    )
+
+    # 预览副本到会话目录（勿写回源码根目录）
+    if PREVIEW_DIR.resolve() != ROOT.resolve():
+        for item in DIST.iterdir():
+            dest = PREVIEW_DIR / item.name
+            if item.is_dir():
+                if dest.exists():
+                    shutil.rmtree(dest)
+                shutil.copytree(item, dest)
+            else:
+                shutil.copy2(item, dest)
+
+    print(f"构建完成：{len(posts)} 篇 → {DIST}")
+    print(f"预览入口：{PREVIEW_DIR / 'index.html'}")
+
+
+def _write(path: Path, html_text: str, *, prefix: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    # page() 已经直接写好 prefix 路径
     path.write_text(html_text, encoding="utf-8")
 
 
