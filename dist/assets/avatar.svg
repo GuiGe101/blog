@@ -1,44 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#FFD5C2"/>
-      <stop offset="45%" stop-color="#F8B4C8"/>
-      <stop offset="100%" stop-color="#C5B4F0"/>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7EB6FF"/>
+      <stop offset="50%" stop-color="#A78BFA"/>
+      <stop offset="100%" stop-color="#F0ABFC"/>
     </linearGradient>
-    <linearGradient id="hair" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#3A3D4A"/>
-      <stop offset="100%" stop-color="#22242D"/>
-    </linearGradient>
-    <linearGradient id="cloth" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="100%" stop-color="#F0F2F7"/>
-    </linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="10"/></filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.07 0"/>
+    </filter>
   </defs>
-  <rect width="200" height="200" rx="36" fill="url(#bg)"/>
-  <!-- body -->
-  <ellipse cx="100" cy="175" rx="58" ry="42" fill="url(#cloth)"/>
-  <path d="M70 150 Q100 135 130 150 L135 185 L65 185 Z" fill="#E85D5D"/>
-  <!-- neck -->
-  <rect x="90" y="118" width="20" height="24" rx="8" fill="#F3C7B0"/>
-  <!-- head -->
-  <circle cx="100" cy="92" r="42" fill="#F7D0BC"/>
-  <!-- hair back -->
-  <path d="M55 95 Q52 45 100 40 Q148 45 145 95 Q145 125 135 140 L125 110 Q128 85 100 82 Q72 85 75 110 L65 140 Q55 125 55 95Z" fill="url(#hair)"/>
-  <!-- bangs -->
-  <path d="M68 78 Q78 58 100 56 Q122 58 132 78 Q120 70 100 70 Q80 70 68 78Z" fill="#2A2D38"/>
-  <!-- buns -->
-  <circle cx="58" cy="78" r="16" fill="#2A2D38"/>
-  <circle cx="142" cy="78" r="16" fill="#2A2D38"/>
-  <circle cx="58" cy="78" r="6" fill="#F07B7B" opacity="0.85"/>
-  <circle cx="142" cy="78" r="6" fill="#F07B7B" opacity="0.85"/>
-  <!-- eyes -->
-  <ellipse cx="84" cy="96" rx="6.5" ry="8.5" fill="#2A3140"/>
-  <ellipse cx="116" cy="96" rx="6.5" ry="8.5" fill="#2A3140"/>
-  <circle cx="86" cy="93.5" r="2.2" fill="#FFFFFF"/>
-  <circle cx="118" cy="93.5" r="2.2" fill="#FFFFFF"/>
-  <!-- blush -->
-  <ellipse cx="72" cy="108" rx="8" ry="4" fill="#F07B7B" opacity="0.35"/>
-  <ellipse cx="128" cy="108" rx="8" ry="4" fill="#F07B7B" opacity="0.35"/>
-  <!-- smile -->
-  <path d="M92 112 Q100 118 108 112" stroke="#C47A7A" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <rect width="200" height="200" rx="36" fill="url(#g)"/>
+  <circle cx="60" cy="55" r="40" fill="#FFFFFF" opacity="0.35" filter="url(#blur)"/>
+  <circle cx="150" cy="140" r="50" fill="#FFD6E8" opacity="0.45" filter="url(#blur)"/>
+  <circle cx="120" cy="70" r="24" fill="#FFFFFF" opacity="0.28" filter="url(#blur)"/>
+  <!-- monogram Z -->
+  <text x="100" y="122" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+        font-size="86" font-weight="700" fill="#FFFFFF" opacity="0.92">z</text>
+  <rect width="200" height="200" rx="36" filter="url(#grain)"/>
 </svg>

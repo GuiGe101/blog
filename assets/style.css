@@ -86,10 +86,7 @@ a:hover { color: #3d7eb0; }
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background:
-    linear-gradient(165deg, #cfe4f7 0%, #e7d9f2 42%, #f7e9e4 78%, #f4f7fb 100%),
-    url("hero.svg") center/cover no-repeat;
-  background-blend-mode: multiply;
+  background: #7EB6FF url("hero.svg") center/cover no-repeat;
 }
 
 .hero-art {
@@ -130,11 +127,9 @@ a:hover { color: #3d7eb0; }
   margin: 0 0 12px;
   font-size: clamp(2.2rem, 5vw, 3.4rem);
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   color: #fff;
-  text-shadow:
-    0 2px 0 rgba(91, 155, 213, 0.35),
-    0 8px 28px rgba(42, 49, 64, 0.22);
+  text-shadow: 0 10px 40px rgba(42, 49, 64, 0.28);
 }
 
 .hero-sub {
