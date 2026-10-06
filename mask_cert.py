@@ -4,32 +4,42 @@ from pathlib import Path
 
 src = Path(r"D:\Edge\zixuann.top.png")
 out = Path(r"E:\AI\MIMO\Blog\assets\domain-cert.png")
-im = Image.open(src).convert("RGB")
+orig = Image.open(src).convert("RGB")
 
-# from dark-run scan
-boxes = [
-    (548, 470, 675, 515),   # 舒梓轩 Chinese body
-    (1018, 518, 1095, 565),  # 舒梓 English L1
-    (78, 550, 128, 600),     # 轩 English L2
-    (418, 700, 510, 750),    # 舒梓轩 holder line (y700-740)
-    (418, 740, 575, 790),    # shu zi xuan registrant (y740-780)
-]
+# dump several candidate strips from ORIGINAL so we can see exact layout
+strips = {
+    "body_cn": (250, 455, 750, 525),
+    "holder": (250, 695, 700, 755),
+    "registrant": (250, 735, 750, 795),
+}
+strip_dir = Path(r"E:\AI\MIMO\Blog\assets\strips")
+strip_dir.mkdir(exist_ok=True)
+for name, box in strips.items():
+    orig.crop(box).save(strip_dir / f"orig_{name}.png")
+    print("saved", name, box)
 
-for i, box in enumerate(boxes):
-    region = im.crop(box).filter(ImageFilter.GaussianBlur(radius=16))
-    im.paste(region, box)
-    ImageDraw.Draw(im).rectangle(box, fill=(25, 25, 25))
-    print("masked", i, box)
+# Also print dark-run boundaries with fine merge on body_cn line
+gray = orig.convert("L")
 
-im.save(out, "PNG")
+def fine_runs(y0, y1, x0, x1, thr=110, merge_gap=6):
+    runs, start = [], None
+    for x in range(x0, x1):
+        has = any(gray.getpixel((x, y)) < thr for y in range(y0, y1))
+        if has and start is None:
+            start = x
+        elif not has and start is not None:
+            runs.append((start, x - 1))
+            start = None
+    if start is not None:
+        runs.append((start, x1 - 1))
+    merged = []
+    for r in runs:
+        if merged and r[0] - merged[-1][1] <= merge_gap:
+            merged[-1] = (merged[-1][0], r[1])
+        else:
+            merged.append(r)
+    return merged
 
-# pixel verification: sample mask centers — should be near-black
-px = im.load()
-for i, box in enumerate(boxes):
-    cx, cy = (box[0] + box[2]) // 2, (box[1] + box[3]) // 2
-    print("sample", i, "center", px[cx, cy])
-
-# save a fresh check strip of the name areas only
-strip = im.crop((100, 450, 1100, 800))
-strip.save(out.parent / "_check_names.png")
-print("saved", out, out.stat().st_size)
+print("body_cn fine", fine_runs(465, 515, 250, 750, merge_gap=6))
+print("holder fine", fine_runs(705, 745, 250, 700, merge_gap=6))
+print("registrant fine", fine_runs(745, 785, 250, 750, merge_gap=6))

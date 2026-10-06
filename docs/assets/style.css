@@ -393,3 +393,14 @@ html.dark .article-body pre { background: #0d111c; }
   .post-cover { min-height: 160px; order: -1; }
   .article-card { padding: 22px 16px; }
 }
+
+.article-cover {
+  margin: 0 0 1.25rem;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.article-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

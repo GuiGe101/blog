@@ -716,6 +716,9 @@ def build() -> None:
           <span>阅读 <b id="stat-page-pv" data-key="{html.escape(p["slug"])}">…</b></span>
         </div>
       </header>
+      <figure class="article-cover">
+        <img src="../{html.escape(p['cover'])}" alt="{html.escape(p['title'])}" loading="lazy">
+      </figure>
       {ser_html}
       <div class="article-body">{p['html']}</div>
       <div class="article-foot">
@@ -730,7 +733,15 @@ def build() -> None:
 </div>"""
         _write(
             DIST / "posts" / f"{p['slug']}.html",
-            page(p["title"], body, prefix="../", active="主页", desc=p["summary"], hero=False),
+            page(
+                p["title"],
+                body,
+                prefix="../",
+                active="主页",
+                desc=p["summary"],
+                hero=False,
+                og_image=f"../{p['cover']}",
+            ),
             prefix="../",
         )
 
