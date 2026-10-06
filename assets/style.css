@@ -30,6 +30,34 @@ html.dark {
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+
+/* 明暗切换：柔和渐变 */
+html.theme-anim,
+html.theme-anim body,
+html.theme-anim .site-nav,
+html.theme-anim .card,
+html.theme-anim .toc,
+html.theme-anim .echo,
+html.theme-anim .article-card,
+html.theme-anim .about-card,
+html.theme-anim .icon-btn,
+html.theme-anim .tag-chip,
+html.theme-anim .search-box,
+html.theme-anim .post-cover,
+html.theme-anim .stat-row,
+html.theme-anim .side-note,
+html.theme-anim .hero-wave path,
+html.theme-anim .article-body pre,
+html.theme-anim .article-body code,
+html.theme-anim .series-nav {
+  transition:
+    background-color 0.55s ease,
+    color 0.55s ease,
+    border-color 0.55s ease,
+    box-shadow 0.55s ease,
+    fill 0.55s ease !important;
+}
+
 body {
   margin: 0;
   font-family: var(--font-ui);

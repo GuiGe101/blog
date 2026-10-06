@@ -2,10 +2,16 @@
 (function () {
   const root = document.documentElement;
 
-  // theme
+  // theme（柔和渐变切换）
   const themeBtn = document.getElementById("theme-toggle");
+  function enableThemeAnim() {
+    root.classList.add("theme-anim");
+    clearTimeout(enableThemeAnim._t);
+    enableThemeAnim._t = setTimeout(() => root.classList.remove("theme-anim"), 700);
+  }
   if (themeBtn) {
     themeBtn.addEventListener("click", () => {
+      enableThemeAnim();
       const dark = root.classList.toggle("dark");
       try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (e) {}
     });
