@@ -14,10 +14,10 @@
 | 点缀 | `#FF4655` | `#FF4655` |
 
 ## 字体
-- 展示/正文：`"LXGW WenKai", "霞鹜文楷", "Noto Serif SC", "Source Han Serif SC", serif`
+- 展示/正文：`"Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif`
 - 界面：`"PingFang SC", "Microsoft YaHei", sans-serif`
 - 代码：`"JetBrains Mono", "Cascadia Code", Consolas, monospace`
-- 正文 17px / 行高 1.85 / 段宽 68–72ch
+- 正文 17px / 行高 1.85 / 字重 500 / 标题 800–900
 
 ## 版式
 - 首页：大头图 + 精选置顶 + 标签流 + 三栏
