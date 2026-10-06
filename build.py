@@ -479,7 +479,7 @@ def load_posts() -> list[dict]:
                 "html": md_to_html(body),
                 "source": body,
                 "words": words,
-                "minutes": reading_minutes(words),
+                "minutes": int(meta.get("minutes", "") or 0) or reading_minutes(words),
             }
         )
     posts.sort(key=lambda p: (p["date"] or "0000-00-00", p["slug"]), reverse=True)
