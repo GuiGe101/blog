@@ -156,6 +156,30 @@ def split_tags(tags: str) -> list[str]:
 
 
 # ---------- 片段 ----------
+def icon(name: str) -> str:
+    icons = {
+        "search": (
+            '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">'
+            '<circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/>'
+            '<path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'
+            "</svg>"
+        ),
+        "theme": (
+            '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">'
+            '<circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>'
+            '<path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" '
+            'fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'
+            "</svg>"
+        ),
+        "menu": (
+            '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">'
+            '<path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'
+            "</svg>"
+        ),
+    }
+    return icons[name]
+
+
 def nav_html(prefix: str = "", active: str = "主页") -> str:
     links = []
     for name, href in NAV:
@@ -165,9 +189,9 @@ def nav_html(prefix: str = "", active: str = "主页") -> str:
   <a class="brand" href="{prefix}index.html"><span class="brand-mark"></span>{html.escape(SITE_NAME)}</a>
   <nav class="nav-links">{''.join(links)}</nav>
   <div class="nav-actions">
-    <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索">🔍</button>
-    <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换">◐</button>
-    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单">☰</button>
+    <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索">{icon('search')}</button>
+    <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换">{icon('theme')}</button>
+    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单">{icon('menu')}</button>
   </div>
 </header>
 <div class="mobile-nav" id="mobile-nav">{''.join(links)}</div>"""
@@ -398,10 +422,10 @@ def post_card(p: dict, prefix: str = "posts/") -> str:
     <div class="badges">{featured}{series}</div>
     <h2 class="post-title"><a href="{prefix}{p['slug']}.html">{html.escape(p['title'])}</a></h2>
     <div class="post-meta">
-      <span>📅 {html.escape(p['date'])}</span>
-      <span>📁 {html.escape(p['category'])}</span>
-      <span>⏱ {p['minutes']} 分钟</span>
-      <span>📝 {p['words']} 字</span>
+      <span>{html.escape(p['date'])}</span>
+      <span>{html.escape(p['category'])}</span>
+      <span>{p['minutes']} 分钟</span>
+      <span>{p['words']} 字</span>
     </div>
     <p class="post-summary">{html.escape(p['summary'])}</p>
     <div class="post-tags">{tags}</div>
@@ -614,10 +638,10 @@ def build() -> None:
         </div>
         <h1>{html.escape(p['title'])}</h1>
         <div class="post-meta">
-          <span>📅 {html.escape(p['date'])}</span>
-          <span>⏱ {p['minutes']} 分钟</span>
-          <span>📝 {p['words']} 字</span>
-          <span>👁 <span id="busuanzi_container_page_pv">…</span></span>
+          <span>{html.escape(p['date'])}</span>
+          <span>{p['minutes']} 分钟</span>
+          <span>{p['words']} 字</span>
+          <span>阅读 <span id="busuanzi_container_page_pv">…</span></span>
         </div>
       </header>
       {ser_html}
