@@ -20,14 +20,14 @@ PREVIEW_DIR = SESSION_CWD if SESSION_CWD.exists() else Path.cwd()
 if PREVIEW_DIR.resolve() == ROOT.resolve():
     PREVIEW_DIR = DIST
 
-SITE_NAME = "zixuann"
-SITE_TITLE = "zixuann 的记忆终端"
+SITE_NAME = "归舸"
+SITE_TITLE = "归舸的记忆终端"
 SITE_SUB = "正在同步生活、技术、灵感与未命名的片段"
 SITE_DESC = "记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。"
 SITE_BIO = "19 岁，在写代码、打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。"
 SITE_URL = "https://zixuann.top"
 START_DATE = "2026-10-06"
-AUTHOR = "zixuann"
+AUTHOR = "归舸"
 
 GISCUS = {
     "repo": "GuiGe101/blog",
