@@ -318,10 +318,10 @@ def waline_html() -> str:
 <section class="echo">
   <h2 class="echo-title">回声</h2>
   <p class="echo-note">欢迎留言。昵称 + QQ 邮箱即可，不需要 GitHub。</p>
-  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css">
   <div id="waline"></div>
   <script type="module">
-    import {{ init }} from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+    import {{ init }} from 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js';
     init({{
       el: '#waline',
       serverURL: '{server}',
