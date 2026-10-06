@@ -699,6 +699,9 @@ def build() -> None:
         f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8"
     )
 
+    # 自定义域名
+    (DIST / "CNAME").write_text("zixuann.top\n", encoding="utf-8")
+
     # 预览副本到会话目录（勿写回源码根目录）
     if PREVIEW_DIR.resolve() != ROOT.resolve():
         for item in DIST.iterdir():
