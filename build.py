@@ -21,7 +21,7 @@ if PREVIEW_DIR.resolve() == ROOT.resolve():
     PREVIEW_DIR = DIST
 
 SITE_NAME = "归舸"
-SITE_TITLE = "归舸的记忆终端"
+SITE_TITLE = "归舸的大窝"
 SITE_SUB = "打瓦、想东想西——慢慢记下来"
 SITE_DESC = "记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。"
 SITE_BIO = "16 岁，打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。"
@@ -389,7 +389,7 @@ def page(
 {hero_block}
 {body}
 <footer class="site-footer">
-  <div>© {datetime.now().year} {html.escape(SITE_NAME)} · 记忆终端</div>
+  <div>© {datetime.now().year} {html.escape(SITE_NAME)} · 归舸的大窝</div>
   <div class="footer-meta">
     <a href="{prefix}feed.xml">RSS</a>
     <a href="{prefix}sitemap.xml">Sitemap</a>
