@@ -36,6 +36,10 @@ GISCUS = {
     "category_id": "DIC_kwDOU-a8M84DHMCl",
 }
 
+# Waline 服务地址，部署完成后填入（例如 https://waline-xxx.vercel.app）
+# 为空时暂时回退到 Giscus
+WALINE_SERVER = ""
+
 NAV = [
     ("主页", "index.html"),
     ("归档", "archive.html"),
@@ -306,6 +310,33 @@ def giscus_html() -> str:
     crossorigin="anonymous"
     async></script>
 </section>"""
+
+
+def waline_html() -> str:
+    server = WALINE_SERVER.rstrip("/")
+    return f"""
+<section class="echo">
+  <h2 class="echo-title">回声</h2>
+  <p class="echo-note">欢迎留言。昵称 + QQ 邮箱即可，不需要 GitHub。</p>
+  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css">
+  <div id="waline"></div>
+  <script type="module">
+    import {{ init }} from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+    init({{
+      el: '#waline',
+      serverURL: '{server}',
+      lang: 'zh-CN',
+      requiredMeta: ['nick', 'mail'],
+      meta: ['nick', 'mail', 'link'],
+      placeholder: '随便聊聊，邮箱不会公开～',
+      dark: 'html.dark',
+    }});
+  </script>
+</section>"""
+
+
+def comment_html() -> str:
+    return waline_html() if WALINE_SERVER else giscus_html()
 
 
 def page(
@@ -693,7 +724,7 @@ def build() -> None:
       </div>
     </div>
     {f'<section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list">{rel_html}</ul></section>' if rel_html else ''}
-    {giscus_html()}
+    {comment_html()}
   </article>
   <aside class="side-col">{toc}</aside>
 </div>"""
