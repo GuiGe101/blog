@@ -266,7 +266,7 @@ def load_posts() -> list[dict]:
                 "date": meta.get("date", ""),
                 "summary": meta.get("summary", ""),
                 "tags": meta.get("tags", ""),
-                "cover": meta.get("cover", ""),
+                "cover": meta.get("cover", "assets/valorant/cover-sage.jpg"),
                 "html": md_to_html(body),
                 "source": body,
             }
