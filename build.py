@@ -19,10 +19,10 @@ ABOUT_FILE = ROOT / "about.md"
 
 # giscus 配置（部署后到 https://giscus.app 填你的 GitHub 仓库再替换）
 GISCUS = {
-    "repo": "YOUR_NAME/YOUR_REPO",
-    "repo_id": "YOUR_REPO_ID",
+    "repo": "GuiGe101/blog",
+    "repo_id": "R_kgDOU-a8Mw",
     "category": "Announcements",
-    "category_id": "YOUR_CATEGORY_ID",
+    "category_id": "DIC_kwDOU-a8M84DHMCl",
 }
 
 
@@ -173,7 +173,7 @@ def giscus_html() -> str:
     data-reactions-enabled="1"
     data-emit-metadata="0"
     data-input-position="bottom"
-    data-theme="light"
+    data-theme="preferred_color_scheme"
     data-lang="zh-CN"
     crossorigin="anonymous"
     async>
