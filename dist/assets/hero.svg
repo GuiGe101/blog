@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 720" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#A8C8E8"/>
+      <stop offset="45%" stop-color="#D7C6EA"/>
+      <stop offset="100%" stop-color="#F6D9D0"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6B6A78"/>
+      <stop offset="100%" stop-color="#3D3D4A"/>
+    </linearGradient>
+    <linearGradient id="uni" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E8EEF6"/>
+    </linearGradient>
+    <radialGradient id="win" cx="0.7" cy="0.35" r="0.45">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1440" height="720" fill="url(#sky)"/>
+  <ellipse cx="1000" cy="250" rx="420" ry="280" fill="url(#win)"/>
+  <!-- window frame hints -->
+  <g stroke="#ffffff" stroke-opacity="0.35" stroke-width="10">
+    <line x1="820" y1="40" x2="820" y2="520"/>
+    <line x1="980" y1="20" x2="980" y2="520"/>
+    <line x1="1140" y1="40" x2="1140" y2="520"/>
+    <line x1="760" y1="180" x2="1360" y2="180"/>
+  </g>
+  <!-- soft orbs -->
+  <circle cx="260" cy="160" r="90" fill="#ffffff" opacity="0.18"/>
+  <circle cx="380" cy="280" r="40" fill="#ffffff" opacity="0.22"/>
+  <circle cx="180" cy="320" r="24" fill="#F8B4C8" opacity="0.35"/>
+  <!-- girl figure right-of-center -->
+  <g transform="translate(920,120) scale(1.15)">
+    <!-- hair mass -->
+    <path d="M40 220 Q10 120 90 70 Q170 20 250 80 Q320 130 290 240 Q270 320 240 360 L210 250 Q230 170 165 150 Q100 145 95 230 L70 350 Q30 310 40 220Z" fill="url(#hair)"/>
+    <!-- face -->
+    <ellipse cx="165" cy="175" rx="52" ry="58" fill="#F6D0BC"/>
+    <!-- bangs -->
+    <path d="M115 155 Q130 105 165 100 Q205 105 218 155 Q195 135 165 135 Q135 135 115 155Z" fill="#4A4A58"/>
+    <!-- eyes -->
+    <ellipse cx="145" cy="185" rx="7" ry="9" fill="#5B6B8A"/>
+    <ellipse cx="185" cy="185" rx="7" ry="9" fill="#5B6B8A"/>
+    <circle cx="147" cy="182" r="2.2" fill="#fff"/>
+    <circle cx="187" cy="182" r="2.2" fill="#fff"/>
+    <!-- blush -->
+    <ellipse cx="132" cy="205" rx="10" ry="5" fill="#F07B7B" opacity="0.28"/>
+    <ellipse cx="198" cy="205" rx="10" ry="5" fill="#F07B7B" opacity="0.28"/>
+    <!-- body / uniform -->
+    <path d="M100 250 Q165 230 230 250 L255 420 L75 420 Z" fill="url(#uni)"/>
+    <path d="M145 250 L165 310 L185 250 Z" fill="#2F3A4A"/>
+    <path d="M155 250 L165 275 L175 250 Z" fill="#C45C6A"/>
+    <!-- arm / hand hold -->
+    <path d="M230 300 Q280 330 310 380" stroke="url(#uni)" stroke-width="28" stroke-linecap="round" fill="none"/>
+    <ellipse cx="315" cy="390" rx="22" ry="16" fill="#F0C4AE" transform="rotate(25 315 390)"/>
+  </g>
+  <!-- second hand suggestion -->
+  <ellipse cx="1280" cy="520" rx="34" ry="22" fill="#E8B89E" opacity="0.85" transform="rotate(-15 1280 520)"/>
+  <rect width="1440" height="720" fill="url(#glow)"/>
+</svg>

@@ -4,24 +4,75 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>zixuann</title>
-<meta name="description" content="记录一点想说的">
+<meta name="description" content="记录生活、技术、灵感与未命名的片段">
 <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-<header class="site-header">
-  <a class="site-title" href="index.html">zixuann</a>
-  <nav class="site-nav">
-    <a href="index.html"  class="active">首页</a>
-    <a href="about.html" >关于</a>
+<header class="site-nav">
+  <a class="brand" href="index.html"><span class="brand-mark"></span>zixuann</a>
+  <nav class="nav-links">
+    <a href="index.html" class="active">主页</a>
+    <a href="index.html">归档</a>
+    <a href="about.html">关于</a>
+    <a href="index.html#posts">其他</a>
   </nav>
 </header>
-<main>
-<ul class="post-list"><li class="post-item">
-  <h2><a href="posts/2026-10-06-hello.html">你好，世界</a></h2>
-  <div class="post-meta">2026-10-06</div>
-  <p class="post-summary">博客开张第一篇。试试排版和留言。</p>
-</li></ul>
-</main>
-<footer class="site-footer">© 2026 zixuann</footer>
+
+<div class="hero">
+  <div class="hero-deco">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="hero-copy">
+    <h1 class="hero-title">zixuann 的记忆终端</h1>
+    <p class="hero-sub">正在同步生活、技术、灵感与未命名的片段</p>
+  </div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#ffffff" d="M0,48 C240,90 420,10 720,42 C1020,74 1200,18 1440,50 L1440,90 L0,90 Z"></path>
+    </svg>
+  </div>
+</div>
+
+<div class="page">
+  <aside class="left-col"><section class="card profile">
+  <div class="profile-avatar">
+    <img src="./assets/avatar.svg" alt="avatar">
+  </div>
+  <h2 class="profile-name">zixuann</h2>
+  <p class="profile-bio">记录生活、技术、灵感与未命名的片段</p>
+</section></aside>
+  <section class="main-col" id="posts">
+    <div class="tagbar">
+  <a class="tag-chip active" href="index.html">🏠 主页<b>1</b></a>
+  <a class="tag-chip" href="index.html">📁 归档<b>1</b></a>
+  <a class="tag-chip" href="index.html">🧠 记忆<b>1</b></a>
+  <a class="tag-chip" href="index.html">🛠 技术<b>1</b></a>
+  <a class="tag-chip" href="index.html">🎨 设计<b>1</b></a>
+</div>
+    <article class="card post-card">
+  <div>
+    <h2 class="post-title"><a href="posts/2026-10-06-hello.html">你好，世界</a></h2>
+    <div class="post-meta"><span>📅 2026-10-06</span><span>✍️ 随笔</span><span>📝 146 字</span></div>
+    <p class="post-summary">博客开张第一篇。试试排版和留言。</p>
+    <div class="post-tags"><span>#随笔</span></div>
+  </div>
+  <div class="post-cover"></div>
+</article>
+  </section>
+  <aside class="side-col"><section class="card">
+  <h3 class="side-title">站点统计</h3>
+  <div class="stat-row"><span>文章</span><b>1</b></div>
+  <div class="stat-row"><span>分类</span><b>1</b></div>
+  <div class="stat-row"><span>标签</span><b>1</b></div>
+  <div class="stat-row"><span>总字数</span><b>122</b></div>
+  <div class="stat-row"><span>运行天数</span><b>2 天</b></div>
+  <div class="stat-row"><span>最后活动</span><b>2026-10-06</b></div>
+  <div class="side-note">这是一个还在慢慢同步的记忆终端。</div>
+</section></aside>
+</div>
+
+<footer class="site-footer">© 2026 zixuann · 记忆终端</footer>
 </body>
 </html>
