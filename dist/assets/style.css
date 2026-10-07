@@ -91,7 +91,7 @@ html { scroll-behavior: smooth; }
   z-index: 2;
 }
 
-/* mouse proximity glow */
+/* mouse proximity glow — kept subtle, no moving beam */
 .icon-btn,
 .nav-links a,
 .mobile-nav a,
@@ -106,17 +106,8 @@ html { scroll-behavior: smooth; }
 .mobile-nav a::after,
 .card::after {
   background:
-    radial-gradient(120px circle at var(--mx) var(--my), rgba(255,255,255,0.45), transparent 42%),
     linear-gradient(145deg, rgba(255,255,255,0.85), rgba(255,255,255,0.05) 40%, rgba(150,210,255,0.35) 100%);
   opacity: 1;
-}
-html.dark .icon-btn::after,
-html.dark .nav-links a::after,
-html.dark .mobile-nav a::after,
-html.dark .card::after {
-  background:
-    radial-gradient(120px circle at var(--mx) var(--my), rgba(126,182,255,0.28), transparent 42%),
-    linear-gradient(145deg, rgba(255,255,255,0.3), rgba(255,255,255,0.04) 40%, rgba(150,210,255,0.2) 100%);
 }
 
 /* press / glass compression */
