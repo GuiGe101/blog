@@ -43,14 +43,6 @@ html.dark {
 html { scroll-behavior: smooth; }
 
 /* liquid glass core */
-@keyframes glass-sheen {
-  0% { background-position: -120% 0; }
-  100% { background-position: 220% 0; }
-}
-@keyframes glass-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-1px); }
-}
 .lg,
 .site-nav,
 .card,
@@ -74,13 +66,12 @@ html { scroll-behavior: smooth; }
   position: absolute; inset: 0;
   border-radius: inherit;
   background: var(--glass-shine);
-  background-size: 220% 100%;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
-  opacity: 0.85;
+  opacity: 0.28;
   pointer-events: none;
   z-index: 1;
   mix-blend-mode: soft-light;
-  animation: glass-sheen 7s ease-in-out infinite;
 }
 .site-nav::after,
 .card::after,
