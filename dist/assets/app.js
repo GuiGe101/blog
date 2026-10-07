@@ -24,6 +24,16 @@
     menuBtn.addEventListener("click", () => mobileNav.classList.toggle("open"));
   }
 
+  // liquid glass: mouse proximity glow
+  const glassSelector = ".icon-btn, .nav-links a, .mobile-nav a, .card, .tag-chip, .profile-links a";
+  document.addEventListener("pointermove", (e) => {
+    const el = e.target.closest && e.target.closest(glassSelector);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+    el.style.setProperty("--my", `${e.clientY - rect.top}px`);
+  }, { passive: true });
+
   // reading progress
   const progress = document.getElementById("progress");
   function updateProgress() {
