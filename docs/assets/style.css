@@ -126,11 +126,28 @@ img { max-width: 100%; display: block; }
 .mobile-nav {
   display: none;
   position: sticky; top: 57px; z-index: 90;
-  padding: 14px 16px 18px;
-  background: color-mix(in srgb, var(--paper) 94%, transparent);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--line);
-  box-shadow: 0 16px 32px rgba(18, 24, 40, 0.12);
+  margin: 0;
+  padding: 14px;
+  border-radius: 0 0 22px 22px;
+  background:
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.42),
+      rgba(255, 255, 255, 0.18) 45%,
+      rgba(126, 182, 255, 0.18));
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-top: none;
+  box-shadow:
+    0 18px 40px rgba(10, 16, 28, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -12px 24px rgba(126, 182, 255, 0.08);
+}
+.mobile-nav::before {
+  content: "";
+  position: absolute; inset: 0 0 auto 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+  pointer-events: none;
 }
 .mobile-nav.open {
   display: grid;
@@ -138,23 +155,82 @@ img { max-width: 100%; display: block; }
   gap: 10px;
 }
 .mobile-nav a {
+  position: relative;
   display: flex; align-items: center; justify-content: center;
-  min-height: 42px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: var(--bg);
+  min-height: 44px;
+  padding: 11px 12px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background:
+    linear-gradient(160deg,
+      rgba(255, 255, 255, 0.38),
+      rgba(255, 255, 255, 0.12));
   color: var(--ink);
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
+  box-shadow:
+    0 8px 18px rgba(18, 24, 40, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
 }
+.mobile-nav a::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.22), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.mobile-nav a:hover::after,
+.mobile-nav a.active::after { opacity: 1; }
 .mobile-nav a:hover,
 .mobile-nav a.active {
-  border-color: var(--accent);
-  background: var(--accent-soft);
+  border-color: rgba(126, 182, 255, 0.65);
+  background:
+    linear-gradient(160deg,
+      rgba(126, 182, 255, 0.34),
+      rgba(255, 255, 255, 0.14));
   color: var(--accent);
   text-decoration: none;
+  box-shadow:
+    0 12px 24px rgba(91, 155, 213, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+html.dark .mobile-nav {
+  background:
+    linear-gradient(135deg,
+      rgba(126, 182, 255, 0.16),
+      rgba(255, 255, 255, 0.06) 50%,
+      rgba(255, 255, 255, 0.03));
+  border-color: rgba(154, 166, 188, 0.22);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -12px 24px rgba(126, 182, 255, 0.05);
+}
+html.dark .mobile-nav a {
+  border-color: rgba(154, 166, 188, 0.22);
+  background:
+    linear-gradient(160deg,
+      rgba(255, 255, 255, 0.10),
+      rgba(255, 255, 255, 0.03));
+  color: var(--ink);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+html.dark .mobile-nav a:hover,
+html.dark .mobile-nav a.active {
+  border-color: rgba(126, 182, 255, 0.5);
+  background:
+    linear-gradient(160deg,
+      rgba(126, 182, 255, 0.22),
+      rgba(255, 255, 255, 0.06));
+  color: var(--accent);
 }
 
 /* hero */
