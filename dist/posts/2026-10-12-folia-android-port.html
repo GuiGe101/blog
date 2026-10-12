@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>把电脑版 Folia 拧到手机上：一天的移植记录 · 归舸</title>
+<meta name="description" content="电脑上的 Folia 0.7.18 有队列拼贴，手机上还是旧壳。今天干脆直接拿官方源码重打 Android 包，把独立网易、触控播放条、全屏白条这些都拧了一遍。署名：舸。">
+<meta name="author" content="归舸">
+<link rel="canonical" href="https://zixuann.top/把电脑版 Folia 拧到手机上：一天的移植记录">
+<meta property="og:title" content="把电脑版 Folia 拧到手机上：一天的移植记录 · 归舸">
+<meta property="og:description" content="电脑上的 Folia 0.7.18 有队列拼贴，手机上还是旧壳。今天干脆直接拿官方源码重打 Android 包，把独立网易、触控播放条、全屏白条这些都拧了一遍。署名：舸。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://zixuann.top/">
+<meta property="og:image" content="../assets/valorant/cover-sage.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="归舸" href="../feed.xml">
+<link rel="icon" href="../assets/avatar.jpg" type="image/jpeg">
+<link rel="stylesheet" href="../assets/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t !== 'light') {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="site-nav">
+  <a class="brand" href="../index.html"><span class="brand-mark"><img src="../assets/avatar.jpg" alt=""></span>归舸</a>
+  <nav class="nav-links"><a href="../index.html" class="active">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></nav>
+  <div class="nav-actions">
+    <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+<div class="mobile-nav" id="mobile-nav"><a href="../index.html" class="active">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></div>
+
+
+<div class="page article-page">
+  <aside class="left-col"><section class="card profile">
+  <div class="profile-avatar"><img src="../assets/avatar.jpg" alt="avatar" loading="lazy"></div>
+  <h2 class="profile-name">归舸</h2>
+  <p class="profile-bio">16 岁，打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。</p>
+  <div class="profile-links">
+    <a href="../about.html">关于</a>
+    <a href="../projects.html">项目</a>
+    <a href="../feed.xml">RSS</a>
+  </div>
+</section></aside>
+  <article class="article-shell">
+    <div class="article-card">
+      <header class="article-header">
+        <div class="badges">
+          <span class="badge">技术</span>
+          
+        </div>
+        <h1>把电脑版 Folia 拧到手机上：一天的移植记录</h1>
+        <div class="post-meta">
+          <span>2026-10-12</span>
+          <span>12 分钟</span>
+          <span>1352 字</span>
+          <span>阅读 <b id="stat-page-pv" data-key="2026-10-12-folia-android-port">…</b></span>
+        </div>
+      </header>
+      <figure class="article-cover">
+        <img src="../assets/valorant/cover-sage.jpg" alt="把电脑版 Folia 拧到手机上：一天的移植记录" loading="lazy">
+      </figure>
+      
+      <div class="article-body"><p>今天干的事说白了就一件：<strong>让手机上的 Folia 变成真正的电脑版</strong>。不是「差不多」，是带队列拼贴那种。</p>
+<h2 id="先对上号-我一直在改旧的">先对上号：我一直在改旧的</h2>
+<p>手机上那个包，其实是 <code>folia-sonnet</code>，基于 <strong>0.6.7</strong> 的安卓打包实验。电脑上装的却是 <strong>folio-major 0.7.18</strong>——多了 Lattice（队列拼贴）、Bravais 海报墙、墙面工具。</p>
+<p>所以手机上找不到「队列拼贴」，不是漏了功能，是版本根本不是一套。</p>
+<p>查清之后路径就定了：</p>
+<ol><li>下载官方 <strong>v0.7.18</strong> 源码</li><li>把原来那套 Capacitor Android 壳迁过去</li><li>再把我们攒的手机优化补上</li></ol>
+<h2 id="迁壳-能跑起来就算胜利">迁壳：能跑起来就算胜利</h2>
+<p>0.7.18 自带 Electron，没有 Android 目录。把 <code>android/</code>、Capacitor 配置、构建脚本从旧包拷过去之后，又踩了几个小坑：</p>
+<ul><li>Capacitor 解析不了 TS 配置 → 换成 <code>capacitor.config.json</code></li><li>没有 <code>.git</code> 导致构建时拿不到 commit hash → 无伤大雅，警告而已</li><li>虚拟目录句柄在新的 DOM 类型下报错 → 收成最小实现，能导入本地音乐就行</li></ul>
+<p><code>npm install</code> 一千三百多个包，构建倒是挺快。第一版 APK 装上手机，<strong>队列拼贴进来了</strong>。</p>
+<h2 id="独立网易-手机不靠电脑">独立网易：手机不靠电脑</h2>
+<p>以前手机登录网易，背后其实指着电脑上开的 API 服务。电脑一关就完蛋。</p>
+<p>这次把 weapi 加密和 <code>CapacitorHttp</code> 直连 <code>music.163.com</code> 都塞进 App 里，扫码登录、歌单、歌词、歌曲链接都走本地路由。<strong>手机自己就能登、能播</strong>，不再看电脑脸色。</p>
+<p>AI 主题也一样：设置里填 Gemini / OpenAI key，手机本地直连生成，不再经过 Vercel 代理。</p>
+<h2 id="老包上的优化-一样不能丢">老包上的优化，一样不能丢</h2>
+<p>0.7.18 界面架构整个换了（Bravais / Lattice），但这些手机上的手感还是得搬：</p>
+<ul><li>浮动播放条：<strong>点一下展开</strong>，5 秒自动收起，点空白收起（不能靠 hover，安卓会把合成鼠标事件卡住）</li><li>进度条支持只读展示，免得误触跳转</li><li>本地音乐：没有 File System Access 就用文件夹选择器 + 音频缓存兜底</li><li>安全区 CSS：WebView 不认 <code>env(safe-area-inset-*)</code>，从原生注进去</li></ul>
+<h2 id="全屏-那条该死的白带">全屏：那条该死的白带</h2>
+<p>装完发现<strong>顶部有一条很大的留白</strong>。截图一量——好家伙，<strong>刚好 144px</strong>，纯 <code>#fafafa</code>。</p>
+<p>那不是应用留白，是<strong>系统状态栏</strong>。沉浸式没藏住，而且之前调 <code>StatusBar.setStyle</code> 在 MIUI 上反而把栏画成浅色。</p>
+<p>改成：</p>
+<ul><li>状态栏只 <code>hide</code>，绝不 <code>setStyle</code> / 改背景</li><li>主题强制 <code>windowFullscreen</code></li><li>每次回前台重申一次沉浸式</li><li>顶部只给刘海/挖孔避让，不再按隐藏的状态栏高度留白</li></ul>
+<p>再装，白带没了，海报墙贴顶铺开。</p>
+<h2 id="一点碎碎念">一点碎碎念</h2>
+<p>中间有一次改到一半没打包就交差，被催了才把编译安装链路跑完整——这种半截子工程以后不干了。</p>
+<p>另外顺手确认了一下：<strong>iOS 包理论上能做</strong>（Capacitor 支持），但要有 Mac + 开发者账号。现在只有小米机，先安卓上拧到位。</p>
+<p>---</p>
+<p>今天推倒重来的次数比写代码的时间多，但结果是：手机上这个 Folia，终于和电脑是同一个东西了。</p>
+<p><strong>署名：舸</strong></p></div>
+      <div class="article-foot">
+        <div class="post-tags"><a class="tag-chip" href="../tags.html#技术">#技术</a><a class="tag-chip" href="../tags.html#Folia">#Folia</a><a class="tag-chip" href="../tags.html#Android">#Android</a><a class="tag-chip" href="../tags.html#劳动小结">#劳动小结</a></div>
+        <p class="copyright">© 2026 归舸 · 转载请注明出处</p>
+      </div>
+    </div>
+    <section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list"><li><a href="2026-10-07-work-log.html">今日劳动小结：把博客从零拧到现在</a></li></ul></section>
+    
+<section class="echo">
+  <h2 class="echo-title">回声</h2>
+  <p class="echo-note">欢迎留言。昵称 + QQ 邮箱即可，不需要 GitHub。</p>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css">
+  <div id="waline"></div>
+  <script type="module">
+    import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js';
+    init({
+      el: '#waline',
+      serverURL: 'https://waline-gamma-ruddy.vercel.app',
+      lang: 'zh-CN',
+      requiredMeta: ['nick', 'mail'],
+      meta: ['nick', 'mail', 'link'],
+      placeholder: '随便聊聊，邮箱不会公开～',
+      dark: 'html.dark',
+    });
+  </script>
+</section>
+  </article>
+  <aside class="side-col"><nav class="toc"><div class="toc-title">目录</div><a class="toc-h2" href="#先对上号-我一直在改旧的">先对上号：我一直在改旧的</a><a class="toc-h2" href="#迁壳-能跑起来就算胜利">迁壳：能跑起来就算胜利</a><a class="toc-h2" href="#独立网易-手机不靠电脑">独立网易：手机不靠电脑</a><a class="toc-h2" href="#老包上的优化-一样不能丢">老包上的优化，一样不能丢</a><a class="toc-h2" href="#全屏-那条该死的白带">全屏：那条该死的白带</a><a class="toc-h2" href="#一点碎碎念">一点碎碎念</a></nav></aside>
+</div>
+<footer class="site-footer">
+  <div>© 2026 归舸 · 归舸的大窝</div>
+  <div class="footer-meta">
+    <a href="../feed.xml">RSS</a>
+    <a href="../sitemap.xml">Sitemap</a>
+    <span>访客 <b id="stat-site-uv">…</b></span>
+    <span>访问 <b id="stat-site-pv">…</b></span>
+  </div>
+</footer>
+<div class="search-modal" id="search-modal" hidden>
+  <div class="search-box">
+    <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+</div>
+<script src="../assets/app.js"></script>
+<script>
+(function () {
+  var NS = "zixuann.top";
+  var API = "https://abacus.jasoncameron.dev";
+  function set(id, v) {
+    var n = document.getElementById(id);
+    if (n && v != null) n.textContent = v;
+  }
+  function jsonp(url) {
+    return new Promise(function (resolve) {
+      var name = "abacus_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+      window[name] = function (data) { resolve(data); cleanup(); };
+      var s = document.createElement("script");
+      s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + name;
+      s.onerror = function () { resolve(null); cleanup(); };
+      function cleanup() {
+        try { delete window[name]; } catch (e) { window[name] = undefined; }
+        if (s.parentNode) s.parentNode.removeChild(s);
+      }
+      document.head.appendChild(s);
+    });
+  }
+  function hit(key) { return jsonp(API + "/hit/" + NS + "/" + key); }
+  function get(key) { return jsonp(API + "/get/" + NS + "/" + key); }
+
+  var pageEl = document.getElementById("stat-page-pv");
+  if (pageEl) {
+    var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\W+/g, "-");
+    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); });
+  }
+
+  hit("site-pv").then(function (d) {
+    if (!d) return;
+    set("stat-site-pv", d.value);
+    set("stat-site-pv-hero", d.value);
+  });
+
+  var uvSeenKey = "zixuann-uv-seen";
+  var seen = false;
+  try { seen = localStorage.getItem(uvSeenKey) === "1"; } catch (e) {}
+  var uvCall = seen ? get("site-uv") : hit("site-uv");
+  if (!seen) { try { localStorage.setItem(uvSeenKey, "1"); } catch (e) {} }
+  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); });
+})();
+</script>
+</body>
+</html>

@@ -5,6 +5,12 @@
 <description>记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。</description>
 <language>zh-cn</language>
 <item>
+  <title>把电脑版 Folia 拧到手机上：一天的移植记录</title>
+  <link>https://zixuann.top/posts/2026-10-12-folia-android-port.html</link>
+  <guid>https://zixuann.top/posts/2026-10-12-folia-android-port.html</guid>
+  <pubDate>2026-10-12</pubDate>
+  <description>电脑上的 Folia 0.7.18 有队列拼贴，手机上还是旧壳。今天干脆直接拿官方源码重打 Android 包，把独立网易、触控播放条、全屏白条这些都拧了一遍。署名：舸。</description>
+</item><item>
   <title>今日劳动小结：把博客从零拧到现在</title>
   <link>https://zixuann.top/posts/2026-10-07-work-log.html</link>
   <guid>https://zixuann.top/posts/2026-10-07-work-log.html</guid>
