@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>这几天的零碎：改名、头像、运行天数，还有一次 git 事故 · 归舸</title>
+<meta name="description" content="不重复以前写过的搭站过程。只记 10 月 12 日之后到今天的新事：站名、头像、简介文案、阅读时长、运行天数实时化，以及一次本地仓库丢失后的覆盖发布。写得很细，当存档用。">
+<meta name="author" content="归舸">
+<link rel="canonical" href="https://zixuann.top/这几天的零碎：改名、头像、运行天数，还有一次 git 事故">
+<meta property="og:title" content="这几天的零碎：改名、头像、运行天数，还有一次 git 事故 · 归舸">
+<meta property="og:description" content="不重复以前写过的搭站过程。只记 10 月 12 日之后到今天的新事：站名、头像、简介文案、阅读时长、运行天数实时化，以及一次本地仓库丢失后的覆盖发布。写得很细，当存档用。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://zixuann.top/">
+<meta property="og:image" content="../assets/avatar.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="归舸" href="../feed.xml">
+<link rel="icon" href="../assets/avatar.jpg" type="image/jpeg">
+<link rel="stylesheet" href="../assets/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t !== 'light') {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="site-nav">
+  <a class="brand" href="../index.html"><span class="brand-mark"><img src="../assets/avatar.jpg" alt=""></span>归舸</a>
+  <nav class="nav-links"><a href="../index.html" class="active">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></nav>
+  <div class="nav-actions">
+    <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+<div class="mobile-nav" id="mobile-nav"><a href="../index.html" class="active">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></div>
+
+
+<div class="page article-page">
+  <aside class="left-col"><section class="card profile">
+  <div class="profile-avatar"><img src="../assets/avatar.jpg" alt="avatar" loading="lazy"></div>
+  <h2 class="profile-name">归舸</h2>
+  <p class="profile-bio">16 岁，打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。</p>
+  <div class="profile-links">
+    <a href="../about.html">关于</a>
+    <a href="../projects.html">项目</a>
+    <a href="../feed.xml">RSS</a>
+  </div>
+</section></aside>
+  <article class="article-shell">
+    <div class="article-card">
+      <header class="article-header">
+        <div class="badges">
+          <span class="badge">思考</span>
+          
+        </div>
+        <h1>这几天的零碎：改名、头像、运行天数，还有一次 git 事故</h1>
+        <div class="post-meta">
+          <span>2026-10-18</span>
+          <span>55 分钟</span>
+          <span>9923 字</span>
+          <span>阅读 <b id="stat-page-pv" data-key="2026-10-18-day-recap">…</b></span>
+        </div>
+      </header>
+      <figure class="article-cover">
+        <img src="../assets/avatar.jpg" alt="这几天的零碎：改名、头像、运行天数，还有一次 git 事故" loading="lazy">
+      </figure>
+      
+      <div class="article-body"><p>今天是 <strong>2026 年 10 月 18 日</strong>，星期天。</p>
+<p>下午两点五十多，我盯着侧栏看了几秒，才意识到一件有点丢人的事：<strong>运行天数还是旧的</strong>。</p>
+<p>算错倒没有。那个数字是上次构建那天写死在 HTML 里的，压根没重新构建。只要我不改代码、不重新发布，它就会一直假装「今天」还是那一天。</p>
+<p>这破事成了今天下午的起点。顺手把这几天攒下的零碎一起理一理，写成这篇。搭站全过程、域名证书、Folia 移植，前面都单独有文章，这里一个字都不再重复。<strong>只记 12 号之后到今天真正新发生的事。</strong></p>
+<p>---</p>
+<p>\1先把名字安下来：「归舸的大窝」</p>
+<h3 id="1-1-名字为什么又改">1.1 名字为什么又改</h3>
+<p>站名改过不止一次。前几轮是：我的博客 → zixuann → zixuann 的记忆终端。</p>
+<p>「记忆终端」这四个字是跟风来的。看别人的站用类似的调调，觉得酷，拿过来也用了几天。用着用着就发现不对：这不像我。像某极客项目的代号，像赛博风的网文标题，像产品经理写的 slogan，唯独不像一个十六七岁、平时打打无畏契约、偶尔瞎想的人住的地方。</p>
+<p>「大窝」是你说出来的。我一听就觉得对。</p>
+<p>窝是什么？窝是住的地方，就是睡觉、打游戏、写点东西的窝。叫「终端」「空间」「宇宙」「元」都不对路。加个「大」字，还有点自嘲的意思：地方不大，口气不小；或者说，把心里那点空间撑得大一点。</p>
+<h3 id="1-2-改动范围">1.2 改动范围</h3>
+<p>你以为改名字就是改两个字，其实牵一发而动全身：</p>
+<ol><li><strong>构建脚本里的站点标题</strong>（<code>SITE_TITLE</code>）。头图大标题、浏览器标签、分享卡片都吃这个</li><li><strong>文章开篇那篇的标题</strong>。从「你好，欢迎来到记忆终端」改成「归舸的大窝」</li><li><strong>页脚</strong>。从「记忆终端」改成「归舸的大窝」</li><li><strong>站内还有残留的「记忆终端」字样</strong>。要搜干净，一处不漏</li></ol>
+<p>另外有个容易混的地方要理清：</p>
+<ul><li><strong>顶栏 / 资料卡</strong>显示的「归舸」是 <strong>名</strong></li><li><strong>头图 / 页脚</strong>的「归舸的大窝」是 <strong>宅名</strong></li></ul>
+<p>一个像门牌，一个像房子本体。这样分着其实挺合适。你要一起叫「归舸的大窝」也行，但现在这种「短名 + 宅名」的组合我更喜欢。</p>
+<h3 id="1-3-为什么名字这么重要">1.3 为什么名字这么重要</h3>
+<p>写程序的人容易觉得：名字是字符串，改个常量的事。做产品的人会告诉你：名字是别人记住你的第一件事。</p>
+<p>个人站尤其如此。技术站可以用域名、用项目名撑着，但「窝」这种站，气质全靠名字。叫「记忆终端」，进来的人会以为这是个工具；叫「归舸的大窝」，进来的人会以为这是个人。</p>
+<p>两种第一印象，差很多。</p>
+<h3 id="1-4-改名时踩到的小坑">1.4 改名时踩到的小坑</h3>
+<p>改名本身顺利，但有一个细节差点漏掉。</p>
+<p>头图大标题、页脚、文章标题都改完之后，本地预览一看，都对。推上去之后再看 RSS 和分享用的 <code>&lt;title&gt;</code>，还是旧的，因为浏览器标签和 OG 标题吃的是另一个变量。</p>
+<p>后来把 <code>SITE_TITLE</code> 这一个源头收干净，所有派生的地方都指向它，才彻底。教训是：<strong>文案不要复制多份。</strong> 复制三份，就会有两份过期。源头只有一个，让模板去展开。</p>
+<p>另外还有一个「记忆」层面的事。构建脚本注释、设计文档里还写着旧名字，不影响线上，但以后自己读代码会迷糊。顺手也改了。工程上的整洁和网页上的整洁，最后会互相影响。</p>
+<p>---</p>
+<p>\1头像：从假人插画到自己的图</p>
+<h3 id="2-1-以前为什么不满意">2.1 以前为什么不满意</h3>
+<p>头像这事前后拉扯了很久。卡住的是「这是不是我」。</p>
+<p><strong>第一阶段：矢量小人。</strong> 自己用 SVG 画的。圆脸、腮红、两个丸子头、微笑弧。当时觉得可爱，发出去看了两天就开始尴尬。像儿童英语 App 的默认头像，像十年前论坛的预设表情。你说「太土了」的时候，我其实心里同意，只是嘴上想再抢救一下。</p>
+<p><strong>第二阶段：渐变字母「z」。</strong> 抽象、干净、现代、有点科技公司官网的味道。问题也在这：太像科技公司了。一个打瓦的小孩，顶着一个 SaaS 创业公司的 logo，违和。</p>
+<p><strong>第三阶段：无畏契约裁切。</strong> 从官方壁纸裁的方图，至少是自己喜欢的东西。但也不是自己。是 Riot 画的，是 Jett，不是我。</p>
+<p><strong>第四阶段：现在这张。</strong> 你发过来的图。方图，构图有意思，而且是 <strong>你选的、你给的</strong>，不是我在素材库里翻出来的。</p>
+<p>头像的意义在这里：要找的是你愿意顶着走遍全站的那张图。</p>
+<h3 id="2-2-聊天附件的尴尬">2.2 聊天附件的尴尬</h3>
+<p>中间有个小插曲值得记。</p>
+<p>你在聊天里直接把图发过来了。我能看见，分辨率、构图、有没有水印，都看得一清二楚。但聊天附件落在系统里的位置，我翻遍了常见的上传目录、会话目录、临时目录，都找不到那个文件。</p>
+<p><code>51892728352459143401750135713761.jpg</code> 这个文件名我能看见，就是摸不到字节。</p>
+<p>这事有点哲学意味：<strong>能看见，不等于能使用。</strong> 对 AI 是这样，对人也是这样。你看得到别人的成果，不等于你能把它装进自己的站。</p>
+<p>后来你手动把文件放到：</p>
+<p><code>E:\AI\MIMO\Blog\assets\51892728352459143401750135713761.jpg</code></p>
+<p>1080×1080，本身就是方图。这下齐了。</p>
+<h3 id="2-3-裁水印">2.3 裁水印</h3>
+<p>图底下有一条短视频平台的水印带。你说得很干脆：<strong>水印裁掉</strong>。</p>
+<p>没有用什么智能消除。就是硬裁：</p>
+<ol><li>整幅图切掉底边大约 8%（1080 的 8% 差不多 86 像素，水印带绰绰有余）</li><li>裁掉之后取中心方形</li><li>缩到 512×512，JPEG 质量 92</li></ol>
+<p>为什么是 8%？少了怕留一截，多了怕裁到主体。这个数是看图定的，不是算出来的。图像处理这种事，最后还得眼睛说了算。</p>
+<p>为什么缩到 512？网页头像用不到 1080。512 在视网膜屏上显示 256px 的区域都够清晰，文件还小，加载快。</p>
+<h3 id="2-4-两处一起换">2.4 两处一起换</h3>
+<p>你说：<strong>「方形有个 Z 的那个」要换，「没有 Z 的那个」也要换，都换成这张。</strong></p>
+<p>「有 Z 的」= 侧栏资料卡的大头像 「没有 Z 的」= 顶栏左上角那个小圆角块</p>
+<p>这两处以前是两张不同的图（一张是头像图，一张是品牌小图标），现在统一成同一张。顺手把浏览器标签上的 favicon 也换成了同一张。</p>
+<p>改完之后有种「终于收拾干净了」的感觉。以前打开网页，左上角一个样子，侧栏另一个样子，标签页又是一个样子。现在三处一致，全站就一个「我」。</p>
+<h3 id="2-5-头像这种事的心态">2.5 头像这种事的心态</h3>
+<p>折腾这么久，最后发现选图的标准其实很简单：</p>
+<ol><li>自己看到不尴尬</li><li>打开网站时不会立刻想去改</li><li>过几周回来看，还认</li></ol>
+<p>做到这三条就行。不用好看，不用高级，不用二次元浓度多高。认就行。</p>
+<h3 id="2-6-换完头像的检查清单">2.6 换完头像的检查清单</h3>
+<p>换图不是「扔个文件」就完。我列过一个小清单：</p>
+<ol><li>侧栏大头像：要圆角、不变形</li><li>顶栏小图标：28×28 缩略下还要能认出来</li><li>favicon：浏览器标签那个 16/32px 小不点</li><li>文章页、关于页的头像：路径前缀不同（<code>../assets</code>），别 404</li><li>缓存：文件名不变的话，老访客可能还看到旧图</li></ol>
+<p>第五条最后是靠 <code>Ctrl+F5</code> 和等 CDN 过期解决的。头像这种小文件，缓存时间有时候比想的顽固。</p>
+<p>以后如果还要换头像，最好直接改文件名，比如 <code>avatar-v2.jpg</code>，路径跟着改，省得和缓存较劲。这次没改名，是因为图是全新文件，问题不大。</p>
+<p>折腾这么久，最后发现选图的标准其实很简单：</p>
+<ol><li>自己看到不尴尬</li><li>打开网站时不会立刻想去改</li><li>过几周回来看，还认</li></ol>
+<p>做到这三条就行。不用好看，不用高级，不用二次元浓度多高。认就行。</p>
+<p>---</p>
+<p>\1简介：删掉「写代码」</p>
+<h3 id="3-1-文案会-说假话">3.1 文案会「说假话」</h3>
+<p>资料卡和「关于」页里的简介，是网站的自我介绍。这东西写不好，整个站就会有股味道。</p>
+<p>前一版里有「在写代码」。你说删掉。</p>
+<p>删完变成：</p>
+<blockquote><p>打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。</p></blockquote>
+<p>对比一下：</p>
+<p>| 旧 | 新 | |----|----| | 在写代码、打无畏契约 | 打无畏契约 | | 像技术博主的身份标签 | 像平时说话 | | 读者的第一反应：哦，程序员 | 读者的第一反应：哦，普通人 |</p>
+<p>不是说写代码不好。写代码当然是日常的一部分。但 <strong>写在名片上</strong> 和 <strong>写在日常里</strong> 是两回事。</p>
+<p>名片要写「人设」。日常会自己透露。</p>
+<p>把「在写代码」从名片上拿掉，是让人设退后一点，让日常往前一点。喜欢技术的人，看到「技术」分类、看到 Folia 移植那篇，自然知道你写代码。不喜欢技术的人，也不会一进站就被三个字劝退。</p>
+<h3 id="3-2-副标题同理">3.2 副标题同理</h3>
+<p>副标题也改过好几次。最后定的调子是「打瓦、想东想西，慢慢记下来」这种。</p>
+<p>不要「正在同步生活、技术、灵感与未命名的片段」。那句像说明书，像同步日志，像某个笔记软件的默认文案。看着挺「文艺」，其实空。</p>
+<p>「打瓦、想东想西」是具体的。谁打瓦，谁想东想西，一眼就懂。</p>
+<p>文案这东西，具体就是真诚，抽象就是敷衍。哪怕抽象得很「有文采」，也是敷衍。</p>
+<h3 id="3-3-关于页跟着改">3.3 关于页跟着改</h3>
+<p>「关于」页是简介的加长版。大改不多，主要跟着简介的调子走，别一边名片上很随意，一边关于页又端起来。</p>
+<p>关于页那种地方，最忌讳写成简历。学历、技能栈、获奖情况、联系邮箱列成表，那就成了投递。个人站的关于，应该像朋友问「你是谁」，你随口答的那两句。</p>
+<p>---</p>
+<p>\1阅读时长：6 分钟还是 41 分钟</p>
+<h3 id="4-1-问题的起因">4.1 问题的起因</h3>
+<p>「今日劳动小结」那篇的阅读时长显示 6 分钟。你要改成 41 分钟。</p>
+<p>为什么会有 6 分钟？因为构建脚本按字数估：</p>
+<pre><code class="lang-text">预计阅读时间 ≈ 字数 ÷ 400 字/分钟</code></pre>
+<p>那篇文字量算下来，就是六七分钟的事。<strong>按这个公式，它没算错。</strong></p>
+<p>错的是「阅读时长」这个词的含义。</p>
+<h3 id="4-2-两种时长">4.2 两种时长</h3>
+<p>| 概念 | 含义 | 那篇的真实值 | |------|------|-------------| | 读完文字要多久 | 眼睛扫过这些字 | 约 6 分钟 | | 这件事花了多久 | 从早折腾到晚 | 一整天 |</p>
+<p>「劳动小结」是一篇 <strong>劳动存档</strong>，不是一篇 6 分钟的短文。那天从凌晨建站到改名、删友链、调部署，前后十小时以上。标 41 分钟已经是压缩过的说法，没把「盯着 GitHub Actions 转圈」的时间算进去。</p>
+<h3 id="4-3-改成可手写">4.3 改成可手写</h3>
+<p>在 frontmatter 里加了 <code>minutes</code> 字段：</p>
+<pre><code class="lang-yaml">minutes: 41</code></pre>
+<p>构建脚本逻辑：</p>
+<ul><li>有 <code>minutes</code> → 用它</li><li>没有 → 按字数自动估</li></ul>
+<p>这样以后每篇自己定。讲技术干货的短文，可以标实际阅读时间；讲「干了一天活」的存档，可以标劳动时间。不用再改构建脚本。</p>
+<p>「归舸的大窝」那篇以前也改过，从 1 分钟改成 18 分钟，一个道理。开张那篇文字不多，但「开张」这件事酝酿了四个多月，18 分钟都算客气。</p>
+<h3 id="4-4-顺手改的地方">4.4 顺手改的地方</h3>
+<p>改的时候把首页卡片、文章页头部、RSS 里的显示都核对了一遍。三个地方要一致，不能首页 41 分钟、点进去 6 分钟，那更怪。</p>
+<p>---</p>
+<h3 id="4-5-分钟-这个词的模糊性">4.5 「分钟」这个词的模糊性</h3>
+<p>其实「阅读时长」本身就是个模糊指标。</p>
+<p>不同人读中文的速度差别很大。同样一篇：</p>
+<ul><li>扫读的人 3 分钟</li><li>认真读的人 8 分钟</li><li>边读边琢磨示例的人 20 分钟</li><li>当存档核对时间线的人 40 分钟</li></ul>
+<p>所以任何自动估算都是 <strong>善意的谎言</strong>。它给的是「一个大概、偏快的中位数」，不是承诺。</p>
+<p>既然如此，那就干脆允许作者自己写。作者比公式更懂这篇是给谁看的、要不要细读。</p>
+<p>这也顺带解决了一个尴尬：有的短文写得极其密，公式算 2 分钟，实际要读 10 分钟；有的长文是流水账，公式算 12 分钟，实际 5 分钟就过完了。手写字段是给「自知」留的口子。</p>
+<p>\1运行天数：别再写死了</p>
+<h3 id="5-1-今天为什么想起来">5.1 今天为什么想起来</h3>
+<p>下午看侧栏，数字不对。</p>
+<p>18 号，从 6 号起算，应该是 <strong>13 天</strong>。页面上却还是个小数字。公式没错，是 <strong>数据过期了</strong>。</p>
+<h3 id="5-2-旧实现-构建时算死">5.2 旧实现：构建时算死</h3>
+<pre><code class="lang-python">days = (datetime.now() - start).days + 1  # 构建那一刻的 now
+html = f&quot;&lt;b&gt;{days} 天&lt;/b&gt;&quot;                 # 写死进 HTML</code></pre>
+<p>写完之后，这个 HTML 是死文件。除非：</p>
+<ul><li>我重新构建 + 推送</li><li>或者 GitHub Pages 自己重新生成</li></ul>
+<p>否则不管谁打开、什么时候打开，看到的都是我构建那天的数字。</p>
+<p>对博客来说这能忍，对「运行天数」这种一眼就看出来不对的东西，不能忍。</p>
+<h3 id="5-3-新实现-浏览器现算">5.3 新实现：浏览器现算</h3>
+<p>页面里只放起点：</p>
+<pre><code class="lang-html">&lt;b id=&quot;run-days&quot; data-start=&quot;2026-10-06&quot;&gt;…&lt;/b&gt;</code></pre>
+<p>浏览器打开时用 JS：</p>
+<pre><code class="lang-javascript">const start = new Date(&quot;2026-10-06T00:00:00&quot;);
+const days = Math.floor((new Date() - start) / 86400000) + 1;
+// 显示 days</code></pre>
+<p>每分钟 <code>setInterval</code> 刷一次。跨零点的长挂页面也会自己更新。</p>
+<h3 id="5-4-今天-18-号怎么算">5.4 「今天 18 号怎么算」</h3>
+<p>你问的这个问题很实在。</p>
+<pre><code class="lang-text">运行天数 = 今天的日期 - 开站日期 + 1
+        = 18 - 6 + 1
+        = 13</code></pre>
+<p>为什么要 +1？因为 <strong>开站那天算第 1 天</strong>，不是第 0 天。人类的习惯是「第一天、第二天」，不是「过了 0 天、过了 1 天」。</p>
+<p>另外手机和电脑如果时区不同，或者一个改了系统时间，两边显示可能差一天。这没办法。我们选择以 <strong>访客设备的本地时间</strong> 为准，比在服务器上算更省事，也更符合「你看到的今天」。</p>
+<h3 id="5-5-静态站的通病">5.5 静态站的通病</h3>
+<p>这个坑很典型，值得单独说。</p>
+<p><strong>静态网页是死文件。</strong> 里面所有「看起来是动态的数据」，像天数、计数、倒计时、农历、距离生日还有几天，只要不是浏览器现算的，都会慢慢变成谎言。</p>
+<p>解决办法只有两种：</p>
+<ol><li><strong>经常重新构建</strong>，麻烦，会忘</li><li><strong>浏览器里算</strong>，一次写对，永久有效</li></ol>
+<p>凡是「和时间有关、且不依赖服务端数据」的，都该往浏览器里塞。凡是「和人有关、需要持久化」的，才需要后端（比如评论、点赞）。</p>
+<p>运行天数属于前者。所以不该出现在 Python 构建脚本里。</p>
+<p>---</p>
+<h3 id="5-6-本地预览和线上的又一次不一致">5.6 本地预览和线上的又一次不一致</h3>
+<p>改运行天数的时候，又踩了一次「改了 A，生效的是 B」。</p>
+<p>本地 <code>dist/index.html</code> 已经是新的，有 <code>run-days</code>。同步到 <code>docs/</code> 的时候报锁文件，只同步了一半。GitHub 那边 Pages 吃的是 <code>docs/</code>，所以线上一度还是旧的。</p>
+<p>后来强制用 <code>Copy-Item -Force</code> 整目录覆盖，再推，才对齐。</p>
+<p>这已经是第 N 次栽在「两个输出目录」上了：</p>
+<ul><li><code>dist/</code> 本地构建产物，给预览用</li><li><code>docs/</code> GitHub Pages 吃的目录</li></ul>
+<p>两者理论上应该永远一致。实践上经常不一致。以后可以考虑只维护一个目录，或者在构建脚本里把同步写进去，不要手动拷。</p>
+<p>\1一次 git 事故</p>
+<p>今天下午第二件事，是 git 丢了。</p>
+<h3 id="6-1-现象">6.1 现象</h3>
+<p>推「运行天数」改动的时候，命令直接报：</p>
+<pre><code class="lang-text">fatal: not a git repository</code></pre>
+<p>不是身份问题，也不是分支问题，报错直说：<strong>这不是仓库</strong>。<code>E:\AI\MIMO\Blog\.git</code> 没了。</p>
+<p>工作区里文章、样式、构建脚本都在。物理文件一个不少。丢的是 <strong>版本历史</strong> 和 <strong>和远程的联系</strong>。</p>
+<h3 id="6-2-当时的感觉">6.2 当时的感觉</h3>
+<p>说实话，第一秒有点懵。</p>
+<p>这个仓库从 10 月 6 日凌晨建起，二十多次提交，部署流程、CNAME、文章、头像，全在历史里。现在它说没就没。</p>
+<p>但很快冷静下来：<strong>工作区还在</strong>。git 丢的是「记账本」，不是「货」。货在，账本可以重开。</p>
+<h3 id="6-3-处理步骤">6.3 处理步骤</h3>
+<p><strong>第一步：中止一切危险操作。</strong> 有冲突先 <code>git merge --abort</code>，别在半吊子状态下改文件。</p>
+<p><strong>第二步：重新初始化。</strong></p>
+<pre><code class="lang-text">git init
+git remote add origin https://github.com/GuiGe101/blog.git
+git fetch origin main</code></pre>
+<p><strong>第三步：看清楚两边是什么关系。</strong></p>
+<ul><li>本地：一堆未跟踪文件，无提交历史</li><li>远程：完整的 <code>main</code> 历史</li></ul>
+<p>像两个人各记了一本账，对不上。</p>
+<p><strong>第四步：试着合并 → 冲突。</strong></p>
+<pre><code class="lang-text">CONFLICT (add/add): assets/app.js
+CONFLICT (add/add): build.py
+CONFLICT (add/add): dist/index.html
+...</code></pre>
+<p>add/add 冲突的意思是：两边都有这个文件，而且都是「新增」。git 不知道信谁。</p>
+<p><strong>这里有个纪律</strong>：冲突文件不瞎改。一改就容易把别人的改动删掉，或者把标记写进代码。先 abort，从长计议。</p>
+<p><strong>第五步：评估哪边新。</strong></p>
+<p>本地其实更完整：</p>
+<ul><li>含运行天数实时化</li><li>含你后来加的几篇文章</li><li>含新头像、新简介</li></ul>
+<p>远程相对旧。而且远程历史是「丢失前」的状态，和本地这堆文件无法自动对齐。</p>
+<p><strong>第六步：询问，征得同意后覆盖。</strong></p>
+<p>这种事 <strong>绝对不能自作主张</strong>。强制推送等于告诉远程：「我这本才是真的，你那本撕了。」</p>
+<p>跟你确认后，你回「1」，执行：</p>
+<pre><code class="lang-text">git push origin HEAD:main --force-with-lease</code></pre>
+<p>成功。</p>
+<p><code>--force-with-lease</code> 比 <code>--force</code> 稍微安全：如果远程在我们 fetch 之后又被人改了，推送会被拒绝。属于「我以为我是最新」的保护。</p>
+<p><strong>第七步：上线核对。</strong></p>
+<p>推完等 Pages 发布，绕过缓存抓一次页面，确认 <code>run-days</code>、<code>data-start</code> 都在，功能正常。</p>
+<h3 id="6-4-为什么-git-会丢">6.4 为什么 .git 会丢</h3>
+<p>不清楚。可能的原因一堆：</p>
+<ul><li>某次清理误删</li><li>某个工具重建目录</li><li>同步/备份工具抽风</li><li>磁盘或权限问题</li></ul>
+<p>没有日志，没法定论。能定论的是教训。</p>
+<h3 id="6-5-教训">6.5 教训</h3>
+<ol><li><strong>强制推送前必须确认。</strong> 这次问了，做得对。</li><li><strong>工作区是本体。</strong> 仓库丢了，文件还在就有救。</li><li><strong>定期 <code>git status</code>。</strong> 不用天天 commit，至少知道自己在哪条船。</li><li><strong>重要仓库偶尔 <code>git clone</code> 一份冷备。</strong> 远程是备份，但远程和本地一起坏的情况不是没有。</li><li><strong>合并冲突时先 abort。</strong> 不要在慌的时候改冲突文件。</li></ol>
+<h3 id="6-6-强制推送的规矩">6.6 强制推送的规矩</h3>
+<p>这次用了 <code>--force-with-lease</code>，想把规矩写明白，以后照着来：</p>
+<p><strong>什么时候可以考虑：</strong></p>
+<ul><li>本地是唯一真相，远程只是过期镜像</li><li>征得用户 / 队友明确同意</li><li>知道自己在覆盖什么</li></ul>
+<p><strong>什么时候绝对不行：</strong></p>
+<ul><li>没问过</li><li>远程可能有别人刚推的提交</li><li>自己也不确定本地是不是完整</li></ul>
+<p><strong>命令优先级：</strong></p>
+<pre><code class="lang-text">git push --force-with-lease   # 优先，相对安全
+git push --force              # 慎用，会无条件覆盖</code></pre>
+<p><code>--force-with-lease</code> 会在远程「比你上次见到的更新」时拒绝推送。这是廉价的保险，没有理由不用。</p>
+<p>另外：<strong>合并冲突时，先 abort。</strong> 在冲突文件里手工改标记，十次有九次改花。改花的后果是「看起来解决了」，其实代码里夹着 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>。这种问题部署后才炸，排查起来非常恶心。</p>
+<ol><li><strong>强制推送前必须确认。</strong> 这次问了，做得对。</li><li><strong>工作区是本体。</strong> 仓库丢了，文件还在就有救。</li><li><strong>定期 <code>git status</code>。</strong> 不用天天 commit，至少知道自己在哪条船。</li><li><strong>重要仓库偶尔 <code>git clone</code> 一份冷备。</strong> 远程是备份，但远程和本地一起坏的情况不是没有。</li><li><strong>合并冲突时先 abort。</strong> 不要在慌的时候改冲突文件。</li></ol>
+<p>---</p>
+<p>\1其它小动作</p>
+<p>零碎还有几笔，列一下：</p>
+<h3 id="7-1-副标题定调">7.1 副标题定调</h3>
+<p>留了「打瓦、想东想西」这个调子。不再像产品介绍，不再像同步日志。要的就是大白话。</p>
+<h3 id="7-2-关于-页">7.2 「关于」页</h3>
+<p>跟着新简介改过。别一边名片上很随意，一边关于页又端起来。</p>
+<h3 id="7-3-cname-固化">7.3 CNAME 固化</h3>
+<p>构建脚本里加了写 CNAME 的步骤，每次 build 自动吐一份。避免再出现「构建完域名绑定丢了」的事故。</p>
+<h3 id="7-4-预览目录锁文件">7.4 预览目录锁文件</h3>
+<p>本地构建完，往预览目录复制时偶尔报：</p>
+<pre><code class="lang-text">PermissionError: [WinError 32] 另一个程序正在使用此文件</code></pre>
+<p>一般是本地预览服务器占着文件。不影响 GitHub 发布，推的是 <code>docs/</code>，不是预览目录。顶多重跑一次复制。静态服务器在 Windows 上锁文件，日常现象。</p>
+<h3 id="7-5-没做完的事">7.5 没做完的事</h3>
+<p>你问过 <strong>源码能不能私有</strong>。当时说清楚了：</p>
+<ul><li>GitHub Pages 免费版和公开仓库绑死</li><li>私有 = 网站可能挂，或要换 Cloudflare Pages / 付费</li><li>评论系统也依赖公开讨论区</li></ul>
+<p>还没定。先放着。真要藏，再迁不迟。</p>
+<h3 id="7-6-工具相关">7.6 工具相关</h3>
+<p>GitHub 界面挂了翻译插件，看着方便，也会骗人：</p>
+<ul><li><code>main</code> → 「主要角色」</li><li><code>18s</code> → 「18 岁」</li><li><code>Deploy from a branch</code> → 「从分支部署」</li></ul>
+<p>对着「18 岁」找了半天失败原因，其实人家是「跑了 18 秒」。排查技术问题的时候，最好关掉翻译看原文。这条算今天白捡的经验。</p>
+<p>---</p>
+<p>\1时间线清单</p>
+<p>给后来的自己对账，提醒自己这些也是亲手改过的地方：</p>
+<p>| 时间 | 事情 | 备注 | |------|------|------| | 10-12 之后 | 站名定为「归舸的大窝」 | 标题、页脚、文章标题、RSS | | 这几天 | 换上自定义头像 | 裁水印、缩 512、三处统一 | | 这几天 | 简介删「在写代码」 | 文案去名片腔 | | 这几天 | 「劳动小结」阅读时长 41 分钟 | 加 <code>minutes</code> 手写字段 | | 10-18 下午 | 运行天数改实时 | 浏览器按设备时间算，每分钟刷新 | | 10-18 下午 | 本地 <code>.git</code> 丢失 | 重建 → 冲突 → 征得同意覆盖远程 | | 10-18 傍晚 | 写这篇存档 | 就是你现在读的这份 |</p>
+<p>表格是给自己看的。以后如果站做大了、文章多了，回头搜「劳动小结」标签就能找到这一串。</p>
+<p>---</p>
+<p>\1这几天的体会</p>
+<h3 id="9-1-后期维护比初次搭建更磨人">9.1 后期维护比初次搭建更磨人</h3>
+<p>搭站那天是很爽的。从零到一，有页面，有域名，有评论，里程碑一个接一个。</p>
+<p>这几天干的都是「改一个字」「换一张图」「修一个过期数字」。单拎出来，没一个配得上「项目」。叠起来，才是「住得舒服」。</p>
+<p>写博客也是一样：开通那天的兴奋是暂时的，每天愿意打开写两句才是真的。</p>
+<h3 id="9-2-静态站的动态数据都要现算">9.2 静态站的动态数据都要现算</h3>
+<p>天数会过期，计数会漂移，缓存会撒谎，翻译会瞎翻。</p>
+<p>凡是和「时间」有关的显示，别写死。这条经验值今天一下午。</p>
+<h3 id="9-3-改成我-比-改成好看-难">9.3 「改成我」比「改成好看」难</h3>
+<p>无畏契约官方图好不好看？好看。比矢量小人高级多了。</p>
+<p>那还不是我。</p>
+<p>自己的图、自己的调调、自己的宅名，哪怕技术上简单得可笑（硬裁 8%、改个字符串），做出来才叫「我的窝」。</p>
+<p><strong>审美是及格线，身份是及格线以上的部分。</strong></p>
+<h3 id="9-4-小事要记-不然会忘">9.4 小事要记，不然会忘</h3>
+<p>劳动小结写过，Folia 写过，证书写过。这几天的小事不记，下周就只记得「好像改了点什么」。</p>
+<p>写下来本身就是记忆的备份。跟 git 一样，平时觉得多余，丢了才知道有用。</p>
+<h3 id="9-5-静态站和-像动态的静态数据">9.5 静态站和「像动态的静态数据」</h3>
+<p>这一点值得再展开说。</p>
+<p>静态站的好处是简单：没有服务器要养，没有数据库要备份，改错了回滚一次 <code>git revert</code> 就好。坏处也简单：<strong>页面是死的</strong>。</p>
+<p>于是就容易出现一种诡异状态：网站看起来活的，有天数、有计数、有「最后更新」，其实全是构建那天化石下来的。</p>
+<p>这种「像动态的静态数据」比没有数据更糟。没有天数，大家不会想；有一个过期的天数，大家一眼就看出不对。<strong>错误的数据比没有数据伤害更大。</strong></p>
+<p>解决它的分类法：</p>
+<p>| 数据类型 | 例子 | 放哪算 | |---------|------|--------| | 和时间有关 | 运行天数、倒计时、今年第几天 | 浏览器 JS | | 和内容有关 | 字数、阅读时长、标签计数 | 构建时 Python | | 和访客有关 | 评论、点赞、阅读量 | 第三方 / 后端 |</p>
+<p>运行天数属于第一类，所以必须挪到 JS。字数属于第二类，放在构建脚本里就行。评论属于第三类，塞不进静态 HTML。</p>
+<p>分类清楚了，后面就不会再犯「把日历写进 HTML」的错。</p>
+<h3 id="9-6-13-天">9.6 13 天</h3>
+<p>今天开站第 13 天。</p>
+<p>从「有域名、没页面」到「有窝、有名、有头像、有一堆自己写的字」，十三天。不算长。</p>
+<p>以后回头看这篇，可能会笑现在抠的这些细节。但大概也会庆幸：<strong>抠过。</strong></p>
+<p>---</p>
+<p>\1接下来</p>
+<p>不写太多愿景，免得打脸。就几个小的：</p>
+<ol><li><strong>多写内容，少折腾界面。</strong> 界面现在够住了。</li><li><strong>瓦打得好看一点。</strong> 这是正事。</li><li><strong>Folia 继续拧。</strong> 那边还有没拧完的。</li><li><strong>明年六月前记得给域名续费。</strong> 窝不能丢。</li></ol>
+<p>运行天数以后自己会数，不用我管。git 以后希望它争气。名字以后尽量不动了。「归舸的大窝」这五个字，动一次，全站跟着晃。</p>
+<p>再补一句：写这篇的时候，顺手又点开侧栏看了一眼。天数是对的。这就够了。工具安静地工作，人就可以去干别的。折腾界面的意义，说到底是为了这个。</p>
+<p>就先记到这里。</p>
+<p>如果哪天你从别处点进这个窝，看到这篇又长又啰嗦的流水账，就当是屋主搬进来两周，坐在地上清点工具时的自言自语。</p>
+<p>欢迎来到归舸的大窝。</p>
+<p><img loading="lazy" alt="" src="assets/avatar.jpg"></p>
+<p><img loading="lazy" alt="" src="assets/valorant/cover-sage.jpg"></p></div>
+      <div class="article-foot">
+        <div class="post-tags"><a class="tag-chip" href="../tags.html#随笔">#随笔</a><a class="tag-chip" href="../tags.html#劳动小结">#劳动小结</a></div>
+        <p class="copyright">© 2026 归舸 · 转载请注明出处</p>
+      </div>
+    </div>
+    <section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list"><li><a href="2026-10-12-folia-android-port.html">把电脑版 Folia 拧到手机上：一天的移植记录</a></li><li><a href="2026-10-07-work-log.html">今日劳动小结：把博客从零拧到现在</a></li><li><a href="2026-10-07-domain-cert.html">这个窝，有证了</a></li></ul></section>
+    
+<section class="echo">
+  <h2 class="echo-title">回声</h2>
+  <p class="echo-note">欢迎留言。昵称 + QQ 邮箱即可，不需要 GitHub。</p>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css">
+  <div id="waline"></div>
+  <script type="module">
+    import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js';
+    init({
+      el: '#waline',
+      serverURL: 'https://waline-gamma-ruddy.vercel.app',
+      lang: 'zh-CN',
+      requiredMeta: ['nick', 'mail'],
+      meta: ['nick', 'mail', 'link'],
+      placeholder: '随便聊聊，邮箱不会公开～',
+      dark: 'html.dark',
+    });
+  </script>
+</section>
+  </article>
+  <aside class="side-col"><nav class="toc"><div class="toc-title">目录</div><a class="toc-h3" href="#1-1-名字为什么又改">1.1 名字为什么又改</a><a class="toc-h3" href="#1-2-改动范围">1.2 改动范围</a><a class="toc-h3" href="#1-3-为什么名字这么重要">1.3 为什么名字这么重要</a><a class="toc-h3" href="#1-4-改名时踩到的小坑">1.4 改名时踩到的小坑</a><a class="toc-h3" href="#2-1-以前为什么不满意">2.1 以前为什么不满意</a><a class="toc-h3" href="#2-2-聊天附件的尴尬">2.2 聊天附件的尴尬</a><a class="toc-h3" href="#2-3-裁水印">2.3 裁水印</a><a class="toc-h3" href="#2-4-两处一起换">2.4 两处一起换</a><a class="toc-h3" href="#2-5-头像这种事的心态">2.5 头像这种事的心态</a><a class="toc-h3" href="#2-6-换完头像的检查清单">2.6 换完头像的检查清单</a><a class="toc-h3" href="#3-1-文案会-说假话">3.1 文案会「说假话」</a><a class="toc-h3" href="#3-2-副标题同理">3.2 副标题同理</a><a class="toc-h3" href="#3-3-关于页跟着改">3.3 关于页跟着改</a><a class="toc-h3" href="#4-1-问题的起因">4.1 问题的起因</a><a class="toc-h3" href="#4-2-两种时长">4.2 两种时长</a><a class="toc-h3" href="#4-3-改成可手写">4.3 改成可手写</a><a class="toc-h3" href="#4-4-顺手改的地方">4.4 顺手改的地方</a><a class="toc-h3" href="#4-5-分钟-这个词的模糊性">4.5 「分钟」这个词的模糊性</a><a class="toc-h3" href="#5-1-今天为什么想起来">5.1 今天为什么想起来</a><a class="toc-h3" href="#5-2-旧实现-构建时算死">5.2 旧实现：构建时算死</a><a class="toc-h3" href="#5-3-新实现-浏览器现算">5.3 新实现：浏览器现算</a><a class="toc-h3" href="#5-4-今天-18-号怎么算">5.4 「今天 18 号怎么算」</a><a class="toc-h3" href="#5-5-静态站的通病">5.5 静态站的通病</a><a class="toc-h3" href="#5-6-本地预览和线上的又一次不一致">5.6 本地预览和线上的又一次不一致</a><a class="toc-h3" href="#6-1-现象">6.1 现象</a><a class="toc-h3" href="#6-2-当时的感觉">6.2 当时的感觉</a><a class="toc-h3" href="#6-3-处理步骤">6.3 处理步骤</a><a class="toc-h3" href="#6-4-为什么-git-会丢">6.4 为什么 .git 会丢</a><a class="toc-h3" href="#6-5-教训">6.5 教训</a><a class="toc-h3" href="#6-6-强制推送的规矩">6.6 强制推送的规矩</a><a class="toc-h3" href="#7-1-副标题定调">7.1 副标题定调</a><a class="toc-h3" href="#7-2-关于-页">7.2 「关于」页</a><a class="toc-h3" href="#7-3-cname-固化">7.3 CNAME 固化</a><a class="toc-h3" href="#7-4-预览目录锁文件">7.4 预览目录锁文件</a><a class="toc-h3" href="#7-5-没做完的事">7.5 没做完的事</a><a class="toc-h3" href="#7-6-工具相关">7.6 工具相关</a><a class="toc-h3" href="#9-1-后期维护比初次搭建更磨人">9.1 后期维护比初次搭建更磨人</a><a class="toc-h3" href="#9-2-静态站的动态数据都要现算">9.2 静态站的动态数据都要现算</a><a class="toc-h3" href="#9-3-改成我-比-改成好看-难">9.3 「改成我」比「改成好看」难</a><a class="toc-h3" href="#9-4-小事要记-不然会忘">9.4 小事要记，不然会忘</a><a class="toc-h3" href="#9-5-静态站和-像动态的静态数据">9.5 静态站和「像动态的静态数据」</a><a class="toc-h3" href="#9-6-13-天">9.6 13 天</a></nav></aside>
+</div>
+<footer class="site-footer">
+  <div>© 2026 归舸 · 归舸的大窝</div>
+  <div class="footer-meta">
+    <a href="../feed.xml">RSS</a>
+    <a href="../sitemap.xml">Sitemap</a>
+    <span>访客 <b id="stat-site-uv">…</b></span>
+    <span>访问 <b id="stat-site-pv">…</b></span>
+  </div>
+</footer>
+<div class="search-modal" id="search-modal" hidden>
+  <div class="search-box">
+    <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+</div>
+<script src="../assets/app.js"></script>
+<script>
+(function () {
+  var NS = "zixuann.top";
+  var API = "https://abacus.jasoncameron.dev";
+  function set(id, v) {
+    var n = document.getElementById(id);
+    if (n && v != null) n.textContent = v;
+  }
+  function jsonp(url) {
+    return new Promise(function (resolve) {
+      var name = "abacus_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+      window[name] = function (data) { resolve(data); cleanup(); };
+      var s = document.createElement("script");
+      s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + name;
+      s.onerror = function () { resolve(null); cleanup(); };
+      function cleanup() {
+        try { delete window[name]; } catch (e) { window[name] = undefined; }
+        if (s.parentNode) s.parentNode.removeChild(s);
+      }
+      document.head.appendChild(s);
+    });
+  }
+  function hit(key) { return jsonp(API + "/hit/" + NS + "/" + key); }
+  function get(key) { return jsonp(API + "/get/" + NS + "/" + key); }
+
+  var pageEl = document.getElementById("stat-page-pv");
+  if (pageEl) {
+    var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\W+/g, "-");
+    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); });
+  }
+
+  hit("site-pv").then(function (d) {
+    if (!d) return;
+    set("stat-site-pv", d.value);
+    set("stat-site-pv-hero", d.value);
+  });
+
+  var uvSeenKey = "zixuann-uv-seen";
+  var seen = false;
+  try { seen = localStorage.getItem(uvSeenKey) === "1"; } catch (e) {}
+  var uvCall = seen ? get("site-uv") : hit("site-uv");
+  if (!seen) { try { localStorage.setItem(uvSeenKey, "1"); } catch (e) {} }
+  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); });
+})();
+</script>
+</body>
+</html>

@@ -5,6 +5,12 @@
 <description>记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。</description>
 <language>zh-cn</language>
 <item>
+  <title>这几天的零碎：改名、头像、运行天数，还有一次 git 事故</title>
+  <link>https://zixuann.top/posts/2026-10-18-day-recap.html</link>
+  <guid>https://zixuann.top/posts/2026-10-18-day-recap.html</guid>
+  <pubDate>2026-10-18</pubDate>
+  <description>不重复以前写过的搭站过程。只记 10 月 12 日之后到今天的新事：站名、头像、简介文案、阅读时长、运行天数实时化，以及一次本地仓库丢失后的覆盖发布。写得很细，当存档用。</description>
+</item><item>
   <title>把电脑版 Folia 拧到手机上：一天的移植记录</title>
   <link>https://zixuann.top/posts/2026-10-12-folia-android-port.html</link>
   <guid>https://zixuann.top/posts/2026-10-12-folia-android-port.html</guid>
