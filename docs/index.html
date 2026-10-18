@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>归舸</title>
+<meta name="description" content="记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。">
+<meta name="author" content="归舸">
+<link rel="canonical" href="https://zixuann.top/">
+<meta property="og:title" content="归舸">
+<meta property="og:description" content="记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://zixuann.top/">
+<meta property="og:image" content="assets/valorant/hero-jett.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="归舸" href="feed.xml">
+<link rel="icon" href="assets/avatar.jpg" type="image/jpeg">
+<link rel="stylesheet" href="assets/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t !== 'light') {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="site-nav">
+  <a class="brand" href="index.html"><span class="brand-mark"><img src="assets/avatar.jpg" alt=""></span>归舸</a>
+  <nav class="nav-links"><a href="index.html" class="active">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html">关于</a></nav>
+  <div class="nav-actions">
+    <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+<div class="mobile-nav" id="mobile-nav"><a href="index.html" class="active">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html">关于</a></div>
+
+<div class="hero">
+  <div class="hero-shade"></div>
+  <div class="hero-copy">
+    <p class="hero-kicker">MEMORY TERMINAL</p>
+    <h1 class="hero-title">归舸的大窝</h1>
+    <p class="hero-sub">打瓦、想东想西——慢慢记下来</p>
+    <div class="hero-stats">
+      <span>访问 <b id="stat-site-pv-hero">…</b></span>
+      <span>文章 <b>4</b></span>
+      <span>自 2026-10-06</span>
+    </div>
+  </div>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="var(--paper)" d="M0,48 C240,90 420,10 720,42 C1020,74 1200,18 1440,50 L1440,90 L0,90 Z"></path>
+    </svg>
+  </div>
+</div>
+
+<div class="page">
+  <aside class="left-col"><section class="card profile">
+  <div class="profile-avatar"><img src="assets/avatar.jpg" alt="avatar" loading="lazy"></div>
+  <h2 class="profile-name">归舸</h2>
+  <p class="profile-bio">16 岁，打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。</p>
+  <div class="profile-links">
+    <a href="about.html">关于</a>
+    <a href="projects.html">项目</a>
+    <a href="feed.xml">RSS</a>
+  </div>
+</section><div class="stack"><section class="card"><h3 class="side-title">分类</h3><div class="tagbar"><a class="tag-chip" href="categories.html#思考">思考<b>3</b></a><a class="tag-chip" href="categories.html#技术">技术<b>1</b></a></div></section></div></aside>
+  <section class="main-col" id="posts">
+    <h2 class="section-title">精选</h2><article class="card post-card">
+  <div>
+    <div class="badges"><span class="badge">精选</span></div>
+    <h2 class="post-title"><a href="posts/2026-10-12-folia-android-port.html">把电脑版 Folia 拧到手机上：一天的移植记录</a></h2>
+    <div class="post-meta">
+      <span>2026-10-12</span>
+      <span>技术</span>
+      <span>12 分钟</span>
+      <span>1352 字</span>
+    </div>
+    <p class="post-summary">电脑上的 Folia 0.7.18 有队列拼贴，手机上还是旧壳。今天干脆直接拿官方源码重打 Android 包，把独立网易、触控播放条、全屏白条这些都拧了一遍。署名：舸。</p>
+    <div class="post-tags"><span>#技术</span><span>#Folia</span><span>#Android</span><span>#劳动小结</span></div>
+  </div>
+  <a class="post-cover" href="posts/2026-10-12-folia-android-port.html">
+    <img src="assets/valorant/cover-sage.jpg" alt="" loading="lazy">
+  </a>
+</article><article class="card post-card">
+  <div>
+    <div class="badges"><span class="badge">精选</span></div>
+    <h2 class="post-title"><a href="posts/2026-10-07-work-log.html">今日劳动小结：把博客从零拧到现在</a></h2>
+    <div class="post-meta">
+      <span>2026-10-07</span>
+      <span>思考</span>
+      <span>41 分钟</span>
+      <span>1321 字</span>
+    </div>
+    <p class="post-summary">从 init 到改副标题、删友链、调阅读时长，再到评论系统和部署。今天一整天都在折腾这个站，记一笔。</p>
+    <div class="post-tags"><span>#随笔</span><span>#劳动小结</span></div>
+  </div>
+  <a class="post-cover" href="posts/2026-10-07-work-log.html">
+    <img src="assets/valorant/cover-worklog-dog.jpg" alt="" loading="lazy">
+  </a>
+</article>
+    <h2 class="section-title">最新</h2>
+    <article class="card post-card">
+  <div>
+    <div class="badges"></div>
+    <h2 class="post-title"><a href="posts/2026-10-07-domain-cert.html">这个窝，有证了</a></h2>
+    <div class="post-meta">
+      <span>2026-10-07</span>
+      <span>思考</span>
+      <span>3 分钟</span>
+      <span>382 字</span>
+    </div>
+    <p class="post-summary">域名证书打印出来了。zixuann.top，从 2026 年 6 月 5 日起，到 2027 年 6 月 5 日。</p>
+    <div class="post-tags"><span>#随笔</span><span>#域名</span></div>
+  </div>
+  <a class="post-cover" href="posts/2026-10-07-domain-cert.html">
+    <img src="assets/domain-cert.png" alt="" loading="lazy">
+  </a>
+</article><article class="card post-card">
+  <div>
+    <div class="badges"></div>
+    <h2 class="post-title"><a href="posts/2026-10-06-hello.html">归舸的大窝</a></h2>
+    <div class="post-meta">
+      <span>2026-10-06</span>
+      <span>思考</span>
+      <span>18 分钟</span>
+      <span>374 字</span>
+    </div>
+    <p class="post-summary">想开这个站挺久了。以前写的东西散在各处，干脆认真记一下——这里慢慢同步技术、生活，和一些还没想完的想法。</p>
+    <div class="post-tags"><span>#随笔</span><span>#首页</span></div>
+  </div>
+  <a class="post-cover" href="posts/2026-10-06-hello.html">
+    <img src="assets/valorant/cover-sage.jpg" alt="" loading="lazy">
+  </a>
+</article>
+  </section>
+  <aside class="side-col">
+    <section class="card">
+  <h3 class="side-title">站点统计</h3>
+  <div class="stat-row"><span>文章</span><b>4</b></div><div class="stat-row"><span>分类</span><b>2</b></div><div class="stat-row"><span>标签</span><b>7</b></div><div class="stat-row"><span>总字数</span><b>3429</b></div><div class="stat-row"><span>运行天数</span><b id="run-days" data-start="2026-10-06">…</b></div><div class="stat-row"><span>最后活动</span><b>2026-10-12</b></div>
+  <div class="side-note">访问统计由 Abacus 提供，刷新页面数字会跳。</div>
+</section>
+    <section class="card"><h3 class="side-title">标签</h3><div class="tagbar"><a class="tag-chip" href="tags.html#随笔">#随笔<b>3</b></a><a class="tag-chip" href="tags.html#劳动小结">#劳动小结<b>2</b></a><a class="tag-chip" href="tags.html#技术">#技术<b>1</b></a><a class="tag-chip" href="tags.html#Folia">#Folia<b>1</b></a><a class="tag-chip" href="tags.html#Android">#Android<b>1</b></a><a class="tag-chip" href="tags.html#域名">#域名<b>1</b></a><a class="tag-chip" href="tags.html#首页">#首页<b>1</b></a></div></section>
+  </aside>
+</div>
+<footer class="site-footer">
+  <div>© 2026 归舸 · 归舸的大窝</div>
+  <div class="footer-meta">
+    <a href="feed.xml">RSS</a>
+    <a href="sitemap.xml">Sitemap</a>
+    <span>访客 <b id="stat-site-uv">…</b></span>
+    <span>访问 <b id="stat-site-pv">…</b></span>
+  </div>
+</footer>
+<div class="search-modal" id="search-modal" hidden>
+  <div class="search-box">
+    <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  var NS = "zixuann.top";
+  var API = "https://abacus.jasoncameron.dev";
+  function set(id, v) {
+    var n = document.getElementById(id);
+    if (n && v != null) n.textContent = v;
+  }
+  function jsonp(url) {
+    return new Promise(function (resolve) {
+      var name = "abacus_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+      window[name] = function (data) { resolve(data); cleanup(); };
+      var s = document.createElement("script");
+      s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + name;
+      s.onerror = function () { resolve(null); cleanup(); };
+      function cleanup() {
+        try { delete window[name]; } catch (e) { window[name] = undefined; }
+        if (s.parentNode) s.parentNode.removeChild(s);
+      }
+      document.head.appendChild(s);
+    });
+  }
+  function hit(key) { return jsonp(API + "/hit/" + NS + "/" + key); }
+  function get(key) { return jsonp(API + "/get/" + NS + "/" + key); }
+
+  var pageEl = document.getElementById("stat-page-pv");
+  if (pageEl) {
+    var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\W+/g, "-");
+    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); });
+  }
+
+  hit("site-pv").then(function (d) {
+    if (!d) return;
+    set("stat-site-pv", d.value);
+    set("stat-site-pv-hero", d.value);
+  });
+
+  var uvSeenKey = "zixuann-uv-seen";
+  var seen = false;
+  try { seen = localStorage.getItem(uvSeenKey) === "1"; } catch (e) {}
+  var uvCall = seen ? get("site-uv") : hit("site-uv");
+  if (!seen) { try { localStorage.setItem(uvSeenKey, "1"); } catch (e) {} }
+  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); });
+})();
+</script>
+</body>
+</html>

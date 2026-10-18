@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7EB6FF"/>
+      <stop offset="50%" stop-color="#A78BFA"/>
+      <stop offset="100%" stop-color="#F0ABFC"/>
+    </linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="10"/></filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.07 0"/>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="36" fill="url(#g)"/>
+  <circle cx="60" cy="55" r="40" fill="#FFFFFF" opacity="0.35" filter="url(#blur)"/>
+  <circle cx="150" cy="140" r="50" fill="#FFD6E8" opacity="0.45" filter="url(#blur)"/>
+  <circle cx="120" cy="70" r="24" fill="#FFFFFF" opacity="0.28" filter="url(#blur)"/>
+  <!-- monogram Z -->
+  <text x="100" y="122" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+        font-size="86" font-weight="700" fill="#FFFFFF" opacity="0.92">z</text>
+  <rect width="200" height="200" rx="36" filter="url(#grain)"/>
+</svg>

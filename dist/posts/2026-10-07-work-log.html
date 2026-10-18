@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>今日劳动小结：把博客从零拧到现在 · 归舸</title>
+<meta name="description" content="从 init 到改副标题、删友链、调阅读时长，再到评论系统和部署。今天一整天都在折腾这个站，记一笔。">
+<meta name="author" content="归舸">
+<link rel="canonical" href="https://zixuann.top/今日劳动小结：把博客从零拧到现在">
+<meta property="og:title" content="今日劳动小结：把博客从零拧到现在 · 归舸">
+<meta property="og:description" content="从 init 到改副标题、删友链、调阅读时长，再到评论系统和部署。今天一整天都在折腾这个站，记一笔。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://zixuann.top/">
+<meta property="og:image" content="../assets/valorant/cover-worklog-dog.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" type="application/rss+xml" title="归舸" href="../feed.xml">
+<link rel="icon" href="../assets/avatar.jpg" type="image/jpeg">
+<link rel="stylesheet" href="../assets/style.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t !== 'light') {
+        document.documentElement.classList.add('dark');
+      }
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header class="site-nav">
+  <a class="brand" href="../index.html"><span class="brand-mark"><img src="../assets/avatar.jpg" alt=""></span>归舸</a>
+  <nav class="nav-links"><a href="../index.html" class="active">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></nav>
+  <div class="nav-actions">
+    <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+  </div>
+</header>
+<div class="mobile-nav" id="mobile-nav"><a href="../index.html" class="active">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></div>
+
+
+<div class="page article-page">
+  <aside class="left-col"><section class="card profile">
+  <div class="profile-avatar"><img src="../assets/avatar.jpg" alt="avatar" loading="lazy"></div>
+  <h2 class="profile-name">归舸</h2>
+  <p class="profile-bio">16 岁，打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。</p>
+  <div class="profile-links">
+    <a href="../about.html">关于</a>
+    <a href="../projects.html">项目</a>
+    <a href="../feed.xml">RSS</a>
+  </div>
+</section></aside>
+  <article class="article-shell">
+    <div class="article-card">
+      <header class="article-header">
+        <div class="badges">
+          <span class="badge">思考</span>
+          
+        </div>
+        <h1>今日劳动小结：把博客从零拧到现在</h1>
+        <div class="post-meta">
+          <span>2026-10-07</span>
+          <span>41 分钟</span>
+          <span>1321 字</span>
+          <span>阅读 <b id="stat-page-pv" data-key="2026-10-07-work-log">…</b></span>
+        </div>
+      </header>
+      <figure class="article-cover">
+        <img src="../assets/valorant/cover-worklog-dog.jpg" alt="今日劳动小结：把博客从零拧到现在" loading="lazy">
+      </figure>
+      
+      <div class="article-body"><p>今天算是把这个站从零拧到了现在这个样子。睡前觉得该记一笔，不然过两天肯定忘。</p>
+<h2 id="从空仓库到能打开">从空仓库到能打开</h2>
+<p>凌晨零点多从 <code>init blog</code> 开始。先把 GitHub Pages 的部署流程搭起来，不然改完只能本地看。接着上了 Giscus 评论和点赞，那时候还觉得评论区有个能说话的地方就够了。</p>
+<p>真正开始有感觉是改成「记忆终端」那套视觉之后。先是换掉原来的剪贴画，改用渐变主视觉；后来又换成无畏契约官方壁纸当头图和封面，整站才有点我自己的味道。导航图标也从 emoji 换成了干净的 SVG，细节上顺眼很多。</p>
+<p>功能那一段是集中补的。全文搜索和 RSS 先上，暗色模式、目录、阅读进度跟上，字数和预计阅读时间也算了进去，系列连载也开了。补完之后它才像一个能长期用的博客，之前不过是首页的壳子。</p>
+<p>域名这块踩过坑。一开始想用 GitHub Actions 直接发，后来为了稳妥改成 <code>docs/</code> 目录部署，CNAME 也配好了，现在是 <code>zixuann.top</code>。中途还出过一次 CNAME 丢掉的事故，构建输出里重新加回去才好。</p>
+<h2 id="站名-头像和一些零碎">站名、头像和一些零碎</h2>
+<p>后面几笔都是「看起来小、改起来烦」的活。站名从 zixuann 换成归舸，页脚叫「归舸的大窝」。头像从默认图换成自己的，品牌位和侧栏资料卡都跟着换了。年龄也改成了 16。</p>
+<p>访问统计原来用的不蒜子，后来换成了 Abacus 计数。这个改动不大，但加载上干净一点。</p>
+<p>首页那句副标题改过好几次。最后定成「打瓦、想东想西——慢慢记下来」。原来那句「正在同步生活、技术、灵感与未命名的片段」太像说明书了，不像我。写代码这仨字后来也去掉了，副标题就留打瓦和想东想西，更像平时说话。</p>
+<h2 id="友链-删掉">友链，删掉</h2>
+<p>友链页整页删了，没保留。导航、侧栏、站点地图、关于页里那句「欢迎加友链」，一起清干净。现在连 <code>friends.html</code> 都会 404。</p>
+<p>删的时候踩了一个挺有意思的坑。本地 <code>dist</code> 明明已经是新的，线上 <code>friends.html</code> 还是 200。查下来是 GitHub Pages 实际在吃 <code>docs/</code> 目录，而 <code>docs</code> 那份还留着旧页面。把 <code>docs</code> 同步成无友链版本再推，线上才真正没了。这种「改了 A，生效的是 B」的情况，今天遇到了不止一次。</p>
+<h2 id="阅读时长和评论">阅读时长和评论</h2>
+<p>「归舸的大窝」那篇阅读时长原来显示 1 分钟，我给改成了 18 分钟。字数没变，时长是单独写的，后来在 frontmatter 里加了 <code>minutes</code> 字段，想写多少写多少，不用再改构建脚本。</p>
+<p>评论区也换了。从 Giscus 换成 Waline，支持 QQ 邮箱登录，数据存在 GitHub 上。客户端后来从 jsDelivr 拉，国内访问快一些。</p>
+<h2 id="一点感想">一点感想</h2>
+<p>今天大概推了二十多次，每一笔都不大，叠起来就很多。中间有几段时间全在处理部署和缓存：本地改好了，网页打开还是旧的；推上去了，Actions 跑完，还要再等一会儿；有时候是浏览器缓存，Ctrl+F5 才看见新东西。</p>
+<p>也碰到过 git 身份没配、本地分支叫 master 远端叫 main 这种事。好在最后都通了。</p>
+<p>写博客这件事，花在写内容上的时间，今天其实不算多。大部分时候是在搭架子、调样式、修部署。不过这些活干完，以后写东西应该会顺手一点。架子稳了，人才有心思往里填。</p>
+<p>就先记到这里。明天应该继续写内容，少折腾一点界面。</p></div>
+      <div class="article-foot">
+        <div class="post-tags"><a class="tag-chip" href="../tags.html#随笔">#随笔</a><a class="tag-chip" href="../tags.html#劳动小结">#劳动小结</a></div>
+        <p class="copyright">© 2026 归舸 · 转载请注明出处</p>
+      </div>
+    </div>
+    <section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list"><li><a href="2026-10-12-folia-android-port.html">把电脑版 Folia 拧到手机上：一天的移植记录</a></li><li><a href="2026-10-07-domain-cert.html">这个窝，有证了</a></li><li><a href="2026-10-06-hello.html">归舸的大窝</a></li></ul></section>
+    
+<section class="echo">
+  <h2 class="echo-title">回声</h2>
+  <p class="echo-note">欢迎留言。昵称 + QQ 邮箱即可，不需要 GitHub。</p>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css">
+  <div id="waline"></div>
+  <script type="module">
+    import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js';
+    init({
+      el: '#waline',
+      serverURL: 'https://waline-gamma-ruddy.vercel.app',
+      lang: 'zh-CN',
+      requiredMeta: ['nick', 'mail'],
+      meta: ['nick', 'mail', 'link'],
+      placeholder: '随便聊聊，邮箱不会公开～',
+      dark: 'html.dark',
+    });
+  </script>
+</section>
+  </article>
+  <aside class="side-col"><nav class="toc"><div class="toc-title">目录</div><a class="toc-h2" href="#从空仓库到能打开">从空仓库到能打开</a><a class="toc-h2" href="#站名-头像和一些零碎">站名、头像和一些零碎</a><a class="toc-h2" href="#友链-删掉">友链，删掉</a><a class="toc-h2" href="#阅读时长和评论">阅读时长和评论</a><a class="toc-h2" href="#一点感想">一点感想</a></nav></aside>
+</div>
+<footer class="site-footer">
+  <div>© 2026 归舸 · 归舸的大窝</div>
+  <div class="footer-meta">
+    <a href="../feed.xml">RSS</a>
+    <a href="../sitemap.xml">Sitemap</a>
+    <span>访客 <b id="stat-site-uv">…</b></span>
+    <span>访问 <b id="stat-site-pv">…</b></span>
+  </div>
+</footer>
+<div class="search-modal" id="search-modal" hidden>
+  <div class="search-box">
+    <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+</div>
+<script src="../assets/app.js"></script>
+<script>
+(function () {
+  var NS = "zixuann.top";
+  var API = "https://abacus.jasoncameron.dev";
+  function set(id, v) {
+    var n = document.getElementById(id);
+    if (n && v != null) n.textContent = v;
+  }
+  function jsonp(url) {
+    return new Promise(function (resolve) {
+      var name = "abacus_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+      window[name] = function (data) { resolve(data); cleanup(); };
+      var s = document.createElement("script");
+      s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + name;
+      s.onerror = function () { resolve(null); cleanup(); };
+      function cleanup() {
+        try { delete window[name]; } catch (e) { window[name] = undefined; }
+        if (s.parentNode) s.parentNode.removeChild(s);
+      }
+      document.head.appendChild(s);
+    });
+  }
+  function hit(key) { return jsonp(API + "/hit/" + NS + "/" + key); }
+  function get(key) { return jsonp(API + "/get/" + NS + "/" + key); }
+
+  var pageEl = document.getElementById("stat-page-pv");
+  if (pageEl) {
+    var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\W+/g, "-");
+    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); });
+  }
+
+  hit("site-pv").then(function (d) {
+    if (!d) return;
+    set("stat-site-pv", d.value);
+    set("stat-site-pv-hero", d.value);
+  });
+
+  var uvSeenKey = "zixuann-uv-seen";
+  var seen = false;
+  try { seen = localStorage.getItem(uvSeenKey) === "1"; } catch (e) {}
+  var uvCall = seen ? get("site-uv") : hit("site-uv");
+  if (!seen) { try { localStorage.setItem(uvSeenKey, "1"); } catch (e) {} }
+  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); });
+})();
+</script>
+</body>
+</html>
