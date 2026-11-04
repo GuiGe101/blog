@@ -832,7 +832,7 @@ def build() -> None:
     (DIST / "CNAME").write_text("zixuann.top\n", encoding="utf-8")
 
     # 预览副本到会话目录（勿写回源码根目录）
-    if PREVIEW_DIR.resolve() != ROOT.resolve():
+    if PREVIEW_DIR.resolve() not in {ROOT.resolve(), DIST.resolve()}:
         for item in DIST.iterdir():
             dest = PREVIEW_DIR / item.name
             if item.is_dir():
