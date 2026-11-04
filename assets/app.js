@@ -38,7 +38,27 @@
   const menuBtn = document.getElementById("menu-toggle");
   const mobileNav = document.getElementById("mobile-nav");
   if (menuBtn && mobileNav) {
-    menuBtn.addEventListener("click", () => mobileNav.classList.toggle("open"));
+    function setMenu(open) {
+      mobileNav.classList.toggle("open", open);
+      mobileNav.hidden = !open;
+      menuBtn.setAttribute("aria-expanded", String(open));
+      menuBtn.setAttribute("aria-label", open ? "关闭菜单" : "打开菜单");
+    }
+    menuBtn.addEventListener("click", () => setMenu(mobileNav.hidden));
+    mobileNav.addEventListener("click", (e) => {
+      if (e.target.closest("a")) setMenu(false);
+    });
+    document.addEventListener("click", (e) => {
+      if (!mobileNav.hidden && !mobileNav.contains(e.target) && !menuBtn.contains(e.target)) {
+        setMenu(false);
+      }
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !mobileNav.hidden) {
+        setMenu(false);
+        menuBtn.focus();
+      }
+    });
   }
 
   // liquid glass: static shine only (no moving light)
@@ -83,6 +103,7 @@
   const openBtn = document.getElementById("search-open");
   const input = document.getElementById("search-input");
   const results = document.getElementById("search-results");
+  let searchReturnFocus = null;
   let index = null;
   const indexUrl = "/search-index.json";
 
@@ -100,16 +121,24 @@
   function render(items) {
     if (!results) return;
     if (!items.length) {
-      results.innerHTML = '<a href="#">没有找到相关内容</a>';
+      results.innerHTML = '<p class="search-empty">没有找到相关内容</p>';
       return;
     }
+    const escape = (value) =>
+      String(value || "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      }[char]));
     results.innerHTML = items
       .slice(0, 12)
       .map(
         (it) =>
-          `<a href="${it.url}"><div>${it.title}</div><div class="meta">${it.date || ""} · ${(
+          `<a href="${escape(it.url)}"><div>${escape(it.title)}</div><div class="meta">${escape(it.date || "")} · ${(
             it.tags || []
-          ).map((t) => "#" + t).join(" ")}</div></a>`
+          ).map((t) => "#" + escape(t)).join(" ")}</div></a>`
       )
       .join("");
   }
@@ -132,12 +161,16 @@
 
   function openSearch() {
     if (!modal) return;
+    searchReturnFocus = document.activeElement;
     modal.hidden = false;
     loadIndex().then(() => doSearch(""));
     setTimeout(() => input && input.focus(), 30);
   }
   function closeSearch() {
     if (modal) modal.hidden = true;
+    if (searchReturnFocus && typeof searchReturnFocus.focus === "function") {
+      searchReturnFocus.focus();
+    }
   }
 
   if (openBtn) openBtn.addEventListener("click", openSearch);

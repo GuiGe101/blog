@@ -65,17 +65,23 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
     return meta, body
 
 
-def inline(text: str) -> str:
+def inline(text: str, *, image_prefix: str = "") -> str:
     text = html.escape(text, quote=False)
     text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
-    text = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", r'<img loading="lazy" alt="\1" src="\2">', text)
+    def image_repl(match: re.Match[str]) -> str:
+        alt, src = match.groups()
+        if image_prefix and not re.match(r"^(?:[a-z][a-z0-9+.-]*:|/|#)", src, re.I):
+            src = image_prefix + src
+        return f'<img loading="lazy" alt="{alt}" src="{src}">'
+
+    text = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", image_repl, text)
     text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', text)
     text = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", text)
     return text
 
 
-def md_to_html(text: str) -> str:
+def md_to_html(text: str, *, image_prefix: str = "") -> str:
     lines = text.replace("\r\n", "\n").split("\n")
     out: list[str] = []
     i, n = 0, len(lines)
@@ -105,20 +111,24 @@ def md_to_html(text: str) -> str:
             while i < n and lines[i].startswith(">"):
                 quote.append(lines[i].lstrip("> ").rstrip())
                 i += 1
-            inner = "<br>".join(inline(x) for x in quote if x.strip())
+            inner = "<br>".join(inline(x, image_prefix=image_prefix) for x in quote if x.strip())
             out.append(f"<blockquote><p>{inner}</p></blockquote>")
             continue
         if re.match(r"^[-*+]\s+", line):
             items: list[str] = []
             while i < n and re.match(r"^[-*+]\s+", lines[i]):
-                items.append(f"<li>{inline(re.sub(r'^[-*+]\s+', '', lines[i]))}</li>")
+                items.append(
+                    f"<li>{inline(re.sub(r'^[-*+]\s+', '', lines[i]), image_prefix=image_prefix)}</li>"
+                )
                 i += 1
             out.append("<ul>" + "".join(items) + "</ul>")
             continue
         if re.match(r"^\d+\.\s+", line):
             items = []
             while i < n and re.match(r"^\d+\.\s+", lines[i]):
-                items.append(f"<li>{inline(re.sub(r'^\d+\.\s+', '', lines[i]))}</li>")
+                items.append(
+                    f"<li>{inline(re.sub(r'^\d+\.\s+', '', lines[i]), image_prefix=image_prefix)}</li>"
+                )
                 i += 1
             out.append("<ol>" + "".join(items) + "</ol>")
             continue
@@ -131,7 +141,7 @@ def md_to_html(text: str) -> str:
         ):
             para.append(lines[i].strip())
             i += 1
-        out.append(f"<p>{inline(' '.join(para))}</p>")
+        out.append(f"<p>{inline(' '.join(para), image_prefix=image_prefix)}</p>")
     return "\n".join(out)
 
 
@@ -188,16 +198,21 @@ def nav_html(prefix: str = "", active: str = "主页") -> str:
     for name, href in NAV:
         cls = ' class="active"' if name == active else ""
         links.append(f'<a href="{prefix}{href}"{cls}>{name}</a>')
+    links = [
+        link.replace(' class="active"', ' class="active" aria-current="page"')
+        for link in links
+    ]
+    link_html = "".join(links)
     return f"""<header class="site-nav">
-  <a class="brand" href="{prefix}index.html"><span class="brand-mark"><img src="{prefix}assets/avatar.jpg" alt=""></span>{html.escape(SITE_NAME)}</a>
-  <nav class="nav-links">{''.join(links)}</nav>
+  <a class="brand" href="{prefix}index.html"><span class="brand-mark"><img src="{prefix}assets/avatar.jpg" alt="{html.escape(SITE_NAME)}的头像" decoding="async"></span>{html.escape(SITE_NAME)}</a>
+  <nav class="nav-links" aria-label="主导航">{link_html}</nav>
   <div class="nav-actions">
     <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索">{icon('search')}</button>
     <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换">{icon('theme')}</button>
-    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单">{icon('menu')}</button>
+    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav">{icon('menu')}</button>
   </div>
 </header>
-<div class="mobile-nav" id="mobile-nav">{''.join(links)}</div>"""
+<nav class="mobile-nav" id="mobile-nav" aria-label="移动端主导航" hidden>{link_html}</nav>"""
 
 
 def hero_html(post_count: int = 0) -> str:
@@ -224,7 +239,7 @@ def hero_html(post_count: int = 0) -> str:
 
 def profile_card(prefix: str = "") -> str:
     return f"""<section class="card profile">
-  <div class="profile-avatar"><img src="{prefix}assets/avatar.jpg" alt="avatar" loading="lazy"></div>
+  <div class="profile-avatar"><img src="{prefix}assets/avatar.jpg" alt="{html.escape(SITE_NAME)}的头像" loading="lazy" decoding="async"></div>
   <h2 class="profile-name">{html.escape(SITE_NAME)}</h2>
   <p class="profile-bio">{html.escape(SITE_BIO)}</p>
   <div class="profile-links">
@@ -347,10 +362,13 @@ def page(
     hero: bool = True,
     hero_count: int = 0,
     og_image: str = "",
+    canonical_path: str = "",
 ) -> str:
     page_title = SITE_NAME if title == SITE_NAME else f"{title} · {SITE_NAME}"
     desc = desc or SITE_DESC
-    og = og_image or f"{prefix}assets/valorant/hero-jett.jpg"
+    canonical = f"{SITE_URL}/{canonical_path.lstrip('/')}" if canonical_path else f"{SITE_URL}/"
+    og_path = og_image or "assets/valorant/hero-jett.jpg"
+    og = og_path if re.match(r"^https?://", og_path, re.I) else f"{SITE_URL}/{og_path.lstrip('../')}"
     hero_block = hero_html(post_count=hero_count) if hero else ""
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -360,12 +378,12 @@ def page(
 <title>{html.escape(page_title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <meta name="author" content="{AUTHOR}">
-<link rel="canonical" href="{SITE_URL}/{title if title != SITE_NAME else ''}">
+<link rel="canonical" href="{html.escape(canonical)}">
 <meta property="og:title" content="{html.escape(page_title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:type" content="website">
-<meta property="og:url" content="{SITE_URL}/">
-<meta property="og:image" content="{og}">
+<meta property="og:url" content="{html.escape(canonical)}">
+<meta property="og:image" content="{html.escape(og)}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="{html.escape(SITE_NAME)}" href="{prefix}feed.xml">
 <link rel="icon" href="{prefix}assets/avatar.jpg" type="image/jpeg">
@@ -395,9 +413,11 @@ def page(
     <span>访问 <b id="stat-site-pv">…</b></span>
   </div>
 </footer>
-<div class="search-modal" id="search-modal" hidden>
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
   <div class="search-box">
-    <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
+  <h2 id="search-title" class="sr-only">搜索文章</h2>
+  <label class="sr-only" for="search-input">搜索标题、摘要、标签</label>
+  <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
     <div id="search-results"></div>
   </div>
 </div>
@@ -502,7 +522,7 @@ def post_card(p: dict, prefix: str = "posts/") -> str:
     <div class="post-tags">{tags}</div>
   </div>
   <a class="post-cover" href="{prefix}{p['slug']}.html">
-    <img src="{p['cover']}" alt="" loading="lazy">
+    <img src="{p['cover']}" alt="{html.escape(p['title'])}" loading="lazy" decoding="async">
   </a>
 </article>"""
 
@@ -553,7 +573,13 @@ def build() -> None:
 </div>"""
     _write(
         DIST / "index.html",
-        page(SITE_NAME, index_body, active="主页", hero_count=len(posts)),
+        page(
+            SITE_NAME,
+            index_body,
+            active="主页",
+            hero_count=len(posts),
+            canonical_path="",
+        ),
         prefix="",
     )
 
@@ -571,7 +597,13 @@ def build() -> None:
         arch.append(f'<h2 class="section-title">{y}</h2><ul class="arch-list">{lis}</ul>')
     _write(
         DIST / "archive.html",
-        page("归档", f'<div class="page single">{"".join(arch)}</div>', active="归档", hero=False),
+        page(
+            "归档",
+            f'<div class="page single">{"".join(arch)}</div>',
+            active="归档",
+            hero=False,
+            canonical_path="archive.html",
+        ),
         prefix="",
     )
 
@@ -590,7 +622,13 @@ def build() -> None:
         cat_html.append(f'<h2 class="section-title" id="{html.escape(cat)}">{html.escape(cat)} <small>{len(items)}</small></h2><ul class="arch-list">{lis}</ul>')
     _write(
         DIST / "categories.html",
-        page("分类", f'<div class="page single">{"".join(cat_html)}</div>', active="分类", hero=False),
+        page(
+            "分类",
+            f'<div class="page single">{"".join(cat_html)}</div>',
+            active="分类",
+            hero=False,
+            canonical_path="categories.html",
+        ),
         prefix="",
     )
 
@@ -612,7 +650,13 @@ def build() -> None:
         tag_html.append(f'<h2 class="section-title" id="{html.escape(t)}">#{html.escape(t)}</h2><ul class="arch-list">{lis}</ul>')
     _write(
         DIST / "tags.html",
-        page("标签", f'<div class="page single">{"".join(tag_html)}</div>', active="标签", hero=False),
+        page(
+            "标签",
+            f'<div class="page single">{"".join(tag_html)}</div>',
+            active="标签",
+            hero=False,
+            canonical_path="tags.html",
+        ),
         prefix="",
     )
 
@@ -636,6 +680,7 @@ def build() -> None:
                 f'<div class="page single"><div class="card pad">{content}</div></div>',
                 active=active,
                 hero=False,
+                canonical_path=f"{fname}.html",
             ),
             prefix="",
         )
@@ -651,6 +696,7 @@ def build() -> None:
 </div></div>""",
             active="",
             hero=False,
+            canonical_path="404.html",
         ),
         prefix="",
     )
@@ -665,6 +711,7 @@ def build() -> None:
         s.sort(key=lambda x: x["series_order"])
 
     for p in posts:
+        p["html"] = md_to_html(p["source"], image_prefix="../")
         toc = extract_toc(p["html"])
         tags = "".join(f'<a class="tag-chip" href="../tags.html#{html.escape(t)}">#{html.escape(t)}</a>' for t in p["tag_list"])
         # 相关
@@ -715,7 +762,7 @@ def build() -> None:
         </div>
       </header>
       <figure class="article-cover">
-        <img src="../{html.escape(p['cover'])}" alt="{html.escape(p['title'])}" loading="lazy">
+        <img src="../{html.escape(p['cover'])}" alt="{html.escape(p['title'])}" loading="lazy" decoding="async">
       </figure>
       {ser_html}
       <div class="article-body">{p['html']}</div>
@@ -738,7 +785,8 @@ def build() -> None:
                 active="主页",
                 desc=p["summary"],
                 hero=False,
-                og_image=f"../{p['cover']}",
+                og_image=p["cover"],
+                canonical_path=f"posts/{p['slug']}.html",
             ),
             prefix="../",
         )
