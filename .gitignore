@@ -1,3 +1,5 @@
 blog-preview/
 preview/
 .fontcache/
+__pycache__/
+*.pyc

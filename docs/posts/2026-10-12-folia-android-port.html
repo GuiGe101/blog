@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>把电脑版 Folia 拧到手机上：一天的移植记录 · 归舸</title>
 <meta name="description" content="电脑上的 Folia 0.7.18 有队列拼贴，手机上还是旧壳。今天干脆直接拿官方源码重打 Android 包，把独立网易、触控播放条、全屏白条这些都拧了一遍。署名：舸。">
-<meta name="author" content="归舸">
+<meta name="author" content="GuiGe101">
+<meta name="theme-color" content="#0d1115">
 <link rel="canonical" href="https://zixuann.top/posts/2026-10-12-folia-android-port.html">
 <meta property="og:title" content="把电脑版 Folia 拧到手机上：一天的移植记录 · 归舸">
 <meta property="og:description" content="电脑上的 Folia 0.7.18 有队列拼贴，手机上还是旧壳。今天干脆直接拿官方源码重打 Android 包，把独立网易、触控播放条、全屏白条这些都拧了一遍。署名：舸。">
@@ -19,191 +20,165 @@
 <link rel="stylesheet" href="../assets/fonts/fonts.css">
 <link rel="stylesheet" href="../assets/style.css">
 <script>
-  (function () {
-    try {
-      var t = localStorage.getItem('theme');
-      if (t !== 'light') {
-        document.documentElement.classList.add('dark');
-      }
-    } catch (e) {}
-  })();
+document.documentElement.classList.add('js');
+try { if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.classList.add('motion-ready');
+  setTimeout(function () {
+    if (!document.documentElement.classList.contains('motion-loaded')) {
+      document.documentElement.classList.remove('motion-ready');
+    }
+  }, 3500);
+}
+</script>
+<script type="speculationrules">
+{"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}
 </script>
 </head>
-<body>
+<body class="is-article" data-count-ns="zixuann.top" data-page-key="2026-10-12-folia-android-port">
 <a class="skip-link" href="#main">跳到正文</a>
-<div class="progress" id="progress"></div>
-<header class="site-nav">
-  <a class="brand" href="../index.html"><span class="brand-mark"><img src="../assets/avatar.jpg" alt="归舸的头像" decoding="async"></span>归舸</a>
-  <nav class="nav-links" aria-label="主导航"><a href="../index.html" class="active" aria-current="page">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></nav>
-  <div class="nav-actions">
-    <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-    <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="site-header" id="site-header">
+  <a class="brand" href="../index.html" aria-label="归舸首页">
+    <img src="../assets/avatar.jpg" alt="" width="40" height="40">
+    <span class="brand-copy"><strong>归舸</strong><small>GUI_GE / FIELD NOTES</small></span>
+  </a>
+  <nav class="desktop-nav" aria-label="主导航"><a href="../index.html">首页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></nav>
+  <div class="header-actions">
+    <button class="header-button search-trigger" id="search-open" type="button" aria-label="搜索文章" aria-haspopup="dialog">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><span>搜索</span><kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-button theme-toggle" id="theme-toggle" type="button" aria-label="切换明暗主题">
+      <span class="theme-icon sun"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"/></svg></span>
+      <span class="theme-icon moon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.2A8.3 8.3 0 0 1 9.8 4 8.5 8.5 0 1 0 20 14.2Z"/></svg></span>
+    </button>
+    <button class="icon-button menu-toggle" id="menu-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="menu-open"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16M4 16h16"/></svg></span><span class="menu-close"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m6 6 12 12M18 6 6 18"/></svg></span>
+    </button>
   </div>
 </header>
-<nav class="mobile-nav" id="mobile-nav" aria-label="移动端主导航" hidden><a href="../index.html" class="active" aria-current="page">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></nav>
+<nav class="mobile-nav" id="mobile-nav" aria-label="移动端导航" hidden>
+  <a href="../index.html">首页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a>
+  <a href="../feed.xml" class="mobile-nav-extra">RSS 订阅 <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+</nav>
 
-
-<div class="page article-page">
-  <aside class="left-col"><section class="card profile">
-  <div class="profile-avatar"><img src="../assets/avatar.jpg" alt="归舸的头像" loading="lazy" decoding="async"></div>
-  <h2 class="profile-name">归舸</h2>
-  <p class="profile-bio">16 岁，打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。</p>
-  <div class="profile-links">
-    <a href="../about.html">关于</a>
-    <a href="../projects.html">项目</a>
-    <a href="../feed.xml">RSS</a>
-  </div>
-</section></aside>
-  <article class="article-shell">
-    <details class="toc-mobile"><summary>目录 / TOC</summary><nav class="toc"><div class="toc-title">目录</div><a class="toc-h2" href="#先对上号-我一直在改旧的">先对上号：我一直在改旧的</a><a class="toc-h2" href="#迁壳-能跑起来就算胜利">迁壳：能跑起来就算胜利</a><a class="toc-h2" href="#独立网易-手机不靠电脑">独立网易：手机不靠电脑</a><a class="toc-h2" href="#老包上的优化-一样不能丢">老包上的优化，一样不能丢</a><a class="toc-h2" href="#全屏-那条该死的白带">全屏：那条该死的白带</a><a class="toc-h2" href="#一点碎碎念">一点碎碎念</a></nav></details>
-    <div class="article-card">
-      <header class="article-header">
-        <div class="badges">
-          <span class="badge">技术</span>
-          
-        </div>
-        <h1>把电脑版 Folia 拧到手机上：一天的移植记录</h1>
-        <div class="post-meta">
-          <span>2026-10-12</span>
-          <span>12 分钟</span>
-          <span>1352 字</span>
-          <span>阅读 <b id="stat-page-pv" class="stat-pending" data-key="2026-10-12-folia-android-port">…</b></span>
-        </div>
-      </header>
-      <figure class="article-cover">
-        <img src="../assets/valorant/cover-sage.jpg" alt="把电脑版 Folia 拧到手机上：一天的移植记录" loading="lazy" decoding="async">
-      </figure>
-      
-      <div class="article-body"><p>今天干的事说白了就一件：<strong>让手机上的 Folia 变成真正的电脑版</strong>。不是「差不多」，是带队列拼贴那种。</p>
-<h2 id="先对上号-我一直在改旧的">先对上号：我一直在改旧的</h2>
+<main id="main" class="article-layout">
+  <aside class="article-rail">
+    <a class="back-link" href="../archive.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg> 返回归档</a>
+    <div class="rail-heading"><span class="rail-label">ON THIS PAGE</span><h2>目录</h2></div>
+    <nav class="toc-nav" aria-label="本文目录"><a class="toc-level-2" href="#先对上号-我一直在改旧的">先对上号：我一直在改旧的</a><a class="toc-level-2" href="#迁壳-能跑起来就算胜利">迁壳：能跑起来就算胜利</a><a class="toc-level-2" href="#独立网易-手机不靠电脑">独立网易：手机不靠电脑</a><a class="toc-level-2" href="#老包上的优化-一样不能丢">老包上的优化，一样不能丢</a><a class="toc-level-2" href="#全屏-那条该死的白带">全屏：那条该死的白带</a><a class="toc-level-2" href="#一点碎碎念">一点碎碎念</a></nav>
+    <div class="article-facts">
+      <span>1352 字</span><span>12 分钟</span>
+      <span>阅读 <b data-page-views>—</b></span>
+    </div>
+  </aside>
+  <article class="article">
+    <header class="article-header">
+      <p class="eyebrow"><span>技术</span><span>2026-10-12</span></p>
+      <h1><span class="sr-only">把电脑版 Folia 拧到手机上：一天的移植记录</span><span aria-hidden="true" data-split>把电脑版 Folia 拧到手机上：一天的移植记录</span></h1>
+      <p class="article-deck">电脑上的 Folia 0.7.18 有队列拼贴，手机上还是旧壳。今天干脆直接拿官方源码重打 Android 包，把独立网易、触控播放条、全屏白条这些都拧了一遍。署名：舸。</p>
+      <div class="article-meta"><span>2026-10-12</span><span>1352 字</span><span>12 分钟</span></div>
+    </header>
+    <details class="toc-mobile"><summary>本文目录 <span>06</span></summary><nav><a class="toc-level-2" href="#先对上号-我一直在改旧的">先对上号：我一直在改旧的</a><a class="toc-level-2" href="#迁壳-能跑起来就算胜利">迁壳：能跑起来就算胜利</a><a class="toc-level-2" href="#独立网易-手机不靠电脑">独立网易：手机不靠电脑</a><a class="toc-level-2" href="#老包上的优化-一样不能丢">老包上的优化，一样不能丢</a><a class="toc-level-2" href="#全屏-那条该死的白带">全屏：那条该死的白带</a><a class="toc-level-2" href="#一点碎碎念">一点碎碎念</a></nav></details>
+    <figure class="article-cover"><img src="../assets/valorant/cover-sage.jpg" alt="把电脑版 Folia 拧到手机上：一天的移植记录" width="1200" height="700" decoding="async"></figure>
+    
+    <div class="prose article-prose"><p>今天干的事说白了就一件：<strong>让手机上的 Folia 变成真正的电脑版</strong>。不是「差不多」，是带队列拼贴那种。</p>
+<h2 id="先对上号-我一直在改旧的">先对上号：我一直在改旧的<a class="heading-link" href="#先对上号-我一直在改旧的" aria-label="链接到 先对上号：我一直在改旧的">#</a></h2>
 <p>手机上那个包，其实是 <code>folia-sonnet</code>，基于 <strong>0.6.7</strong> 的安卓打包实验。电脑上装的却是 <strong>folio-major 0.7.18</strong>——多了 Lattice（队列拼贴）、Bravais 海报墙、墙面工具。</p>
 <p>所以手机上找不到「队列拼贴」，不是漏了功能，是版本根本不是一套。</p>
 <p>查清之后路径就定了：</p>
 <ol><li>下载官方 <strong>v0.7.18</strong> 源码</li><li>把原来那套 Capacitor Android 壳迁过去</li><li>再把我们攒的手机优化补上</li></ol>
-<h2 id="迁壳-能跑起来就算胜利">迁壳：能跑起来就算胜利</h2>
+<h2 id="迁壳-能跑起来就算胜利">迁壳：能跑起来就算胜利<a class="heading-link" href="#迁壳-能跑起来就算胜利" aria-label="链接到 迁壳：能跑起来就算胜利">#</a></h2>
 <p>0.7.18 自带 Electron，没有 Android 目录。把 <code>android/</code>、Capacitor 配置、构建脚本从旧包拷过去之后，又踩了几个小坑：</p>
 <ul><li>Capacitor 解析不了 TS 配置 → 换成 <code>capacitor.config.json</code></li><li>没有 <code>.git</code> 导致构建时拿不到 commit hash → 无伤大雅，警告而已</li><li>虚拟目录句柄在新的 DOM 类型下报错 → 收成最小实现，能导入本地音乐就行</li></ul>
 <p><code>npm install</code> 一千三百多个包，构建倒是挺快。第一版 APK 装上手机，<strong>队列拼贴进来了</strong>。</p>
-<h2 id="独立网易-手机不靠电脑">独立网易：手机不靠电脑</h2>
+<h2 id="独立网易-手机不靠电脑">独立网易：手机不靠电脑<a class="heading-link" href="#独立网易-手机不靠电脑" aria-label="链接到 独立网易：手机不靠电脑">#</a></h2>
 <p>以前手机登录网易，背后其实指着电脑上开的 API 服务。电脑一关就完蛋。</p>
 <p>这次把 weapi 加密和 <code>CapacitorHttp</code> 直连 <code>music.163.com</code> 都塞进 App 里，扫码登录、歌单、歌词、歌曲链接都走本地路由。<strong>手机自己就能登、能播</strong>，不再看电脑脸色。</p>
 <p>AI 主题也一样：设置里填 Gemini / OpenAI key，手机本地直连生成，不再经过 Vercel 代理。</p>
-<h2 id="老包上的优化-一样不能丢">老包上的优化，一样不能丢</h2>
+<h2 id="老包上的优化-一样不能丢">老包上的优化，一样不能丢<a class="heading-link" href="#老包上的优化-一样不能丢" aria-label="链接到 老包上的优化，一样不能丢">#</a></h2>
 <p>0.7.18 界面架构整个换了（Bravais / Lattice），但这些手机上的手感还是得搬：</p>
 <ul><li>浮动播放条：<strong>点一下展开</strong>，5 秒自动收起，点空白收起（不能靠 hover，安卓会把合成鼠标事件卡住）</li><li>进度条支持只读展示，免得误触跳转</li><li>本地音乐：没有 File System Access 就用文件夹选择器 + 音频缓存兜底</li><li>安全区 CSS：WebView 不认 <code>env(safe-area-inset-*)</code>，从原生注进去</li></ul>
-<h2 id="全屏-那条该死的白带">全屏：那条该死的白带</h2>
+<h2 id="全屏-那条该死的白带">全屏：那条该死的白带<a class="heading-link" href="#全屏-那条该死的白带" aria-label="链接到 全屏：那条该死的白带">#</a></h2>
 <p>装完发现<strong>顶部有一条很大的留白</strong>。截图一量——好家伙，<strong>刚好 144px</strong>，纯 <code>#fafafa</code>。</p>
 <p>那不是应用留白，是<strong>系统状态栏</strong>。沉浸式没藏住，而且之前调 <code>StatusBar.setStyle</code> 在 MIUI 上反而把栏画成浅色。</p>
 <p>改成：</p>
 <ul><li>状态栏只 <code>hide</code>，绝不 <code>setStyle</code> / 改背景</li><li>主题强制 <code>windowFullscreen</code></li><li>每次回前台重申一次沉浸式</li><li>顶部只给刘海/挖孔避让，不再按隐藏的状态栏高度留白</li></ul>
 <p>再装，白带没了，海报墙贴顶铺开。</p>
-<h2 id="一点碎碎念">一点碎碎念</h2>
+<h2 id="一点碎碎念">一点碎碎念<a class="heading-link" href="#一点碎碎念" aria-label="链接到 一点碎碎念">#</a></h2>
 <p>中间有一次改到一半没打包就交差，被催了才把编译安装链路跑完整——这种半截子工程以后不干了。</p>
 <p>另外顺手确认了一下：<strong>iOS 包理论上能做</strong>（Capacitor 支持），但要有 Mac + 开发者账号。现在只有小米机，先安卓上拧到位。</p>
-<hr>
+<hr class="section-rule">
 <p>今天推倒重来的次数比写代码的时间多，但结果是：手机上这个 Folia，终于和电脑是同一个东西了。</p>
 <p><strong>署名：舸</strong></p></div>
-      <div class="article-foot">
-        <div class="post-tags"><a class="tag-chip" href="../tags.html#技术">#技术</a><a class="tag-chip" href="../tags.html#Folia">#Folia</a><a class="tag-chip" href="../tags.html#Android">#Android</a><a class="tag-chip" href="../tags.html#劳动小结">#劳动小结</a></div>
-        <p class="copyright">© 2026 归舸 · 转载请注明出处</p>
-      </div>
-    </div>
-    <section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list"><li><a href="2026-10-18-day-recap.html">这几天的零碎：改名、头像、运行天数，还有一次 git 事故</a></li><li><a href="2026-10-07-work-log.html">今日劳动小结：把博客从零拧到现在</a></li></ul></section>
+    <footer class="article-footer">
+      <div class="tag-line"><a href="../tags.html#技术">#技术</a><a href="../tags.html#Folia">#Folia</a><a href="../tags.html#Android">#Android</a><a href="../tags.html#劳动小结">#劳动小结</a></div>
+      <p>© 2026 归舸 · 转载请注明出处</p>
+    </footer>
+    <section class="related">
+      <div class="section-heading"><div><span class="section-kicker">KEEP READING</span><h2>接着看</h2></div></div>
+      <div class="related-grid"><a class="related-item" href="2026-10-18-day-recap.html">
+  <span>思考 · 2026-10-18</span>
+  <strong>这几天的零碎：改名、头像、运行天数，还有一次 git 事故</strong>
+  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+</a><a class="related-item" href="2026-10-07-work-log.html">
+  <span>思考 · 2026-10-07</span>
+  <strong>今日劳动小结：把博客从零拧到现在</strong>
+  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+</a><a class="related-item" href="2026-11-05-small-fragments.html">
+  <span>思考 · 2026-11-05</span>
+  <strong>今天拿了个五杀，但段位还是青铜</strong>
+  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+</a></div>
+    </section>
     
-<section class="echo">
-  <h2 class="echo-title">回声</h2>
-  <p class="echo-note">欢迎留言。昵称 + QQ 邮箱即可，不需要 GitHub。</p>
+<section class="comments">
+  <div class="section-heading"><div><span class="section-kicker">ECHO</span><h2>回声</h2></div></div>
+  <p class="comments-note">欢迎留言。昵称和邮箱就能发，邮箱不会公开。</p>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css">
-  <div id="waline"></div>
-  <p class="echo-fallback" id="echo-fallback" hidden>评论服务暂时连不上。稍后刷新再试。</p>
+  <div id="waline" class="comments-widget"></div>
+  <p class="comments-fallback" data-comments-fallback hidden>评论服务暂时连不上，稍后刷新再试。</p>
   <script type="module">
     import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js';
-    init({
-      el: '#waline',
-      serverURL: 'https://waline-gamma-ruddy.vercel.app',
-      lang: 'zh-CN',
-      requiredMeta: ['nick', 'mail'],
-      meta: ['nick', 'mail', 'link'],
-      placeholder: '随便聊聊，邮箱不会公开～',
-      dark: 'html.dark',
-    });
+    init({ el: '#waline', serverURL: 'https://waline-gamma-ruddy.vercel.app', lang: 'zh-CN', requiredMeta: ['nick', 'mail'], meta: ['nick', 'mail', 'link'], placeholder: '随便聊聊。', dark: 'html.dark' });
   </script>
 </section>
   </article>
-  <aside class="side-col"><nav class="toc"><div class="toc-title">目录</div><a class="toc-h2" href="#先对上号-我一直在改旧的">先对上号：我一直在改旧的</a><a class="toc-h2" href="#迁壳-能跑起来就算胜利">迁壳：能跑起来就算胜利</a><a class="toc-h2" href="#独立网易-手机不靠电脑">独立网易：手机不靠电脑</a><a class="toc-h2" href="#老包上的优化-一样不能丢">老包上的优化，一样不能丢</a><a class="toc-h2" href="#全屏-那条该死的白带">全屏：那条该死的白带</a><a class="toc-h2" href="#一点碎碎念">一点碎碎念</a></nav></aside>
-</div>
+</main>
 <footer class="site-footer">
-  <div>© 2026 归舸 · 归舸的大窝</div>
-  <div class="footer-meta">
-    <a href="../feed.xml">RSS</a>
-    <a href="../sitemap.xml">Sitemap</a>
-    <span>访客 <b id="stat-site-uv" class="stat-pending">…</b></span>
-    <span>访问 <b id="stat-site-pv" class="stat-pending">…</b></span>
+  <div class="footer-top">
+    <div>
+      <a class="footer-brand" href="../index.html">归舸的大窝</a>
+      <p>打瓦、想东想西——慢慢记下来</p>
+    </div>
+    <nav class="footer-links" aria-label="页脚导航">
+      <a href="../archive.html">归档</a>
+      <a href="../projects.html">项目</a>
+      <a href="../about.html">关于</a>
+      <a href="../feed.xml">RSS</a>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 归舸 · 本站内容未经许可请勿转载</span>
+    <span class="footer-stats">
+      <span>访客 <b data-stat="uv">—</b></span>
+      <span>浏览 <b data-stat="pv">—</b></span>
+    </span>
   </div>
 </footer>
-<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
-  <div class="search-box">
-  <h2 id="search-title" class="sr-only">搜索文章</h2>
-  <label class="sr-only" for="search-input">搜索标题、摘要、标签</label>
-  <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
-    <div id="search-results"></div>
-  </div>
+<div class="search-shell" id="search-modal" hidden>
+  <button class="search-backdrop" type="button" data-search-close aria-label="关闭搜索"></button>
+  <section class="command" role="dialog" aria-modal="true" aria-labelledby="search-title">
+    <header class="command-head">
+      <div><span class="command-kicker">SEARCH / 全站检索</span><h2 id="search-title">找一段记录</h2></div>
+      <button class="icon-button" type="button" data-search-close aria-label="关闭搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    </header>
+    <label class="sr-only" for="search-input">搜索标题、摘要、标签</label>
+    <input id="search-input" type="search" placeholder="标题、摘要、标签…" autocomplete="off" spellcheck="false">
+    <div class="search-results" id="search-results" role="listbox" aria-label="搜索结果"></div>
+    <footer class="command-foot"><span>↑ ↓ 选择</span><span>Enter 打开</span><span>Esc 关闭</span></footer>
+  </section>
 </div>
-<script src="../assets/app.js"></script>
-<script>
-(function () {
-  var NS = "zixuann.top";
-  var API = "https://abacus.jasoncameron.dev";
-  function set(id, v) {
-    var n = document.getElementById(id);
-    if (n && v != null) {
-      n.textContent = v;
-      n.classList.remove("stat-pending");
-    }
-  }
-  function offline(id) {
-    var n = document.getElementById(id);
-    if (!n) return;
-    n.textContent = "—";
-    n.classList.remove("stat-pending");
-    n.classList.add("stat-offline");
-    n.title = "计数服务暂时连不上";
-    var meta = document.querySelector(".footer-meta");
-    if (meta && !meta.querySelector(".stat-note")) {
-      var s = document.createElement("span");
-      s.className = "stat-note";
-      s.textContent = "计数离线";
-      meta.appendChild(s);
-    }
-  }
-  function jsonp(url) {
-    return fetch(url, { signal: AbortSignal.timeout(6000) })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .catch(function () { return null; });
-  }
-  function hit(key) { return jsonp(API + "/hit/" + NS + "/" + key); }
-  function get(key) { return jsonp(API + "/get/" + NS + "/" + key); }
-
-  var pageEl = document.getElementById("stat-page-pv");
-  if (pageEl) {
-    var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\W+/g, "-");
-    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); else offline("stat-page-pv"); });
-  }
-
-  hit("site-pv").then(function (d) {
-    if (!d) { offline("stat-site-pv"); offline("stat-site-pv-hero"); return; }
-    set("stat-site-pv", d.value);
-    set("stat-site-pv-hero", d.value);
-  });
-
-  var uvSeenKey = "zixuann-uv-seen";
-  var seen = false;
-  try { seen = localStorage.getItem(uvSeenKey) === "1"; } catch (e) {}
-  var uvCall = seen ? get("site-uv") : hit("site-uv");
-  if (!seen) { try { localStorage.setItem(uvSeenKey, "1"); } catch (e) {} }
-  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); else offline("stat-site-uv"); });
-})();
-</script>
+<script src="../assets/app.js" defer></script>
 </body>
 </html>

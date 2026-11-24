@@ -14,7 +14,10 @@ CACHE = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / ".fontcache"
 
 def charset() -> str:
     chars = set()
-    for p in list((ROOT / "posts").glob("*.md")) + [ROOT / "about.md", ROOT / "projects.md", ROOT / "build.py"]:
+    sources = list((ROOT / "posts").glob("*.md"))
+    sources += [ROOT / "about.md", ROOT / "projects.md", ROOT / "build.py"]
+    sources += list((ROOT / "blogkit").glob("*.py"))
+    for p in sources:
         if p.exists():
             chars.update(p.read_text(encoding="utf-8"))
     for hi in range(0xB0, 0xD8):

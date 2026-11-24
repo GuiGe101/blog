@@ -1,0 +1,1 @@
+"""Static site builder for 归舸的大窝."""

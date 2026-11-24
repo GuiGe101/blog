@@ -24,6 +24,8 @@ jobs:
           python-version: "3.12"
       - name: Build
         run: python build.py
+      - name: Check static output
+        run: python tools/check_site.py
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
