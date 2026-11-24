@@ -271,30 +271,92 @@
       }
     });
 
-    // 滑动红条：位置/高度用 transform 过渡，避免逐条 padding 触发布局
+    // 滑动红条：弹簧积分驱动 transform/height，速度越快轻微拉伸
     const rails = Array.from(document.querySelectorAll(".toc-nav")).map((nav) => {
       const bar = document.createElement("span");
-      bar.className = "toc-indicator no-anim";
+      bar.className = "toc-indicator";
       bar.setAttribute("aria-hidden", "true");
       nav.appendChild(bar);
       return { nav, bar };
     });
-    const paintBar = (rail, link, animate) => {
+    const motionOff = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const springs = new WeakMap();
+    const springsOf = (bar) => {
+      let spring = springs.get(bar);
+      if (!spring) {
+        spring = { y: 0, h: 0, vy: 0, vh: 0, ty: 0, th: 0, raf: 0, last: 0 };
+        springs.set(bar, spring);
+      }
+      return spring;
+    };
+    const paintBar = (rail, link, animate = true) => {
       if (!rail) return;
-      const { bar, nav } = rail;
+      const { bar } = rail;
       if (!link) {
         bar.classList.remove("is-on");
         return;
       }
-      bar.classList.toggle("no-anim", !animate);
-      bar.style.setProperty("--toc-y", link.offsetTop + "px");
-      bar.style.setProperty("--toc-h", link.offsetHeight + "px");
+      const spring = springsOf(bar);
+      const targetY = link.offsetTop;
+      const targetH = link.offsetHeight;
+      const fresh = !bar.classList.contains("is-on");
       bar.classList.add("is-on");
-      if (!animate) {
-        requestAnimationFrame(() => bar.classList.remove("no-anim"));
+
+      if (!animate || motionOff.matches) {
+        spring.y = spring.ty = targetY;
+        spring.h = spring.th = targetH;
+        spring.vy = spring.vh = 0;
+        bar.style.setProperty("--toc-y", targetY + "px");
+        bar.style.setProperty("--toc-h", targetH + "px");
+        bar.style.setProperty("--toc-stretch", "1");
+        return;
       }
+
+      spring.ty = targetY;
+      spring.th = targetH;
+      if (fresh) {
+        spring.y = targetY;
+        spring.h = 0;
+        spring.vy = 0;
+        spring.vh = 0;
+      }
+      if (spring.raf) return;
+
+      const step = (now) => {
+        const dt = Math.min(0.034, Math.max(0.001, (now - (spring.last || now)) / 1000));
+        spring.last = now;
+        // 位置：欠阻尼弹簧，收尾带一点回弹
+        spring.vy += (-176 * (spring.y - spring.ty) - 21 * spring.vy) * dt;
+        spring.y += spring.vy * dt;
+        // 高度：更紧一些，避免条子变形拖太久
+        spring.vh += (-230 * (spring.h - spring.th) - 30 * spring.vh) * dt;
+        spring.h += spring.vh * dt;
+        // 速度越快，竖向轻微拉伸（最多 18%）
+        const stretch = 1 + Math.min(0.14, Math.abs(spring.vy) * 0.00085 + Math.abs(spring.vh) * 0.0004);
+        bar.style.setProperty("--toc-y", spring.y.toFixed(2) + "px");
+        bar.style.setProperty("--toc-h", Math.max(0, spring.h).toFixed(2) + "px");
+        bar.style.setProperty("--toc-stretch", stretch.toFixed(3));
+        const settled =
+          Math.abs(spring.y - spring.ty) < 0.12 &&
+          Math.abs(spring.vy) < 1.5 &&
+          Math.abs(spring.h - spring.th) < 0.12 &&
+          Math.abs(spring.vh) < 1.5;
+        if (settled) {
+          spring.y = spring.ty;
+          spring.h = spring.th;
+          spring.vy = spring.vh = 0;
+          bar.style.setProperty("--toc-y", spring.ty + "px");
+          bar.style.setProperty("--toc-h", spring.th + "px");
+          bar.style.setProperty("--toc-stretch", "1");
+          spring.raf = 0;
+          spring.last = 0;
+          return;
+        }
+        spring.raf = requestAnimationFrame(step);
+      };
+      spring.last = 0;
+      spring.raf = requestAnimationFrame(step);
     };
-    const railOf = (link) => rails.find((rail) => rail.nav.contains(link));
     const syncBars = (animate) => {
       rails.forEach((rail) => paintBar(rail, rail.nav.querySelector("a.active"), animate));
     };
