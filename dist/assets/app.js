@@ -125,6 +125,9 @@
   // Staggered character reveal
   function splitText(element) {
     let index = 0;
+    // 折行禁则：收尾标点并入前一字，开引号并入后一字
+    const CLOSE = "、，。：；！？）】」』》〉”’…～·";
+    const OPEN = "（【「『《〈“‘";
     const walk = (parent) => {
       Array.from(parent.childNodes).forEach((child) => {
         if (child.nodeType === Node.TEXT_NODE) {
@@ -132,9 +135,26 @@
           if (!text.trim()) return;
           const fragment = document.createDocumentFragment();
           const tokens = text.match(/[A-Za-z0-9]+(?:['’-][A-Za-z0-9]+)*|[\s\S]/gu) || [];
+          let openSpan = null;
           tokens.forEach((token) => {
             if (/^\s+$/.test(token)) {
+              openSpan = null;
               fragment.appendChild(document.createTextNode(token));
+              return;
+            }
+            if (openSpan) {
+              openSpan.textContent += token;
+              openSpan = null;
+              return;
+            }
+            const previous = fragment.lastChild;
+            if (
+              CLOSE.includes(token) &&
+              previous &&
+              previous.nodeType === Node.ELEMENT_NODE &&
+              previous.classList.contains("split-char")
+            ) {
+              previous.textContent += token;
               return;
             }
             const span = document.createElement("span");
@@ -142,6 +162,7 @@
             span.style.setProperty("--char-index", String(index++));
             span.textContent = token;
             fragment.appendChild(span);
+            if (OPEN.includes(token)) openSpan = span;
           });
           child.replaceWith(fragment);
         } else if (child.nodeType === Node.ELEMENT_NODE && child.tagName !== "BR") {
@@ -249,6 +270,53 @@
         targets.set(target, link.getAttribute("href"));
       }
     });
+
+    // 滑动红条：位置/高度用 transform 过渡，避免逐条 padding 触发布局
+    const rails = Array.from(document.querySelectorAll(".toc-nav")).map((nav) => {
+      const bar = document.createElement("span");
+      bar.className = "toc-indicator no-anim";
+      bar.setAttribute("aria-hidden", "true");
+      nav.appendChild(bar);
+      return { nav, bar };
+    });
+    const paintBar = (rail, link, animate) => {
+      if (!rail) return;
+      const { bar, nav } = rail;
+      if (!link) {
+        bar.classList.remove("is-on");
+        return;
+      }
+      bar.classList.toggle("no-anim", !animate);
+      bar.style.setProperty("--toc-y", link.offsetTop + "px");
+      bar.style.setProperty("--toc-h", link.offsetHeight + "px");
+      bar.classList.add("is-on");
+      if (!animate) {
+        requestAnimationFrame(() => bar.classList.remove("no-anim"));
+      }
+    };
+    const railOf = (link) => rails.find((rail) => rail.nav.contains(link));
+    const syncBars = (animate) => {
+      rails.forEach((rail) => paintBar(rail, rail.nav.querySelector("a.active"), animate));
+    };
+    rails.forEach((rail) => paintBar(rail, rail.nav.querySelector("a.active"), false));
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => syncBars(false)).catch(() => {});
+    }
+    let resizeTimer = 0;
+    window.addEventListener("resize", () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => syncBars(false), 160);
+    }, { passive: true });
+
+    // 悬停时红条先滑到指针下的条目，移出后回到当前章节
+    rails.forEach((rail) => {
+      rail.nav.addEventListener("pointerover", (event) => {
+        const link = event.target instanceof Element ? event.target.closest("a") : null;
+        if (link && rail.nav.contains(link)) paintBar(rail, link, true);
+      });
+      rail.nav.addEventListener("pointerleave", () => paintBar(rail, rail.nav.querySelector("a.active"), true));
+    });
+
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver(
         (entries) => {
@@ -261,6 +329,7 @@
             if (active) link.setAttribute("aria-current", "location");
             else link.removeAttribute("aria-current");
           });
+          syncBars(true);
         },
         { rootMargin: "-12% 0px -72% 0px", threshold: 0 }
       );
@@ -482,4 +551,176 @@
     paintStat('[data-stat="uv"]', visitors);
   }
   initCounters();
+})();
+
+/* ===== v6 · cinema interactions ===== */
+(function () {
+  "use strict";
+  const root = document.documentElement;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const fine = window.matchMedia("(pointer: fine)").matches;
+
+  // HUD 时钟
+  const clocks = document.querySelectorAll("[data-clock]");
+  if (clocks.length) {
+    const pad = (n) => String(n).padStart(2, "0");
+    const paint = () => {
+      const now = new Date();
+      const text = pad(now.getHours()) + ":" + pad(now.getMinutes()) + ":" + pad(now.getSeconds());
+      clocks.forEach((node) => { node.textContent = text; });
+    };
+    paint();
+    window.setInterval(paint, 1000);
+  }
+
+  // 数字滚动
+  const counters = Array.from(document.querySelectorAll("[data-count]"));
+  if (counters.length) {
+    const animate = (node) => {
+      const target = parseInt(node.dataset.count, 10);
+      if (!Number.isFinite(target) || reduce.matches) return;
+      const start = performance.now();
+      const duration = 1100;
+      const step = (now) => {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        node.textContent = String(Math.round(target * eased)).padStart(2, "0");
+        if (t < 1) requestAnimationFrame(step);
+        else node.textContent = String(target).padStart(2, "0");
+      };
+      node.textContent = "00";
+      requestAnimationFrame(step);
+    };
+    if ("IntersectionObserver" in window && !reduce.matches) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          animate(entry.target);
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.4 });
+      counters.forEach((node) => io.observe(node));
+    } else {
+      counters.forEach(animate);
+    }
+  }
+
+  if (!reduce.matches && fine) {
+    // 磁吸按钮
+    Array.from(document.querySelectorAll(".button-primary, .round-link")).forEach((node) => {
+      node.classList.add("magnetic");
+      node.addEventListener("pointermove", (event) => {
+        const rect = node.getBoundingClientRect();
+        const dx = (event.clientX - (rect.left + rect.width / 2)) / rect.width;
+        const dy = (event.clientY - (rect.top + rect.height / 2)) / rect.height;
+        node.classList.add("is-pulling");
+        node.style.transform = "translate3d(" + (dx * 8).toFixed(2) + "px," + (dy * 6).toFixed(2) + "px,0)";
+      });
+      node.addEventListener("pointerleave", () => {
+        node.classList.remove("is-pulling");
+        node.style.transform = "";
+      });
+    });
+
+    // 3D 倾斜
+    Array.from(document.querySelectorAll("[data-tilt]")).forEach((node) => {
+      let queued = false;
+      let rx = 0;
+      let ry = 0;
+      node.addEventListener("pointermove", (event) => {
+        const rect = node.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width - 0.5;
+        const py = (event.clientY - rect.top) / rect.height - 0.5;
+        rx = (py * -4).toFixed(2);
+        ry = (px * 5).toFixed(2);
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          node.classList.add("is-tilting");
+          node.style.setProperty("--ty", rx + "deg");
+          node.style.setProperty("--tx", ry + "deg");
+        });
+      });
+      node.addEventListener("pointerleave", () => {
+        node.classList.remove("is-tilting");
+        node.style.removeProperty("--tx");
+        node.style.removeProperty("--ty");
+      });
+    });
+  }
+
+  // 跑马灯随滚动速度倾斜
+  const ticker = document.querySelector(".motion-ticker");
+  if (ticker && !reduce.matches) {
+    let last = window.scrollY;
+    let skew = 0;
+    let raf = 0;
+    const tick = () => {
+      skew *= 0.88;
+      ticker.style.setProperty("--tick-skew", skew.toFixed(2) + "deg");
+      if (Math.abs(skew) > 0.05) raf = requestAnimationFrame(tick);
+      else raf = 0;
+    };
+    window.addEventListener("scroll", () => {
+      const y = window.scrollY;
+      const delta = y - last;
+      last = y;
+      skew = Math.max(-3.5, Math.min(3.5, delta * 0.35));
+      if (!raf) raf = requestAnimationFrame(tick);
+    }, { passive: true });
+  }
+
+  // 主题切换：圆形擦除（不支持时交还给原有逻辑）
+  const themeButton = document.getElementById("theme-toggle");
+  if (
+    themeButton &&
+    typeof document.startViewTransition === "function" &&
+    !reduce.matches
+  ) {
+    document.addEventListener(
+      "click",
+      (event) => {
+        const target = event.target instanceof Element ? event.target.closest("#theme-toggle") : null;
+        if (!target) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        const rect = target.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        const radius = Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y)
+        );
+        const meta = document.querySelector('meta[name="theme-color"]');
+
+        root.classList.add("theme-swap");
+        const transition = document.startViewTransition(() => {
+          const dark = root.classList.toggle("dark");
+          try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (error) {}
+          target.setAttribute("aria-label", dark ? "切换到浅色主题" : "切换到深色主题");
+          target.setAttribute("aria-pressed", String(dark));
+          if (meta) meta.setAttribute("content", dark ? "#0d1115" : "#f1ede4");
+        });
+        transition.ready
+          .then(() => {
+            const ease = "cubic-bezier(0.65, 0, 0.35, 1)";
+            root.animate(
+              { clipPath: ["circle(" + radius + "px at " + x + "px " + y + "px)", "circle(0px at " + x + "px " + y + "px)"] },
+              { duration: 560, easing: ease, pseudoElement: "::view-transition-old(root)" }
+            );
+            root.animate(
+              { clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + radius + "px at " + x + "px " + y + "px)"] },
+              { duration: 560, easing: ease, pseudoElement: "::view-transition-new(root)" }
+            );
+          })
+          .catch(() => {});
+        transition.finished
+          .then(() => root.classList.remove("theme-swap"))
+          .catch(() => root.classList.remove("theme-swap"));
+      },
+      true
+    );
+  }
 })();

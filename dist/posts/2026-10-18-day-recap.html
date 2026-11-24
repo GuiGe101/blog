@@ -6,7 +6,7 @@
 <title>这几天的零碎：改名、头像、运行天数，还有一次 git 事故 · 归舸</title>
 <meta name="description" content="不重复以前写过的搭站过程。只记 10 月 12 日之后到今天的新事：站名、头像、简介文案、阅读时长、运行天数实时化，以及一次本地仓库丢失后的覆盖发布。写得很细，当存档用。">
 <meta name="author" content="GuiGe101">
-<meta name="theme-color" content="#0d1115">
+<meta name="theme-color" content="#f1ede4">
 <link rel="canonical" href="https://zixuann.top/posts/2026-10-18-day-recap.html">
 <meta property="og:title" content="这几天的零碎：改名、头像、运行天数，还有一次 git 事故 · 归舸">
 <meta property="og:description" content="不重复以前写过的搭站过程。只记 10 月 12 日之后到今天的新事：站名、头像、简介文案、阅读时长、运行天数实时化，以及一次本地仓库丢失后的覆盖发布。写得很细，当存档用。">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="../assets/style.css">
 <script>
 document.documentElement.classList.add('js');
-try { if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
+try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.documentElement.classList.add('motion-ready');
   setTimeout(function () {
@@ -80,7 +80,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       <div class="article-meta"><span>2026-10-18</span><span>9943 字</span><span>55 分钟</span></div>
     </header>
     <details class="toc-mobile"><summary>本文目录 <span>52</span></summary><nav><a class="toc-level-2" href="#一、先把名字安下来-「归舸的大窝」">一、先把名字安下来：「归舸的大窝」</a><a class="toc-level-3" href="#1-1-名字为什么又改">1.1 名字为什么又改</a><a class="toc-level-3" href="#1-2-改动范围">1.2 改动范围</a><a class="toc-level-3" href="#1-3-为什么名字这么重要">1.3 为什么名字这么重要</a><a class="toc-level-3" href="#1-4-改名时踩到的小坑">1.4 改名时踩到的小坑</a><a class="toc-level-2" href="#二、头像-从假人插画到自己的图">二、头像：从假人插画到自己的图</a><a class="toc-level-3" href="#2-1-以前为什么不满意">2.1 以前为什么不满意</a><a class="toc-level-3" href="#2-2-聊天附件的尴尬">2.2 聊天附件的尴尬</a><a class="toc-level-3" href="#2-3-裁水印">2.3 裁水印</a><a class="toc-level-3" href="#2-4-两处一起换">2.4 两处一起换</a><a class="toc-level-3" href="#2-5-头像这种事的心态">2.5 头像这种事的心态</a><a class="toc-level-3" href="#2-6-换完头像的检查清单">2.6 换完头像的检查清单</a><a class="toc-level-2" href="#三、简介-删掉「写代码」">三、简介：删掉「写代码」</a><a class="toc-level-3" href="#3-1-文案会「说假话」">3.1 文案会「说假话」</a><a class="toc-level-3" href="#3-2-副标题同理">3.2 副标题同理</a><a class="toc-level-3" href="#3-3-关于页跟着改">3.3 关于页跟着改</a><a class="toc-level-2" href="#四、阅读时长-6-分钟还是-41-分钟">四、阅读时长：6 分钟还是 41 分钟</a><a class="toc-level-3" href="#4-1-问题的起因">4.1 问题的起因</a><a class="toc-level-3" href="#4-2-两种时长">4.2 两种时长</a><a class="toc-level-3" href="#4-3-改成可手写">4.3 改成可手写</a><a class="toc-level-3" href="#4-4-顺手改的地方">4.4 顺手改的地方</a><a class="toc-level-3" href="#4-5-「分钟」这个词的模糊性">4.5 「分钟」这个词的模糊性</a><a class="toc-level-2" href="#五、运行天数-别再写死了">五、运行天数：别再写死了</a><a class="toc-level-3" href="#5-1-今天为什么想起来">5.1 今天为什么想起来</a><a class="toc-level-3" href="#5-2-旧实现-构建时算死">5.2 旧实现：构建时算死</a><a class="toc-level-3" href="#5-3-新实现-浏览器现算">5.3 新实现：浏览器现算</a><a class="toc-level-3" href="#5-4-「今天-18-号怎么算」">5.4 「今天 18 号怎么算」</a><a class="toc-level-3" href="#5-5-静态站的通病">5.5 静态站的通病</a><a class="toc-level-3" href="#5-6-本地预览和线上的又一次不一致">5.6 本地预览和线上的又一次不一致</a><a class="toc-level-2" href="#六、一次-git-事故">六、一次 git 事故</a><a class="toc-level-3" href="#6-1-现象">6.1 现象</a><a class="toc-level-3" href="#6-2-当时的感觉">6.2 当时的感觉</a><a class="toc-level-3" href="#6-3-处理步骤">6.3 处理步骤</a><a class="toc-level-3" href="#6-4-为什么-git-会丢">6.4 为什么 .git 会丢</a><a class="toc-level-3" href="#6-5-教训">6.5 教训</a><a class="toc-level-3" href="#6-6-强制推送的规矩">6.6 强制推送的规矩</a><a class="toc-level-2" href="#七、其它小动作">七、其它小动作</a><a class="toc-level-3" href="#7-1-副标题定调">7.1 副标题定调</a><a class="toc-level-3" href="#7-2-「关于」页">7.2 「关于」页</a><a class="toc-level-3" href="#7-3-cname-固化">7.3 CNAME 固化</a><a class="toc-level-3" href="#7-4-预览目录锁文件">7.4 预览目录锁文件</a><a class="toc-level-3" href="#7-5-没做完的事">7.5 没做完的事</a><a class="toc-level-3" href="#7-6-工具相关">7.6 工具相关</a><a class="toc-level-2" href="#八、时间线清单">八、时间线清单</a><a class="toc-level-2" href="#九、这几天的体会">九、这几天的体会</a><a class="toc-level-3" href="#9-1-后期维护比初次搭建更磨人">9.1 后期维护比初次搭建更磨人</a><a class="toc-level-3" href="#9-2-静态站的动态数据都要现算">9.2 静态站的动态数据都要现算</a><a class="toc-level-3" href="#9-3-「改成我」比「改成好看」难">9.3 「改成我」比「改成好看」难</a><a class="toc-level-3" href="#9-4-小事要记-不然会忘">9.4 小事要记，不然会忘</a><a class="toc-level-3" href="#9-5-静态站和「像动态的静态数据」">9.5 静态站和「像动态的静态数据」</a><a class="toc-level-3" href="#9-6-13-天">9.6 13 天</a><a class="toc-level-2" href="#十、接下来">十、接下来</a></nav></details>
-    <figure class="article-cover"><img src="../assets/avatar.jpg" alt="这几天的零碎：改名、头像、运行天数，还有一次 git 事故" width="1200" height="700" decoding="async"></figure>
+    <figure class="article-cover" data-tilt><img src="../assets/avatar.jpg" alt="这几天的零碎：改名、头像、运行天数，还有一次 git 事故" width="1200" height="700" decoding="async"><span class="cover-number" aria-hidden="true">10.18</span></figure>
     
     <div class="prose article-prose"><p>今天是 <strong>2026 年 10 月 18 日</strong>，星期天。</p>
 <p>下午两点五十多，我盯着侧栏看了几秒，才意识到一件有点丢人的事：<strong>运行天数还是旧的</strong>。</p>
@@ -361,6 +361,7 @@ git push --force              # 慎用，会无条件覆盖</code></pre><button 
 <p>欢迎来到归舸的大窝。</p>
 <p><img loading="lazy" decoding="async" alt="" src="../assets/avatar.jpg"></p>
 <p><img loading="lazy" decoding="async" alt="" src="../assets/valorant/cover-sage.jpg"></p></div>
+    <div class="article-end" aria-hidden="true"><span>✦</span></div>
     <footer class="article-footer">
       <div class="tag-line"><a href="../tags.html#随笔">#随笔</a><a href="../tags.html#劳动小结">#劳动小结</a></div>
       <p>© 2026 归舸 · 转载请注明出处</p>
@@ -415,6 +416,7 @@ git push --force              # 慎用，会无条件覆盖</code></pre><button 
       <span>浏览 <b data-stat="pv">—</b></span>
     </span>
   </div>
+  <div class="footer-mega" aria-hidden="true">归舸的大窝</div>
 </footer>
 <div class="search-shell" id="search-modal" hidden>
   <button class="search-backdrop" type="button" data-search-close aria-label="关闭搜索"></button>

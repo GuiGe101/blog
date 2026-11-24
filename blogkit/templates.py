@@ -79,7 +79,7 @@ def shell(
 <title>{e(page_title)}</title>
 <meta name="description" content="{e(description)}">
 <meta name="author" content="{AUTHOR}">
-<meta name="theme-color" content="#0d1115">
+<meta name="theme-color" content="#f1ede4">
 <link rel="canonical" href="{e(canonical_url)}">
 <meta property="og:title" content="{e(page_title)}">
 <meta property="og:description" content="{e(description)}">
@@ -94,7 +94,7 @@ def shell(
 <link rel="stylesheet" href="{prefix}assets/style.css">
 <script>
 document.documentElement.classList.add('js');
-try {{ if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark'); }} catch (e) {{}}
+try {{ if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); }} catch (e) {{}}
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {{
   document.documentElement.classList.add('motion-ready');
   setTimeout(function () {{
@@ -155,6 +155,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {{
       <span>浏览 <b data-stat="pv">—</b></span>
     </span>
   </div>
+  <div class="footer-mega" aria-hidden="true">{e(SITE_NAME)}的大窝</div>
 </footer>
 <div class="search-shell" id="search-modal" hidden>
   <button class="search-backdrop" type="button" data-search-close aria-label="关闭搜索"></button>
@@ -185,6 +186,21 @@ def hero(posts: list[Post], stats: SiteStats) -> str:
     )
     return f"""
 <section class="home-hero" aria-labelledby="home-title">
+  <div class="hero-canvas" aria-hidden="true">
+    <div class="hero-stage-card"><img src="assets/valorant/hero-a2.jpg" alt="" fetchpriority="high"><span class="stage-label">SUNSET / ALLEY — FIELD NOTES</span></div>
+    <div class="hero-grade"></div>
+    <div class="hero-gridlines"></div>
+    <div class="hero-wordmark">归舸</div>
+    <div class="hero-scan"></div>
+    <span class="hero-tick tl"></span><span class="hero-tick tr"></span>
+    <span class="hero-tick bl"></span><span class="hero-tick br"></span>
+    <div class="hero-hud">
+      <span class="hud-rec"><i></i>REC</span>
+      <span>ZIXUANN.TOP</span>
+      <span class="hud-time" data-clock>--:--:--</span>
+      <span class="hud-frame">SCENE 01 / 05</span>
+    </div>
+  </div>
   <div class="hero-grid">
     <div class="hero-copy">
       <p class="eyebrow"><span>PERSONAL FIELD NOTES</span><span>EST. 2026</span></p>
@@ -198,12 +214,13 @@ def hero(posts: list[Post], stats: SiteStats) -> str:
         <a class="text-link" href="about.html">先认识一下 {icon("up-right")}</a>
       </div>
       <dl class="hero-figures">
-        <div><dt>记录</dt><dd>{stats.posts:02d}</dd></div>
-        <div><dt>分类</dt><dd>{stats.categories:02d}</dd></div>
+        <div><dt>记录</dt><dd data-count="{stats.posts}">{stats.posts:02d}</dd></div>
+        <div><dt>分类</dt><dd data-count="{stats.categories}">{stats.categories:02d}</dd></div>
         <div><dt>始于</dt><dd>2026.10</dd></div>
       </dl>
     </div>
     <figure class="hero-portrait">
+      <span class="portrait-ring" aria-hidden="true"></span>
       <div class="portrait-frame">
         <img src="assets/avatar.jpg" alt="归舸的头像" width="640" height="640">
         <span class="portrait-stamp">GUI_GE</span>
@@ -223,7 +240,7 @@ def lead_story(post: Post) -> str:
     badge = '<span class="label-accent">精选</span>' if post.featured else ""
     return f"""
 <article class="lead-story">
-  <a class="lead-media" href="posts/{e(post.slug)}.html" aria-label="阅读 {e(post.title)}">
+  <a class="lead-media" data-tilt href="posts/{e(post.slug)}.html" aria-label="阅读 {e(post.title)}">
     <img src="{e(post.cover)}" alt="" width="1200" height="760" decoding="async">
     <span class="lead-number">NO. {post.date[5:7]}.{post.date[8:10] if len(post.date) > 9 else ""}</span>
   </a>
@@ -532,9 +549,10 @@ def article_page(post: Post, posts: list[Post]) -> str:
       <div class="article-meta"><span>{e(post.date)}</span><span>{post.words} 字</span><span>{post.minutes} 分钟</span></div>
     </header>
     {toc_html(post, mobile=True)}
-    <figure class="article-cover"><img src="../{e(post.cover)}" alt="{e(post.title)}" width="1200" height="700" decoding="async"></figure>
+    <figure class="article-cover" data-tilt><img src="../{e(post.cover)}" alt="{e(post.title)}" width="1200" height="700" decoding="async"><span class="cover-number" aria-hidden="true">{e(post.date[5:].replace("-", "."))}</span></figure>
     {series_nav}
     <div class="prose article-prose">{post.html}</div>
+    <div class="article-end" aria-hidden="true"><span>✦</span></div>
     <footer class="article-footer">
       <div class="tag-line">{tags}</div>
       <p>© {date.today().year} {e(SITE_NAME)} · 转载请注明出处</p>

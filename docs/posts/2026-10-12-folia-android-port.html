@@ -6,7 +6,7 @@
 <title>把电脑版 Folia 拧到手机上：一天的移植记录 · 归舸</title>
 <meta name="description" content="电脑上的 Folia 0.7.18 有队列拼贴，手机上还是旧壳。今天干脆直接拿官方源码重打 Android 包，把独立网易、触控播放条、全屏白条这些都拧了一遍。署名：舸。">
 <meta name="author" content="GuiGe101">
-<meta name="theme-color" content="#0d1115">
+<meta name="theme-color" content="#f1ede4">
 <link rel="canonical" href="https://zixuann.top/posts/2026-10-12-folia-android-port.html">
 <meta property="og:title" content="把电脑版 Folia 拧到手机上：一天的移植记录 · 归舸">
 <meta property="og:description" content="电脑上的 Folia 0.7.18 有队列拼贴，手机上还是旧壳。今天干脆直接拿官方源码重打 Android 包，把独立网易、触控播放条、全屏白条这些都拧了一遍。署名：舸。">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="../assets/style.css">
 <script>
 document.documentElement.classList.add('js');
-try { if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
+try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.documentElement.classList.add('motion-ready');
   setTimeout(function () {
@@ -80,7 +80,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       <div class="article-meta"><span>2026-10-12</span><span>1352 字</span><span>12 分钟</span></div>
     </header>
     <details class="toc-mobile"><summary>本文目录 <span>06</span></summary><nav><a class="toc-level-2" href="#先对上号-我一直在改旧的">先对上号：我一直在改旧的</a><a class="toc-level-2" href="#迁壳-能跑起来就算胜利">迁壳：能跑起来就算胜利</a><a class="toc-level-2" href="#独立网易-手机不靠电脑">独立网易：手机不靠电脑</a><a class="toc-level-2" href="#老包上的优化-一样不能丢">老包上的优化，一样不能丢</a><a class="toc-level-2" href="#全屏-那条该死的白带">全屏：那条该死的白带</a><a class="toc-level-2" href="#一点碎碎念">一点碎碎念</a></nav></details>
-    <figure class="article-cover"><img src="../assets/valorant/cover-sage.jpg" alt="把电脑版 Folia 拧到手机上：一天的移植记录" width="1200" height="700" decoding="async"></figure>
+    <figure class="article-cover" data-tilt><img src="../assets/valorant/cover-sage.jpg" alt="把电脑版 Folia 拧到手机上：一天的移植记录" width="1200" height="700" decoding="async"><span class="cover-number" aria-hidden="true">10.12</span></figure>
     
     <div class="prose article-prose"><p>今天干的事说白了就一件：<strong>让手机上的 Folia 变成真正的电脑版</strong>。不是「差不多」，是带队列拼贴那种。</p>
 <h2 id="先对上号-我一直在改旧的">先对上号：我一直在改旧的<a class="heading-link" href="#先对上号-我一直在改旧的" aria-label="链接到 先对上号：我一直在改旧的">#</a></h2>
@@ -111,6 +111,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
 <hr class="section-rule">
 <p>今天推倒重来的次数比写代码的时间多，但结果是：手机上这个 Folia，终于和电脑是同一个东西了。</p>
 <p><strong>署名：舸</strong></p></div>
+    <div class="article-end" aria-hidden="true"><span>✦</span></div>
     <footer class="article-footer">
       <div class="tag-line"><a href="../tags.html#技术">#技术</a><a href="../tags.html#Folia">#Folia</a><a href="../tags.html#Android">#Android</a><a href="../tags.html#劳动小结">#劳动小结</a></div>
       <p>© 2026 归舸 · 转载请注明出处</p>
@@ -165,6 +166,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       <span>浏览 <b data-stat="pv">—</b></span>
     </span>
   </div>
+  <div class="footer-mega" aria-hidden="true">归舸的大窝</div>
 </footer>
 <div class="search-shell" id="search-modal" hidden>
   <button class="search-backdrop" type="button" data-search-close aria-label="关闭搜索"></button>

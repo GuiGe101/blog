@@ -6,7 +6,7 @@
 <title>今日劳动小结：把博客从零拧到现在 · 归舸</title>
 <meta name="description" content="从 init 到改副标题、删友链、调阅读时长，再到评论系统和部署。今天一整天都在折腾这个站，记一笔。">
 <meta name="author" content="GuiGe101">
-<meta name="theme-color" content="#0d1115">
+<meta name="theme-color" content="#f1ede4">
 <link rel="canonical" href="https://zixuann.top/posts/2026-10-07-work-log.html">
 <meta property="og:title" content="今日劳动小结：把博客从零拧到现在 · 归舸">
 <meta property="og:description" content="从 init 到改副标题、删友链、调阅读时长，再到评论系统和部署。今天一整天都在折腾这个站，记一笔。">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="../assets/style.css">
 <script>
 document.documentElement.classList.add('js');
-try { if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
+try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.documentElement.classList.add('motion-ready');
   setTimeout(function () {
@@ -80,7 +80,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       <div class="article-meta"><span>2026-10-07</span><span>1321 字</span><span>41 分钟</span></div>
     </header>
     <details class="toc-mobile"><summary>本文目录 <span>05</span></summary><nav><a class="toc-level-2" href="#从空仓库到能打开">从空仓库到能打开</a><a class="toc-level-2" href="#站名、头像和一些零碎">站名、头像和一些零碎</a><a class="toc-level-2" href="#友链-删掉">友链，删掉</a><a class="toc-level-2" href="#阅读时长和评论">阅读时长和评论</a><a class="toc-level-2" href="#一点感想">一点感想</a></nav></details>
-    <figure class="article-cover"><img src="../assets/valorant/cover-worklog-dog.jpg" alt="今日劳动小结：把博客从零拧到现在" width="1200" height="700" decoding="async"></figure>
+    <figure class="article-cover" data-tilt><img src="../assets/valorant/cover-worklog-dog.jpg" alt="今日劳动小结：把博客从零拧到现在" width="1200" height="700" decoding="async"><span class="cover-number" aria-hidden="true">10.07</span></figure>
     
     <div class="prose article-prose"><p>今天算是把这个站从零拧到了现在这个样子。睡前觉得该记一笔，不然过两天肯定忘。</p>
 <h2 id="从空仓库到能打开">从空仓库到能打开<a class="heading-link" href="#从空仓库到能打开" aria-label="链接到 从空仓库到能打开">#</a></h2>
@@ -103,6 +103,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
 <p>也碰到过 git 身份没配、本地分支叫 master 远端叫 main 这种事。好在最后都通了。</p>
 <p>写博客这件事，花在写内容上的时间，今天其实不算多。大部分时候是在搭架子、调样式、修部署。不过这些活干完，以后写东西应该会顺手一点。架子稳了，人才有心思往里填。</p>
 <p>就先记到这里。明天应该继续写内容，少折腾一点界面。</p></div>
+    <div class="article-end" aria-hidden="true"><span>✦</span></div>
     <footer class="article-footer">
       <div class="tag-line"><a href="../tags.html#随笔">#随笔</a><a href="../tags.html#劳动小结">#劳动小结</a></div>
       <p>© 2026 归舸 · 转载请注明出处</p>
@@ -157,6 +158,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       <span>浏览 <b data-stat="pv">—</b></span>
     </span>
   </div>
+  <div class="footer-mega" aria-hidden="true">归舸的大窝</div>
 </footer>
 <div class="search-shell" id="search-modal" hidden>
   <button class="search-backdrop" type="button" data-search-close aria-label="关闭搜索"></button>

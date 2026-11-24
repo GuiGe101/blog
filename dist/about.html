@@ -6,7 +6,7 @@
 <title>关于我 · 归舸</title>
 <meta name="description" content="关于归舸：打瓦、写点代码，偶尔想东想西。">
 <meta name="author" content="GuiGe101">
-<meta name="theme-color" content="#0d1115">
+<meta name="theme-color" content="#f1ede4">
 <link rel="canonical" href="https://zixuann.top/about.html">
 <meta property="og:title" content="关于我 · 归舸">
 <meta property="og:description" content="关于归舸：打瓦、写点代码，偶尔想东想西。">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="assets/style.css">
 <script>
 document.documentElement.classList.add('js');
-try { if (localStorage.getItem('theme') !== 'light') document.documentElement.classList.add('dark'); } catch (e) {}
+try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.documentElement.classList.add('motion-ready');
   setTimeout(function () {
@@ -101,6 +101,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       <span>浏览 <b data-stat="pv">—</b></span>
     </span>
   </div>
+  <div class="footer-mega" aria-hidden="true">归舸的大窝</div>
 </footer>
 <div class="search-shell" id="search-modal" hidden>
   <button class="search-backdrop" type="button" data-search-close aria-label="关闭搜索"></button>
