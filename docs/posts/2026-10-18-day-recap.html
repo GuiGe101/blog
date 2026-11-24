@@ -6,15 +6,17 @@
 <title>这几天的零碎：改名、头像、运行天数，还有一次 git 事故 · 归舸</title>
 <meta name="description" content="不重复以前写过的搭站过程。只记 10 月 12 日之后到今天的新事：站名、头像、简介文案、阅读时长、运行天数实时化，以及一次本地仓库丢失后的覆盖发布。写得很细，当存档用。">
 <meta name="author" content="归舸">
-<link rel="canonical" href="https://zixuann.top/这几天的零碎：改名、头像、运行天数，还有一次 git 事故">
+<link rel="canonical" href="https://zixuann.top/posts/2026-10-18-day-recap.html">
 <meta property="og:title" content="这几天的零碎：改名、头像、运行天数，还有一次 git 事故 · 归舸">
 <meta property="og:description" content="不重复以前写过的搭站过程。只记 10 月 12 日之后到今天的新事：站名、头像、简介文案、阅读时长、运行天数实时化，以及一次本地仓库丢失后的覆盖发布。写得很细，当存档用。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://zixuann.top/">
-<meta property="og:image" content="../assets/avatar.jpg">
+<meta property="og:url" content="https://zixuann.top/posts/2026-10-18-day-recap.html">
+<meta property="og:image" content="https://zixuann.top/assets/avatar.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="归舸" href="../feed.xml">
 <link rel="icon" href="../assets/avatar.jpg" type="image/jpeg">
+<link rel="preload" href="../assets/fonts/lxgw-wenkai-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <link rel="stylesheet" href="../assets/style.css">
 <script>
   (function () {
@@ -28,6 +30,7 @@
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main">跳到正文</a>
 <div class="progress" id="progress"></div>
 <header class="site-nav">
   <a class="brand" href="../index.html"><span class="brand-mark"><img src="../assets/avatar.jpg" alt=""></span>归舸</a>
@@ -35,15 +38,16 @@
   <div class="nav-actions">
     <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
   </div>
 </header>
-<div class="mobile-nav" id="mobile-nav"><a href="../index.html" class="active">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></div>
+<div class="mobile-nav" id="mobile-nav" hidden><a href="../index.html" class="active">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></div>
 
 
 <div class="page article-page">
   <aside class="left-col"><section class="card profile">
-  <div class="profile-avatar"><img src="../assets/avatar.jpg" alt="avatar" loading="lazy"></div>
+  <div class="term-line">~/guige $ <b>whoami</b></div>
+  <div class="profile-avatar"><img src="../assets/avatar.jpg" alt="归舸的头像" loading="lazy"></div>
   <h2 class="profile-name">归舸</h2>
   <p class="profile-bio">16 岁，打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。</p>
   <div class="profile-links">
@@ -53,6 +57,7 @@
   </div>
 </section></aside>
   <article class="article-shell">
+    <details class="toc-mobile"><summary>目录 / TOC</summary><nav class="toc"><div class="toc-title">目录</div><a class="toc-h2" href="#一-先把名字安下来-归舸的大窝">一、先把名字安下来：「归舸的大窝」</a><a class="toc-h3" href="#1-1-名字为什么又改">1.1 名字为什么又改</a><a class="toc-h3" href="#1-2-改动范围">1.2 改动范围</a><a class="toc-h3" href="#1-3-为什么名字这么重要">1.3 为什么名字这么重要</a><a class="toc-h3" href="#1-4-改名时踩到的小坑">1.4 改名时踩到的小坑</a><a class="toc-h2" href="#二-头像-从假人插画到自己的图">二、头像：从假人插画到自己的图</a><a class="toc-h3" href="#2-1-以前为什么不满意">2.1 以前为什么不满意</a><a class="toc-h3" href="#2-2-聊天附件的尴尬">2.2 聊天附件的尴尬</a><a class="toc-h3" href="#2-3-裁水印">2.3 裁水印</a><a class="toc-h3" href="#2-4-两处一起换">2.4 两处一起换</a><a class="toc-h3" href="#2-5-头像这种事的心态">2.5 头像这种事的心态</a><a class="toc-h3" href="#2-6-换完头像的检查清单">2.6 换完头像的检查清单</a><a class="toc-h2" href="#三-简介-删掉-写代码">三、简介：删掉「写代码」</a><a class="toc-h3" href="#3-1-文案会-说假话">3.1 文案会「说假话」</a><a class="toc-h3" href="#3-2-副标题同理">3.2 副标题同理</a><a class="toc-h3" href="#3-3-关于页跟着改">3.3 关于页跟着改</a><a class="toc-h2" href="#四-阅读时长-6-分钟还是-41-分钟">四、阅读时长：6 分钟还是 41 分钟</a><a class="toc-h3" href="#4-1-问题的起因">4.1 问题的起因</a><a class="toc-h3" href="#4-2-两种时长">4.2 两种时长</a><a class="toc-h3" href="#4-3-改成可手写">4.3 改成可手写</a><a class="toc-h3" href="#4-4-顺手改的地方">4.4 顺手改的地方</a><a class="toc-h3" href="#4-5-分钟-这个词的模糊性">4.5 「分钟」这个词的模糊性</a><a class="toc-h2" href="#五-运行天数-别再写死了">五、运行天数：别再写死了</a><a class="toc-h3" href="#5-1-今天为什么想起来">5.1 今天为什么想起来</a><a class="toc-h3" href="#5-2-旧实现-构建时算死">5.2 旧实现：构建时算死</a><a class="toc-h3" href="#5-3-新实现-浏览器现算">5.3 新实现：浏览器现算</a><a class="toc-h3" href="#5-4-今天-18-号怎么算">5.4 「今天 18 号怎么算」</a><a class="toc-h3" href="#5-5-静态站的通病">5.5 静态站的通病</a><a class="toc-h3" href="#5-6-本地预览和线上的又一次不一致">5.6 本地预览和线上的又一次不一致</a><a class="toc-h2" href="#六-一次-git-事故">六、一次 git 事故</a><a class="toc-h3" href="#6-1-现象">6.1 现象</a><a class="toc-h3" href="#6-2-当时的感觉">6.2 当时的感觉</a><a class="toc-h3" href="#6-3-处理步骤">6.3 处理步骤</a><a class="toc-h3" href="#6-4-为什么-git-会丢">6.4 为什么 .git 会丢</a><a class="toc-h3" href="#6-5-教训">6.5 教训</a><a class="toc-h3" href="#6-6-强制推送的规矩">6.6 强制推送的规矩</a><a class="toc-h2" href="#七-其它小动作">七、其它小动作</a><a class="toc-h3" href="#7-1-副标题定调">7.1 副标题定调</a><a class="toc-h3" href="#7-2-关于-页">7.2 「关于」页</a><a class="toc-h3" href="#7-3-cname-固化">7.3 CNAME 固化</a><a class="toc-h3" href="#7-4-预览目录锁文件">7.4 预览目录锁文件</a><a class="toc-h3" href="#7-5-没做完的事">7.5 没做完的事</a><a class="toc-h3" href="#7-6-工具相关">7.6 工具相关</a><a class="toc-h2" href="#八-时间线清单">八、时间线清单</a><a class="toc-h2" href="#九-这几天的体会">九、这几天的体会</a><a class="toc-h3" href="#9-1-后期维护比初次搭建更磨人">9.1 后期维护比初次搭建更磨人</a><a class="toc-h3" href="#9-2-静态站的动态数据都要现算">9.2 静态站的动态数据都要现算</a><a class="toc-h3" href="#9-3-改成我-比-改成好看-难">9.3 「改成我」比「改成好看」难</a><a class="toc-h3" href="#9-4-小事要记-不然会忘">9.4 小事要记，不然会忘</a><a class="toc-h3" href="#9-5-静态站和-像动态的静态数据">9.5 静态站和「像动态的静态数据」</a><a class="toc-h3" href="#9-6-13-天">9.6 13 天</a><a class="toc-h2" href="#十-接下来">十、接下来</a></nav></details>
     <div class="article-card">
       <header class="article-header">
         <div class="badges">
@@ -63,8 +68,8 @@
         <div class="post-meta">
           <span>2026-10-18</span>
           <span>55 分钟</span>
-          <span>9923 字</span>
-          <span>阅读 <b id="stat-page-pv" data-key="2026-10-18-day-recap">…</b></span>
+          <span>9943 字</span>
+          <span>阅读 <b id="stat-page-pv" class="stat-pending" data-key="2026-10-18-day-recap">…</b></span>
         </div>
       </header>
       <figure class="article-cover">
@@ -75,8 +80,8 @@
 <p>下午两点五十多，我盯着侧栏看了几秒，才意识到一件有点丢人的事：<strong>运行天数还是旧的</strong>。</p>
 <p>算错倒没有。那个数字是上次构建那天写死在 HTML 里的，压根没重新构建。只要我不改代码、不重新发布，它就会一直假装「今天」还是那一天。</p>
 <p>这破事成了今天下午的起点。顺手把这几天攒下的零碎一起理一理，写成这篇。搭站全过程、域名证书、Folia 移植，前面都单独有文章，这里一个字都不再重复。<strong>只记 12 号之后到今天真正新发生的事。</strong></p>
-<p>---</p>
-<p>\1先把名字安下来：「归舸的大窝」</p>
+<hr>
+<h2 id="一-先把名字安下来-归舸的大窝">一、先把名字安下来：「归舸的大窝」</h2>
 <h3 id="1-1-名字为什么又改">1.1 名字为什么又改</h3>
 <p>站名改过不止一次。前几轮是：我的博客 → zixuann → zixuann 的记忆终端。</p>
 <p>「记忆终端」这四个字是跟风来的。看别人的站用类似的调调，觉得酷，拿过来也用了几天。用着用着就发现不对：这不像我。像某极客项目的代号，像赛博风的网文标题，像产品经理写的 slogan，唯独不像一个十六七岁、平时打打无畏契约、偶尔瞎想的人住的地方。</p>
@@ -97,8 +102,8 @@
 <p>头图大标题、页脚、文章标题都改完之后，本地预览一看，都对。推上去之后再看 RSS 和分享用的 <code>&lt;title&gt;</code>，还是旧的，因为浏览器标签和 OG 标题吃的是另一个变量。</p>
 <p>后来把 <code>SITE_TITLE</code> 这一个源头收干净，所有派生的地方都指向它，才彻底。教训是：<strong>文案不要复制多份。</strong> 复制三份，就会有两份过期。源头只有一个，让模板去展开。</p>
 <p>另外还有一个「记忆」层面的事。构建脚本注释、设计文档里还写着旧名字，不影响线上，但以后自己读代码会迷糊。顺手也改了。工程上的整洁和网页上的整洁，最后会互相影响。</p>
-<p>---</p>
-<p>\1头像：从假人插画到自己的图</p>
+<hr>
+<h2 id="二-头像-从假人插画到自己的图">二、头像：从假人插画到自己的图</h2>
 <h3 id="2-1-以前为什么不满意">2.1 以前为什么不满意</h3>
 <p>头像这事前后拉扯了很久。卡住的是「这是不是我」。</p>
 <p><strong>第一阶段：矢量小人。</strong> 自己用 SVG 画的。圆脸、腮红、两个丸子头、微笑弧。当时觉得可爱，发出去看了两天就开始尴尬。像儿童英语 App 的默认头像，像十年前论坛的预设表情。你说「太土了」的时候，我其实心里同意，只是嘴上想再抢救一下。</p>
@@ -137,8 +142,8 @@
 <p>折腾这么久，最后发现选图的标准其实很简单：</p>
 <ol><li>自己看到不尴尬</li><li>打开网站时不会立刻想去改</li><li>过几周回来看，还认</li></ol>
 <p>做到这三条就行。不用好看，不用高级，不用二次元浓度多高。认就行。</p>
-<p>---</p>
-<p>\1简介：删掉「写代码」</p>
+<hr>
+<h2 id="三-简介-删掉-写代码">三、简介：删掉「写代码」</h2>
 <h3 id="3-1-文案会-说假话">3.1 文案会「说假话」</h3>
 <p>资料卡和「关于」页里的简介，是网站的自我介绍。这东西写不好，整个站就会有股味道。</p>
 <p>前一版里有「在写代码」。你说删掉。</p>
@@ -157,8 +162,8 @@
 <h3 id="3-3-关于页跟着改">3.3 关于页跟着改</h3>
 <p>「关于」页是简介的加长版。大改不多，主要跟着简介的调子走，别一边名片上很随意，一边关于页又端起来。</p>
 <p>关于页那种地方，最忌讳写成简历。学历、技能栈、获奖情况、联系邮箱列成表，那就成了投递。个人站的关于，应该像朋友问「你是谁」，你随口答的那两句。</p>
-<p>---</p>
-<p>\1阅读时长：6 分钟还是 41 分钟</p>
+<hr>
+<h2 id="四-阅读时长-6-分钟还是-41-分钟">四、阅读时长：6 分钟还是 41 分钟</h2>
 <h3 id="4-1-问题的起因">4.1 问题的起因</h3>
 <p>「今日劳动小结」那篇的阅读时长显示 6 分钟。你要改成 41 分钟。</p>
 <p>为什么会有 6 分钟？因为构建脚本按字数估：</p>
@@ -177,7 +182,7 @@
 <p>「归舸的大窝」那篇以前也改过，从 1 分钟改成 18 分钟，一个道理。开张那篇文字不多，但「开张」这件事酝酿了四个多月，18 分钟都算客气。</p>
 <h3 id="4-4-顺手改的地方">4.4 顺手改的地方</h3>
 <p>改的时候把首页卡片、文章页头部、RSS 里的显示都核对了一遍。三个地方要一致，不能首页 41 分钟、点进去 6 分钟，那更怪。</p>
-<p>---</p>
+<hr>
 <h3 id="4-5-分钟-这个词的模糊性">4.5 「分钟」这个词的模糊性</h3>
 <p>其实「阅读时长」本身就是个模糊指标。</p>
 <p>不同人读中文的速度差别很大。同样一篇：</p>
@@ -185,7 +190,7 @@
 <p>所以任何自动估算都是 <strong>善意的谎言</strong>。它给的是「一个大概、偏快的中位数」，不是承诺。</p>
 <p>既然如此，那就干脆允许作者自己写。作者比公式更懂这篇是给谁看的、要不要细读。</p>
 <p>这也顺带解决了一个尴尬：有的短文写得极其密，公式算 2 分钟，实际要读 10 分钟；有的长文是流水账，公式算 12 分钟，实际 5 分钟就过完了。手写字段是给「自知」留的口子。</p>
-<p>\1运行天数：别再写死了</p>
+<h2 id="五-运行天数-别再写死了">五、运行天数：别再写死了</h2>
 <h3 id="5-1-今天为什么想起来">5.1 今天为什么想起来</h3>
 <p>下午看侧栏，数字不对。</p>
 <p>18 号，从 6 号起算，应该是 <strong>13 天</strong>。页面上却还是个小数字。公式没错，是 <strong>数据过期了</strong>。</p>
@@ -218,7 +223,7 @@ const days = Math.floor((new Date() - start) / 86400000) + 1;
 <ol><li><strong>经常重新构建</strong>，麻烦，会忘</li><li><strong>浏览器里算</strong>，一次写对，永久有效</li></ol>
 <p>凡是「和时间有关、且不依赖服务端数据」的，都该往浏览器里塞。凡是「和人有关、需要持久化」的，才需要后端（比如评论、点赞）。</p>
 <p>运行天数属于前者。所以不该出现在 Python 构建脚本里。</p>
-<p>---</p>
+<hr>
 <h3 id="5-6-本地预览和线上的又一次不一致">5.6 本地预览和线上的又一次不一致</h3>
 <p>改运行天数的时候，又踩了一次「改了 A，生效的是 B」。</p>
 <p>本地 <code>dist/index.html</code> 已经是新的，有 <code>run-days</code>。同步到 <code>docs/</code> 的时候报锁文件，只同步了一半。GitHub 那边 Pages 吃的是 <code>docs/</code>，所以线上一度还是旧的。</p>
@@ -226,7 +231,7 @@ const days = Math.floor((new Date() - start) / 86400000) + 1;
 <p>这已经是第 N 次栽在「两个输出目录」上了：</p>
 <ul><li><code>dist/</code> 本地构建产物，给预览用</li><li><code>docs/</code> GitHub Pages 吃的目录</li></ul>
 <p>两者理论上应该永远一致。实践上经常不一致。以后可以考虑只维护一个目录，或者在构建脚本里把同步写进去，不要手动拷。</p>
-<p>\1一次 git 事故</p>
+<h2 id="六-一次-git-事故">六、一次 git 事故</h2>
 <p>今天下午第二件事，是 git 丢了。</p>
 <h3 id="6-1-现象">6.1 现象</h3>
 <p>推「运行天数」改动的时候，命令直接报：</p>
@@ -283,8 +288,8 @@ git push --force              # 慎用，会无条件覆盖</code></pre>
 <p><code>--force-with-lease</code> 会在远程「比你上次见到的更新」时拒绝推送。这是廉价的保险，没有理由不用。</p>
 <p>另外：<strong>合并冲突时，先 abort。</strong> 在冲突文件里手工改标记，十次有九次改花。改花的后果是「看起来解决了」，其实代码里夹着 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>。这种问题部署后才炸，排查起来非常恶心。</p>
 <ol><li><strong>强制推送前必须确认。</strong> 这次问了，做得对。</li><li><strong>工作区是本体。</strong> 仓库丢了，文件还在就有救。</li><li><strong>定期 <code>git status</code>。</strong> 不用天天 commit，至少知道自己在哪条船。</li><li><strong>重要仓库偶尔 <code>git clone</code> 一份冷备。</strong> 远程是备份，但远程和本地一起坏的情况不是没有。</li><li><strong>合并冲突时先 abort。</strong> 不要在慌的时候改冲突文件。</li></ol>
-<p>---</p>
-<p>\1其它小动作</p>
+<hr>
+<h2 id="七-其它小动作">七、其它小动作</h2>
 <p>零碎还有几笔，列一下：</p>
 <h3 id="7-1-副标题定调">7.1 副标题定调</h3>
 <p>留了「打瓦、想东想西」这个调子。不再像产品介绍，不再像同步日志。要的就是大白话。</p>
@@ -304,13 +309,13 @@ git push --force              # 慎用，会无条件覆盖</code></pre>
 <p>GitHub 界面挂了翻译插件，看着方便，也会骗人：</p>
 <ul><li><code>main</code> → 「主要角色」</li><li><code>18s</code> → 「18 岁」</li><li><code>Deploy from a branch</code> → 「从分支部署」</li></ul>
 <p>对着「18 岁」找了半天失败原因，其实人家是「跑了 18 秒」。排查技术问题的时候，最好关掉翻译看原文。这条算今天白捡的经验。</p>
-<p>---</p>
-<p>\1时间线清单</p>
+<hr>
+<h2 id="八-时间线清单">八、时间线清单</h2>
 <p>给后来的自己对账，提醒自己这些也是亲手改过的地方：</p>
 <p>| 时间 | 事情 | 备注 | |------|------|------| | 10-12 之后 | 站名定为「归舸的大窝」 | 标题、页脚、文章标题、RSS | | 这几天 | 换上自定义头像 | 裁水印、缩 512、三处统一 | | 这几天 | 简介删「在写代码」 | 文案去名片腔 | | 这几天 | 「劳动小结」阅读时长 41 分钟 | 加 <code>minutes</code> 手写字段 | | 10-18 下午 | 运行天数改实时 | 浏览器按设备时间算，每分钟刷新 | | 10-18 下午 | 本地 <code>.git</code> 丢失 | 重建 → 冲突 → 征得同意覆盖远程 | | 10-18 傍晚 | 写这篇存档 | 就是你现在读的这份 |</p>
 <p>表格是给自己看的。以后如果站做大了、文章多了，回头搜「劳动小结」标签就能找到这一串。</p>
-<p>---</p>
-<p>\1这几天的体会</p>
+<hr>
+<h2 id="九-这几天的体会">九、这几天的体会</h2>
 <h3 id="9-1-后期维护比初次搭建更磨人">9.1 后期维护比初次搭建更磨人</h3>
 <p>搭站那天是很爽的。从零到一，有页面，有域名，有评论，里程碑一个接一个。</p>
 <p>这几天干的都是「改一个字」「换一张图」「修一个过期数字」。单拎出来，没一个配得上「项目」。叠起来，才是「住得舒服」。</p>
@@ -339,8 +344,8 @@ git push --force              # 慎用，会无条件覆盖</code></pre>
 <p>今天开站第 13 天。</p>
 <p>从「有域名、没页面」到「有窝、有名、有头像、有一堆自己写的字」，十三天。不算长。</p>
 <p>以后回头看这篇，可能会笑现在抠的这些细节。但大概也会庆幸：<strong>抠过。</strong></p>
-<p>---</p>
-<p>\1接下来</p>
+<hr>
+<h2 id="十-接下来">十、接下来</h2>
 <p>不写太多愿景，免得打脸。就几个小的：</p>
 <ol><li><strong>多写内容，少折腾界面。</strong> 界面现在够住了。</li><li><strong>瓦打得好看一点。</strong> 这是正事。</li><li><strong>Folia 继续拧。</strong> 那边还有没拧完的。</li><li><strong>明年六月前记得给域名续费。</strong> 窝不能丢。</li></ol>
 <p>运行天数以后自己会数，不用我管。git 以后希望它争气。名字以后尽量不动了。「归舸的大窝」这五个字，动一次，全站跟着晃。</p>
@@ -348,20 +353,21 @@ git push --force              # 慎用，会无条件覆盖</code></pre>
 <p>就先记到这里。</p>
 <p>如果哪天你从别处点进这个窝，看到这篇又长又啰嗦的流水账，就当是屋主搬进来两周，坐在地上清点工具时的自言自语。</p>
 <p>欢迎来到归舸的大窝。</p>
-<p><img loading="lazy" alt="" src="assets/avatar.jpg"></p>
-<p><img loading="lazy" alt="" src="assets/valorant/cover-sage.jpg"></p></div>
+<p><img loading="lazy" alt="" src="../assets/avatar.jpg"></p>
+<p><img loading="lazy" alt="" src="../assets/valorant/cover-sage.jpg"></p></div>
       <div class="article-foot">
         <div class="post-tags"><a class="tag-chip" href="../tags.html#随笔">#随笔</a><a class="tag-chip" href="../tags.html#劳动小结">#劳动小结</a></div>
         <p class="copyright">© 2026 归舸 · 转载请注明出处</p>
       </div>
     </div>
-    <section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list"><li><a href="2026-10-12-folia-android-port.html">把电脑版 Folia 拧到手机上：一天的移植记录</a></li><li><a href="2026-10-07-work-log.html">今日劳动小结：把博客从零拧到现在</a></li><li><a href="2026-10-07-domain-cert.html">这个窝，有证了</a></li></ul></section>
+    <section class="card pad"><h3 class="side-title">相关文章</h3><ul class="arch-list"><li><a href="2026-11-05-small-fragments.html">今天拿了个五杀，但段位还是青铜</a></li><li><a href="2026-10-12-folia-android-port.html">把电脑版 Folia 拧到手机上：一天的移植记录</a></li><li><a href="2026-10-07-work-log.html">今日劳动小结：把博客从零拧到现在</a></li></ul></section>
     
 <section class="echo">
   <h2 class="echo-title">回声</h2>
   <p class="echo-note">欢迎留言。昵称 + QQ 邮箱即可，不需要 GitHub。</p>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css">
   <div id="waline"></div>
+  <p class="echo-fallback" id="echo-fallback" hidden>评论服务暂时连不上。稍后刷新再试。</p>
   <script type="module">
     import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js';
     init({
@@ -376,15 +382,15 @@ git push --force              # 慎用，会无条件覆盖</code></pre>
   </script>
 </section>
   </article>
-  <aside class="side-col"><nav class="toc"><div class="toc-title">目录</div><a class="toc-h3" href="#1-1-名字为什么又改">1.1 名字为什么又改</a><a class="toc-h3" href="#1-2-改动范围">1.2 改动范围</a><a class="toc-h3" href="#1-3-为什么名字这么重要">1.3 为什么名字这么重要</a><a class="toc-h3" href="#1-4-改名时踩到的小坑">1.4 改名时踩到的小坑</a><a class="toc-h3" href="#2-1-以前为什么不满意">2.1 以前为什么不满意</a><a class="toc-h3" href="#2-2-聊天附件的尴尬">2.2 聊天附件的尴尬</a><a class="toc-h3" href="#2-3-裁水印">2.3 裁水印</a><a class="toc-h3" href="#2-4-两处一起换">2.4 两处一起换</a><a class="toc-h3" href="#2-5-头像这种事的心态">2.5 头像这种事的心态</a><a class="toc-h3" href="#2-6-换完头像的检查清单">2.6 换完头像的检查清单</a><a class="toc-h3" href="#3-1-文案会-说假话">3.1 文案会「说假话」</a><a class="toc-h3" href="#3-2-副标题同理">3.2 副标题同理</a><a class="toc-h3" href="#3-3-关于页跟着改">3.3 关于页跟着改</a><a class="toc-h3" href="#4-1-问题的起因">4.1 问题的起因</a><a class="toc-h3" href="#4-2-两种时长">4.2 两种时长</a><a class="toc-h3" href="#4-3-改成可手写">4.3 改成可手写</a><a class="toc-h3" href="#4-4-顺手改的地方">4.4 顺手改的地方</a><a class="toc-h3" href="#4-5-分钟-这个词的模糊性">4.5 「分钟」这个词的模糊性</a><a class="toc-h3" href="#5-1-今天为什么想起来">5.1 今天为什么想起来</a><a class="toc-h3" href="#5-2-旧实现-构建时算死">5.2 旧实现：构建时算死</a><a class="toc-h3" href="#5-3-新实现-浏览器现算">5.3 新实现：浏览器现算</a><a class="toc-h3" href="#5-4-今天-18-号怎么算">5.4 「今天 18 号怎么算」</a><a class="toc-h3" href="#5-5-静态站的通病">5.5 静态站的通病</a><a class="toc-h3" href="#5-6-本地预览和线上的又一次不一致">5.6 本地预览和线上的又一次不一致</a><a class="toc-h3" href="#6-1-现象">6.1 现象</a><a class="toc-h3" href="#6-2-当时的感觉">6.2 当时的感觉</a><a class="toc-h3" href="#6-3-处理步骤">6.3 处理步骤</a><a class="toc-h3" href="#6-4-为什么-git-会丢">6.4 为什么 .git 会丢</a><a class="toc-h3" href="#6-5-教训">6.5 教训</a><a class="toc-h3" href="#6-6-强制推送的规矩">6.6 强制推送的规矩</a><a class="toc-h3" href="#7-1-副标题定调">7.1 副标题定调</a><a class="toc-h3" href="#7-2-关于-页">7.2 「关于」页</a><a class="toc-h3" href="#7-3-cname-固化">7.3 CNAME 固化</a><a class="toc-h3" href="#7-4-预览目录锁文件">7.4 预览目录锁文件</a><a class="toc-h3" href="#7-5-没做完的事">7.5 没做完的事</a><a class="toc-h3" href="#7-6-工具相关">7.6 工具相关</a><a class="toc-h3" href="#9-1-后期维护比初次搭建更磨人">9.1 后期维护比初次搭建更磨人</a><a class="toc-h3" href="#9-2-静态站的动态数据都要现算">9.2 静态站的动态数据都要现算</a><a class="toc-h3" href="#9-3-改成我-比-改成好看-难">9.3 「改成我」比「改成好看」难</a><a class="toc-h3" href="#9-4-小事要记-不然会忘">9.4 小事要记，不然会忘</a><a class="toc-h3" href="#9-5-静态站和-像动态的静态数据">9.5 静态站和「像动态的静态数据」</a><a class="toc-h3" href="#9-6-13-天">9.6 13 天</a></nav></aside>
+  <aside class="side-col"><nav class="toc"><div class="toc-title">目录</div><a class="toc-h2" href="#一-先把名字安下来-归舸的大窝">一、先把名字安下来：「归舸的大窝」</a><a class="toc-h3" href="#1-1-名字为什么又改">1.1 名字为什么又改</a><a class="toc-h3" href="#1-2-改动范围">1.2 改动范围</a><a class="toc-h3" href="#1-3-为什么名字这么重要">1.3 为什么名字这么重要</a><a class="toc-h3" href="#1-4-改名时踩到的小坑">1.4 改名时踩到的小坑</a><a class="toc-h2" href="#二-头像-从假人插画到自己的图">二、头像：从假人插画到自己的图</a><a class="toc-h3" href="#2-1-以前为什么不满意">2.1 以前为什么不满意</a><a class="toc-h3" href="#2-2-聊天附件的尴尬">2.2 聊天附件的尴尬</a><a class="toc-h3" href="#2-3-裁水印">2.3 裁水印</a><a class="toc-h3" href="#2-4-两处一起换">2.4 两处一起换</a><a class="toc-h3" href="#2-5-头像这种事的心态">2.5 头像这种事的心态</a><a class="toc-h3" href="#2-6-换完头像的检查清单">2.6 换完头像的检查清单</a><a class="toc-h2" href="#三-简介-删掉-写代码">三、简介：删掉「写代码」</a><a class="toc-h3" href="#3-1-文案会-说假话">3.1 文案会「说假话」</a><a class="toc-h3" href="#3-2-副标题同理">3.2 副标题同理</a><a class="toc-h3" href="#3-3-关于页跟着改">3.3 关于页跟着改</a><a class="toc-h2" href="#四-阅读时长-6-分钟还是-41-分钟">四、阅读时长：6 分钟还是 41 分钟</a><a class="toc-h3" href="#4-1-问题的起因">4.1 问题的起因</a><a class="toc-h3" href="#4-2-两种时长">4.2 两种时长</a><a class="toc-h3" href="#4-3-改成可手写">4.3 改成可手写</a><a class="toc-h3" href="#4-4-顺手改的地方">4.4 顺手改的地方</a><a class="toc-h3" href="#4-5-分钟-这个词的模糊性">4.5 「分钟」这个词的模糊性</a><a class="toc-h2" href="#五-运行天数-别再写死了">五、运行天数：别再写死了</a><a class="toc-h3" href="#5-1-今天为什么想起来">5.1 今天为什么想起来</a><a class="toc-h3" href="#5-2-旧实现-构建时算死">5.2 旧实现：构建时算死</a><a class="toc-h3" href="#5-3-新实现-浏览器现算">5.3 新实现：浏览器现算</a><a class="toc-h3" href="#5-4-今天-18-号怎么算">5.4 「今天 18 号怎么算」</a><a class="toc-h3" href="#5-5-静态站的通病">5.5 静态站的通病</a><a class="toc-h3" href="#5-6-本地预览和线上的又一次不一致">5.6 本地预览和线上的又一次不一致</a><a class="toc-h2" href="#六-一次-git-事故">六、一次 git 事故</a><a class="toc-h3" href="#6-1-现象">6.1 现象</a><a class="toc-h3" href="#6-2-当时的感觉">6.2 当时的感觉</a><a class="toc-h3" href="#6-3-处理步骤">6.3 处理步骤</a><a class="toc-h3" href="#6-4-为什么-git-会丢">6.4 为什么 .git 会丢</a><a class="toc-h3" href="#6-5-教训">6.5 教训</a><a class="toc-h3" href="#6-6-强制推送的规矩">6.6 强制推送的规矩</a><a class="toc-h2" href="#七-其它小动作">七、其它小动作</a><a class="toc-h3" href="#7-1-副标题定调">7.1 副标题定调</a><a class="toc-h3" href="#7-2-关于-页">7.2 「关于」页</a><a class="toc-h3" href="#7-3-cname-固化">7.3 CNAME 固化</a><a class="toc-h3" href="#7-4-预览目录锁文件">7.4 预览目录锁文件</a><a class="toc-h3" href="#7-5-没做完的事">7.5 没做完的事</a><a class="toc-h3" href="#7-6-工具相关">7.6 工具相关</a><a class="toc-h2" href="#八-时间线清单">八、时间线清单</a><a class="toc-h2" href="#九-这几天的体会">九、这几天的体会</a><a class="toc-h3" href="#9-1-后期维护比初次搭建更磨人">9.1 后期维护比初次搭建更磨人</a><a class="toc-h3" href="#9-2-静态站的动态数据都要现算">9.2 静态站的动态数据都要现算</a><a class="toc-h3" href="#9-3-改成我-比-改成好看-难">9.3 「改成我」比「改成好看」难</a><a class="toc-h3" href="#9-4-小事要记-不然会忘">9.4 小事要记，不然会忘</a><a class="toc-h3" href="#9-5-静态站和-像动态的静态数据">9.5 静态站和「像动态的静态数据」</a><a class="toc-h3" href="#9-6-13-天">9.6 13 天</a><a class="toc-h2" href="#十-接下来">十、接下来</a></nav></aside>
 </div>
 <footer class="site-footer">
   <div>© 2026 归舸 · 归舸的大窝</div>
   <div class="footer-meta">
     <a href="../feed.xml">RSS</a>
     <a href="../sitemap.xml">Sitemap</a>
-    <span>访客 <b id="stat-site-uv">…</b></span>
-    <span>访问 <b id="stat-site-pv">…</b></span>
+    <span>访客 <b id="stat-site-uv" class="stat-pending">…</b></span>
+    <span>访问 <b id="stat-site-pv" class="stat-pending">…</b></span>
   </div>
 </footer>
 <div class="search-modal" id="search-modal" hidden>
@@ -400,21 +406,30 @@ git push --force              # 慎用，会无条件覆盖</code></pre>
   var API = "https://abacus.jasoncameron.dev";
   function set(id, v) {
     var n = document.getElementById(id);
-    if (n && v != null) n.textContent = v;
+    if (n && v != null) {
+      n.textContent = v;
+      n.classList.remove("stat-pending");
+    }
+  }
+  function offline(id) {
+    var n = document.getElementById(id);
+    if (!n) return;
+    n.textContent = "—";
+    n.classList.remove("stat-pending");
+    n.classList.add("stat-offline");
+    n.title = "计数服务暂时连不上";
+    var meta = document.querySelector(".footer-meta");
+    if (meta && !meta.querySelector(".stat-note")) {
+      var s = document.createElement("span");
+      s.className = "stat-note";
+      s.textContent = "计数离线";
+      meta.appendChild(s);
+    }
   }
   function jsonp(url) {
-    return new Promise(function (resolve) {
-      var name = "abacus_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-      window[name] = function (data) { resolve(data); cleanup(); };
-      var s = document.createElement("script");
-      s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + name;
-      s.onerror = function () { resolve(null); cleanup(); };
-      function cleanup() {
-        try { delete window[name]; } catch (e) { window[name] = undefined; }
-        if (s.parentNode) s.parentNode.removeChild(s);
-      }
-      document.head.appendChild(s);
-    });
+    return fetch(url, { signal: AbortSignal.timeout(6000) })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
   }
   function hit(key) { return jsonp(API + "/hit/" + NS + "/" + key); }
   function get(key) { return jsonp(API + "/get/" + NS + "/" + key); }
@@ -422,11 +437,11 @@ git push --force              # 慎用，会无条件覆盖</code></pre>
   var pageEl = document.getElementById("stat-page-pv");
   if (pageEl) {
     var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\W+/g, "-");
-    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); });
+    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); else offline("stat-page-pv"); });
   }
 
   hit("site-pv").then(function (d) {
-    if (!d) return;
+    if (!d) { offline("stat-site-pv"); offline("stat-site-pv-hero"); return; }
     set("stat-site-pv", d.value);
     set("stat-site-pv-hero", d.value);
   });
@@ -436,7 +451,7 @@ git push --force              # 慎用，会无条件覆盖</code></pre>
   try { seen = localStorage.getItem(uvSeenKey) === "1"; } catch (e) {}
   var uvCall = seen ? get("site-uv") : hit("site-uv");
   if (!seen) { try { localStorage.setItem(uvSeenKey, "1"); } catch (e) {} }
-  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); });
+  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); else offline("stat-site-uv"); });
 })();
 </script>
 </body>

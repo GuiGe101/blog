@@ -4,9 +4,9 @@ title: 项目与作品
 
 一些在折腾的玩意儿。以后有截图就补上。
 
-## 记忆终端博客
+## 归舸的大窝
 
-这个站本身。静态生成 + GitHub Pages + giscus。
+这个站本身。静态生成 + GitHub Pages + Waline。
 
 - 线上：<https://zixuann.top>
 - 源码：[GuiGe101/blog](https://github.com/GuiGe101/blog)

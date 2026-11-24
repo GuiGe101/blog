@@ -6,15 +6,17 @@
 <title>关于我 · 归舸</title>
 <meta name="description" content="记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。">
 <meta name="author" content="归舸">
-<link rel="canonical" href="https://zixuann.top/关于我">
+<link rel="canonical" href="https://zixuann.top/">
 <meta property="og:title" content="关于我 · 归舸">
 <meta property="og:description" content="记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://zixuann.top/">
-<meta property="og:image" content="assets/valorant/hero-jett.jpg">
+<meta property="og:image" content="https://zixuann.top/assets/valorant/hero-jett.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="归舸" href="feed.xml">
 <link rel="icon" href="assets/avatar.jpg" type="image/jpeg">
+<link rel="preload" href="assets/fonts/lxgw-wenkai-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
 <link rel="stylesheet" href="assets/style.css">
 <script>
   (function () {
@@ -28,6 +30,7 @@
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main">跳到正文</a>
 <div class="progress" id="progress"></div>
 <header class="site-nav">
   <a class="brand" href="index.html"><span class="brand-mark"><img src="assets/avatar.jpg" alt=""></span>归舸</a>
@@ -35,16 +38,16 @@
   <div class="nav-actions">
     <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
   </div>
 </header>
-<div class="mobile-nav" id="mobile-nav"><a href="index.html">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html" class="active">关于</a></div>
+<div class="mobile-nav" id="mobile-nav" hidden><a href="index.html">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html" class="active">关于</a></div>
 
 <div class="page single"><div class="card pad"><p>这里是 <strong>归舸</strong>（GuiGe101），16 岁。</p>
 <h2 id="我在做什么">我在做什么</h2>
 <ul><li>写点代码，折腾博客和小工具</li><li>打无畏契约（Valorant）</li><li>记录生活、技术、灵感</li></ul>
 <h2 id="这个站">这个站</h2>
-<p><code>zixuann.top</code> 是我的记忆终端。欢迎逛、欢迎留言。</p>
+<p><code>zixuann.top</code> 是我的大窝。欢迎逛、欢迎留言。</p>
 <p>三条主线：</p>
 <ul><li><strong>技术</strong> — 踩坑和过程</li><li><strong>生活</strong> — 切片</li><li><strong>思考</strong> — 碎片和长文</li></ul>
 <h2 id="联系">联系</h2>
@@ -56,8 +59,8 @@
   <div class="footer-meta">
     <a href="feed.xml">RSS</a>
     <a href="sitemap.xml">Sitemap</a>
-    <span>访客 <b id="stat-site-uv">…</b></span>
-    <span>访问 <b id="stat-site-pv">…</b></span>
+    <span>访客 <b id="stat-site-uv" class="stat-pending">…</b></span>
+    <span>访问 <b id="stat-site-pv" class="stat-pending">…</b></span>
   </div>
 </footer>
 <div class="search-modal" id="search-modal" hidden>
@@ -73,21 +76,30 @@
   var API = "https://abacus.jasoncameron.dev";
   function set(id, v) {
     var n = document.getElementById(id);
-    if (n && v != null) n.textContent = v;
+    if (n && v != null) {
+      n.textContent = v;
+      n.classList.remove("stat-pending");
+    }
+  }
+  function offline(id) {
+    var n = document.getElementById(id);
+    if (!n) return;
+    n.textContent = "—";
+    n.classList.remove("stat-pending");
+    n.classList.add("stat-offline");
+    n.title = "计数服务暂时连不上";
+    var meta = document.querySelector(".footer-meta");
+    if (meta && !meta.querySelector(".stat-note")) {
+      var s = document.createElement("span");
+      s.className = "stat-note";
+      s.textContent = "计数离线";
+      meta.appendChild(s);
+    }
   }
   function jsonp(url) {
-    return new Promise(function (resolve) {
-      var name = "abacus_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-      window[name] = function (data) { resolve(data); cleanup(); };
-      var s = document.createElement("script");
-      s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + name;
-      s.onerror = function () { resolve(null); cleanup(); };
-      function cleanup() {
-        try { delete window[name]; } catch (e) { window[name] = undefined; }
-        if (s.parentNode) s.parentNode.removeChild(s);
-      }
-      document.head.appendChild(s);
-    });
+    return fetch(url, { signal: AbortSignal.timeout(6000) })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
   }
   function hit(key) { return jsonp(API + "/hit/" + NS + "/" + key); }
   function get(key) { return jsonp(API + "/get/" + NS + "/" + key); }
@@ -95,11 +107,11 @@
   var pageEl = document.getElementById("stat-page-pv");
   if (pageEl) {
     var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\W+/g, "-");
-    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); });
+    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); else offline("stat-page-pv"); });
   }
 
   hit("site-pv").then(function (d) {
-    if (!d) return;
+    if (!d) { offline("stat-site-pv"); offline("stat-site-pv-hero"); return; }
     set("stat-site-pv", d.value);
     set("stat-site-pv-hero", d.value);
   });
@@ -109,7 +121,7 @@
   try { seen = localStorage.getItem(uvSeenKey) === "1"; } catch (e) {}
   var uvCall = seen ? get("site-uv") : hit("site-uv");
   if (!seen) { try { localStorage.setItem(uvSeenKey, "1"); } catch (e) {} }
-  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); });
+  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); else offline("stat-site-uv"); });
 })();
 </script>
 </body>

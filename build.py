@@ -14,11 +14,17 @@ ROOT = Path(__file__).parent.resolve()
 POSTS_DIR = ROOT / "posts"
 ASSETS_DIR = ROOT / "assets"
 DIST = ROOT / "dist"
+PAGES_DIR = ROOT / "docs"
 # 预览输出到会话工作目录（index.html 可直接浏览器打开）
-SESSION_CWD = Path(r"E:\AI\MIMO DESKTOP\XiangMu\.mimo-sessions\2026\10\06\new-chat")
-PREVIEW_DIR = SESSION_CWD if SESSION_CWD.exists() else Path.cwd()
+# 换成相对路径：windows 下独占写 dist 时，绝对路径会让 os.environ 阻塞（花十秒还抛 PermissionError）
+SESSION_CWD = ROOT.parent.resolve()
+PREVIEW_DIR = SESSION_CWD if SESSION_CWD.is_dir() else Path.cwd()
 if PREVIEW_DIR.resolve() == ROOT.resolve():
     PREVIEW_DIR = DIST
+# 预览目录等于站点根目录（SESSION_CWD = ROOT.parent）时，如果硬拷到根目录，dist/、posts/、assets/
+# 会和源码目录混在一起，所以改写到 preview/ 子目录
+if PREVIEW_DIR == ROOT.parent.resolve():
+    PREVIEW_DIR = PREVIEW_DIR / "preview"
 
 SITE_NAME = "归舸"
 SITE_TITLE = "归舸的大窝"
@@ -65,17 +71,24 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
     return meta, body
 
 
-def inline(text: str) -> str:
+def inline(text: str, asset_prefix: str = "") -> str:
     text = html.escape(text, quote=False)
     text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
-    text = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", r'<img loading="lazy" alt="\1" src="\2">', text)
+
+    def image(match: re.Match[str]) -> str:
+        alt, src = match.groups()
+        if not re.match(r"^(?:[a-z][a-z0-9+.-]*:|//|/)", src, re.I):
+            src = asset_prefix + src
+        return f'<img loading="lazy" alt="{alt}" src="{src}">'
+
+    text = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", image, text)
     text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', text)
     text = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", text)
     return text
 
 
-def md_to_html(text: str) -> str:
+def md_to_html(text: str, asset_prefix: str = "") -> str:
     lines = text.replace("\r\n", "\n").split("\n")
     out: list[str] = []
     i, n = 0, len(lines)
@@ -97,7 +110,7 @@ def md_to_html(text: str) -> str:
             level = len(hm.group(1))
             title = hm.group(2).strip()
             hid = re.sub(r"[^\w一-鿿-]+", "-", title).strip("-").lower() or f"h{level}"
-            out.append(f'<h{level} id="{hid}">{inline(title)}</h{level}>')
+            out.append(f'<h{level} id="{hid}">{inline(title, asset_prefix)}</h{level}>')
             i += 1
             continue
         if line.startswith(">"):
@@ -105,33 +118,39 @@ def md_to_html(text: str) -> str:
             while i < n and lines[i].startswith(">"):
                 quote.append(lines[i].lstrip("> ").rstrip())
                 i += 1
-            inner = "<br>".join(inline(x) for x in quote if x.strip())
+            inner = "<br>".join(inline(x, asset_prefix) for x in quote if x.strip())
             out.append(f"<blockquote><p>{inner}</p></blockquote>")
             continue
         if re.match(r"^[-*+]\s+", line):
             items: list[str] = []
             while i < n and re.match(r"^[-*+]\s+", lines[i]):
-                items.append(f"<li>{inline(re.sub(r'^[-*+]\s+', '', lines[i]))}</li>")
+                items.append(f"<li>{inline(re.sub(r'^[-*+]\s+', '', lines[i]), asset_prefix)}</li>")
                 i += 1
             out.append("<ul>" + "".join(items) + "</ul>")
             continue
         if re.match(r"^\d+\.\s+", line):
             items = []
             while i < n and re.match(r"^\d+\.\s+", lines[i]):
-                items.append(f"<li>{inline(re.sub(r'^\d+\.\s+', '', lines[i]))}</li>")
+                items.append(f"<li>{inline(re.sub(r'^\d+\.\s+', '', lines[i]), asset_prefix)}</li>")
                 i += 1
             out.append("<ol>" + "".join(items) + "</ol>")
+            continue
+        if re.match(r"^(-{3,}|\*{3,}|_{3,})\s*$", line):
+            out.append("<hr>")
+            i += 1
             continue
         if not line.strip():
             i += 1
             continue
         para: list[str] = []
         while i < n and lines[i].strip() and not re.match(
-            r"^(#{1,6}\s|>|[-*+]\s|\d+\.\s|```)", lines[i]
+            r"^(#{1,6}\s|>|[-*+]\s|\d+\.\s|```|(-{3,}|\*{3,}|_{3,})\s*$)", lines[i]
         ):
             para.append(lines[i].strip())
             i += 1
-        out.append(f"<p>{inline(' '.join(para))}</p>")
+        joined = " ".join(para)
+        joined = re.sub(r"(?<=[㐀-﫿-〿＀-￯]) +(?=[㐀-﫿-〿＀-￯])", "", joined)
+        out.append(f"<p>{inline(joined, asset_prefix)}</p>")
     return "\n".join(out)
 
 
@@ -194,10 +213,10 @@ def nav_html(prefix: str = "", active: str = "主页") -> str:
   <div class="nav-actions">
     <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索">{icon('search')}</button>
     <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换">{icon('theme')}</button>
-    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="菜单">{icon('menu')}</button>
+    <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav">{icon('menu')}</button>
   </div>
 </header>
-<div class="mobile-nav" id="mobile-nav">{''.join(links)}</div>"""
+<div class="mobile-nav" id="mobile-nav" hidden>{''.join(links)}</div>"""
 
 
 def hero_html(post_count: int = 0) -> str:
@@ -205,18 +224,18 @@ def hero_html(post_count: int = 0) -> str:
 <div class="hero">
   <div class="hero-shade"></div>
   <div class="hero-copy">
-    <p class="hero-kicker">MEMORY TERMINAL</p>
+    <p class="hero-kicker">Memory Terminal · 慢慢记</p>
     <h1 class="hero-title">{html.escape(SITE_TITLE)}</h1>
     <p class="hero-sub">{html.escape(SITE_SUB)}</p>
     <div class="hero-stats">
-      <span>访问 <b id="stat-site-pv-hero">…</b></span>
+      <span>访问 <b id="stat-site-pv-hero" class="stat-pending">…</b></span>
       <span>文章 <b>{post_count}</b></span>
       <span>自 {START_DATE}</span>
     </div>
   </div>
   <div class="hero-wave">
     <svg viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
-      <path fill="var(--paper)" d="M0,48 C240,90 420,10 720,42 C1020,74 1200,18 1440,50 L1440,90 L0,90 Z"></path>
+      <path fill="var(--bg)" d="M0,48 C240,90 420,10 720,42 C1020,74 1200,18 1440,50 L1440,90 L0,90 Z"></path>
     </svg>
   </div>
 </div>"""
@@ -224,7 +243,8 @@ def hero_html(post_count: int = 0) -> str:
 
 def profile_card(prefix: str = "") -> str:
     return f"""<section class="card profile">
-  <div class="profile-avatar"><img src="{prefix}assets/avatar.jpg" alt="avatar" loading="lazy"></div>
+  <div class="term-line">~/guige $ <b>whoami</b></div>
+  <div class="profile-avatar"><img src="{prefix}assets/avatar.jpg" alt="归舸的头像" loading="lazy"></div>
   <h2 class="profile-name">{html.escape(SITE_NAME)}</h2>
   <p class="profile-bio">{html.escape(SITE_BIO)}</p>
   <div class="profile-links">
@@ -307,6 +327,7 @@ def giscus_html() -> str:
     data-lang="zh-CN"
     crossorigin="anonymous"
     async></script>
+  <p class="echo-fallback" id="echo-fallback" hidden>评论服务暂时连不上。稍后刷新再试。</p>
 </section>"""
 
 
@@ -318,6 +339,7 @@ def waline_html() -> str:
   <p class="echo-note">欢迎留言。昵称 + QQ 邮箱即可，不需要 GitHub。</p>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css">
   <div id="waline"></div>
+  <p class="echo-fallback" id="echo-fallback" hidden>评论服务暂时连不上。稍后刷新再试。</p>
   <script type="module">
     import {{ init }} from 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js';
     init({{
@@ -347,6 +369,7 @@ def page(
     hero: bool = True,
     hero_count: int = 0,
     og_image: str = "",
+    canonical: str = "",
 ) -> str:
     page_title = SITE_NAME if title == SITE_NAME else f"{title} · {SITE_NAME}"
     desc = desc or SITE_DESC
@@ -360,15 +383,17 @@ def page(
 <title>{html.escape(page_title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <meta name="author" content="{AUTHOR}">
-<link rel="canonical" href="{SITE_URL}/{title if title != SITE_NAME else ''}">
+<link rel="canonical" href="{SITE_URL}/{canonical}">
 <meta property="og:title" content="{html.escape(page_title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:type" content="website">
-<meta property="og:url" content="{SITE_URL}/">
-<meta property="og:image" content="{og}">
+<meta property="og:url" content="{SITE_URL}/{canonical}">
+<meta property="og:image" content="{og if og.startswith('http') else SITE_URL}/{og}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="{html.escape(SITE_NAME)}" href="{prefix}feed.xml">
 <link rel="icon" href="{prefix}assets/avatar.jpg" type="image/jpeg">
+<link rel="preload" href="{prefix}assets/fonts/lxgw-wenkai-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{prefix}assets/fonts/fonts.css">
 <link rel="stylesheet" href="{prefix}assets/style.css">
 <script>
   (function () {{
@@ -382,6 +407,7 @@ def page(
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main">跳到正文</a>
 <div class="progress" id="progress"></div>
 {nav_html(prefix=prefix, active=active)}
 {hero_block}
@@ -391,8 +417,8 @@ def page(
   <div class="footer-meta">
     <a href="{prefix}feed.xml">RSS</a>
     <a href="{prefix}sitemap.xml">Sitemap</a>
-    <span>访客 <b id="stat-site-uv">…</b></span>
-    <span>访问 <b id="stat-site-pv">…</b></span>
+    <span>访客 <b id="stat-site-uv" class="stat-pending">…</b></span>
+    <span>访问 <b id="stat-site-pv" class="stat-pending">…</b></span>
   </div>
 </footer>
 <div class="search-modal" id="search-modal" hidden>
@@ -408,21 +434,30 @@ def page(
   var API = "https://abacus.jasoncameron.dev";
   function set(id, v) {{
     var n = document.getElementById(id);
-    if (n && v != null) n.textContent = v;
+    if (n && v != null) {{
+      n.textContent = v;
+      n.classList.remove("stat-pending");
+    }}
+  }}
+  function offline(id) {{
+    var n = document.getElementById(id);
+    if (!n) return;
+    n.textContent = "—";
+    n.classList.remove("stat-pending");
+    n.classList.add("stat-offline");
+    n.title = "计数服务暂时连不上";
+    var meta = document.querySelector(".footer-meta");
+    if (meta && !meta.querySelector(".stat-note")) {{
+      var s = document.createElement("span");
+      s.className = "stat-note";
+      s.textContent = "计数离线";
+      meta.appendChild(s);
+    }}
   }}
   function jsonp(url) {{
-    return new Promise(function (resolve) {{
-      var name = "abacus_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-      window[name] = function (data) {{ resolve(data); cleanup(); }};
-      var s = document.createElement("script");
-      s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + name;
-      s.onerror = function () {{ resolve(null); cleanup(); }};
-      function cleanup() {{
-        try {{ delete window[name]; }} catch (e) {{ window[name] = undefined; }}
-        if (s.parentNode) s.parentNode.removeChild(s);
-      }}
-      document.head.appendChild(s);
-    }});
+    return fetch(url, {{ signal: AbortSignal.timeout(6000) }})
+      .then(function (r) {{ return r.ok ? r.json() : null; }})
+      .catch(function () {{ return null; }});
   }}
   function hit(key) {{ return jsonp(API + "/hit/" + NS + "/" + key); }}
   function get(key) {{ return jsonp(API + "/get/" + NS + "/" + key); }}
@@ -430,11 +465,11 @@ def page(
   var pageEl = document.getElementById("stat-page-pv");
   if (pageEl) {{
     var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\\W+/g, "-");
-    hit("page-" + pageKey).then(function (d) {{ if (d) set("stat-page-pv", d.value); }});
+    hit("page-" + pageKey).then(function (d) {{ if (d) set("stat-page-pv", d.value); else offline("stat-page-pv"); }});
   }}
 
   hit("site-pv").then(function (d) {{
-    if (!d) return;
+    if (!d) {{ offline("stat-site-pv"); offline("stat-site-pv-hero"); return; }}
     set("stat-site-pv", d.value);
     set("stat-site-pv-hero", d.value);
   }});
@@ -444,7 +479,7 @@ def page(
   try {{ seen = localStorage.getItem(uvSeenKey) === "1"; }} catch (e) {{}}
   var uvCall = seen ? get("site-uv") : hit("site-uv");
   if (!seen) {{ try {{ localStorage.setItem(uvSeenKey, "1"); }} catch (e) {{}} }}
-  uvCall.then(function (d) {{ if (d) set("stat-site-uv", d.value); }});
+  uvCall.then(function (d) {{ if (d) set("stat-site-uv", d.value); else offline("stat-site-uv"); }});
 }})();
 </script>
 </body>
@@ -474,7 +509,7 @@ def load_posts() -> list[dict]:
                 "featured": meta.get("featured", "").lower() in {"1", "true", "yes", "y"},
                 "series": meta.get("series", ""),
                 "series_order": int(meta.get("series_order", "0") or 0),
-                "html": md_to_html(body),
+                "html": md_to_html(body, asset_prefix="../"),
                 "source": body,
                 "words": words,
                 "minutes": int(meta.get("minutes", "") or 0) or reading_minutes(words),
@@ -488,9 +523,11 @@ def post_card(p: dict, prefix: str = "posts/") -> str:
     tags = "".join(f"<span>#{html.escape(t)}</span>" for t in p["tag_list"])
     featured = '<span class="badge">精选</span>' if p["featured"] else ""
     series = f'<span class="badge series">{html.escape(p["series"])}</span>' if p["series"] else ""
-    return f"""<article class="card post-card">
+    badges = f'<div class="badges">{featured}{series}</div>' if featured or series else ""
+    cls = "post-card featured" if p["featured"] else "post-card"
+    return f"""<article class="{cls}">
   <div>
-    <div class="badges">{featured}{series}</div>
+    {badges}
     <h2 class="post-title"><a href="{prefix}{p['slug']}.html">{html.escape(p['title'])}</a></h2>
     <div class="post-meta">
       <span>{html.escape(p['date'])}</span>
@@ -700,6 +737,7 @@ def build() -> None:
 <div class="page article-page">
   <aside class="left-col">{profile_card(prefix="../")}</aside>
   <article class="article-shell">
+    <details class="toc-mobile"><summary>目录 / TOC</summary>{toc}</details>
     <div class="article-card">
       <header class="article-header">
         <div class="badges">
@@ -711,7 +749,7 @@ def build() -> None:
           <span>{html.escape(p['date'])}</span>
           <span>{p['minutes']} 分钟</span>
           <span>{p['words']} 字</span>
-          <span>阅读 <b id="stat-page-pv" data-key="{html.escape(p["slug"])}">…</b></span>
+          <span>阅读 <b id="stat-page-pv" class="stat-pending" data-key="{html.escape(p["slug"])}">…</b></span>
         </div>
       </header>
       <figure class="article-cover">
@@ -738,7 +776,8 @@ def build() -> None:
                 active="主页",
                 desc=p["summary"],
                 hero=False,
-                og_image=f"../{p['cover']}",
+                og_image=f"{p['cover']}",
+                canonical=f"posts/{p['slug']}.html",
             ),
             prefix="../",
         )
@@ -785,6 +824,7 @@ def build() -> None:
 
     # 预览副本到会话目录（勿写回源码根目录）
     if PREVIEW_DIR.resolve() != ROOT.resolve():
+        PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
         for item in DIST.iterdir():
             dest = PREVIEW_DIR / item.name
             if item.is_dir():
@@ -794,7 +834,13 @@ def build() -> None:
             else:
                 shutil.copy2(item, dest)
 
+    # 旧版 Pages 仍从 docs 构建，切换发布源之前保持同步。
+    if PAGES_DIR.exists():
+        shutil.rmtree(PAGES_DIR)
+    shutil.copytree(DIST, PAGES_DIR)
+
     print(f"构建完成：{len(posts)} 篇 → {DIST}")
+    print(f"Pages 镜像：{PAGES_DIR}")
     print(f"预览入口：{PREVIEW_DIR / 'index.html'}")
 
 

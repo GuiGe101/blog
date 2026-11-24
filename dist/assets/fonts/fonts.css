@@ -1,0 +1,15 @@
+/* 自托管霞鹜文楷（GB2312 一级 + 站点字符子集） */
+@font-face {
+  font-family: "LXGW WenKai";
+  src: url("lxgw-wenkai-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "LXGW WenKai";
+  src: url("lxgw-wenkai-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
