@@ -74,6 +74,9 @@
   const heroStage = document.querySelector(".hero-stage");
   const hero = document.querySelector(".home-hero");
   let sceneQueued = false;
+  let pointerQueued = false;
+  let pointerX = 0;
+  let pointerY = 0;
 
   function updateScene() {
     if (!heroStage || !hero) return;
@@ -96,16 +99,27 @@
     requestAnimationFrame(run);
     window.setTimeout(run, 32);
   }
-  if (hero && window.matchMedia("(pointer: fine)").matches && motionEnabled) {
-    hero.addEventListener(
+  if (window.matchMedia("(pointer: fine)").matches && motionEnabled) {
+    document.addEventListener(
       "pointermove",
       (event) => {
-        const rect = hero.getBoundingClientRect();
-        hero.style.setProperty("--pointer-x", event.clientX - rect.left + "px");
-        hero.style.setProperty("--pointer-y", event.clientY - rect.top + "px");
+        pointerX = event.clientX;
+        pointerY = event.clientY;
+        body.classList.add("pointer-active");
+        if (pointerQueued) return;
+        pointerQueued = true;
+        const paint = () => {
+          if (!pointerQueued) return;
+          pointerQueued = false;
+          root.style.setProperty("--pointer-x", pointerX + "px");
+          root.style.setProperty("--pointer-y", pointerY + "px");
+        };
+        requestAnimationFrame(paint);
+        window.setTimeout(paint, 32);
       },
       { passive: true }
     );
+    document.addEventListener("mouseleave", () => body.classList.remove("pointer-active"));
   }
 
   // Staggered character reveal
@@ -187,13 +201,13 @@
           observer.unobserve(entry.target);
         });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.06 }
+      { rootMargin: "320px 0px 320px 0px", threshold: 0 }
     );
     elements.forEach((element) => {
       const parent = element.parentElement;
       const index = counts.get(parent) || 0;
       counts.set(parent, index + 1);
-      element.style.setProperty("--reveal-delay", Math.min(index, 5) * 55 + "ms");
+      element.style.setProperty("--reveal-delay", Math.min(index, 3) * 30 + "ms");
       element.classList.add("will-reveal");
       observer.observe(element);
     });
@@ -204,7 +218,7 @@
           element.classList.add("is-visible");
         }
       });
-    }, 2600);
+    }, 1800);
     root.classList.add("motion-loaded");
   }
   setupReveals();

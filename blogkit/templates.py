@@ -328,8 +328,8 @@ def home_page(posts: list[Post], stats: SiteStats) -> str:
         )
     lead = posts[0]
     latest = posts[1:4]
-    remaining = posts[4:]
-    journal = "".join(journal_item(post, index) for index, post in enumerate(remaining, start=4))
+    remaining = posts[1:]
+    journal = "".join(journal_item(post, index) for index, post in enumerate(remaining, start=2))
     body = f"""
 <div class="hero-stage">
   {hero(posts, stats)}
