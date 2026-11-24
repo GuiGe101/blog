@@ -33,21 +33,20 @@
 <a class="skip-link" href="#main">跳到正文</a>
 <div class="progress" id="progress"></div>
 <header class="site-nav">
-  <a class="brand" href="../index.html"><span class="brand-mark"><img src="../assets/avatar.jpg" alt=""></span>归舸</a>
-  <nav class="nav-links"><a href="../index.html" class="active">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></nav>
+  <a class="brand" href="../index.html"><span class="brand-mark"><img src="../assets/avatar.jpg" alt="归舸的头像" decoding="async"></span>归舸</a>
+  <nav class="nav-links" aria-label="主导航"><a href="../index.html" class="active" aria-current="page">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></nav>
   <div class="nav-actions">
     <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
   </div>
 </header>
-<div class="mobile-nav" id="mobile-nav" hidden><a href="../index.html" class="active">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></div>
+<nav class="mobile-nav" id="mobile-nav" aria-label="移动端主导航" hidden><a href="../index.html" class="active" aria-current="page">主页</a><a href="../archive.html">归档</a><a href="../categories.html">分类</a><a href="../tags.html">标签</a><a href="../projects.html">项目</a><a href="../about.html">关于</a></nav>
 
 
 <div class="page article-page">
   <aside class="left-col"><section class="card profile">
-  <div class="term-line">~/guige $ <b>whoami</b></div>
-  <div class="profile-avatar"><img src="../assets/avatar.jpg" alt="归舸的头像" loading="lazy"></div>
+  <div class="profile-avatar"><img src="../assets/avatar.jpg" alt="归舸的头像" loading="lazy" decoding="async"></div>
   <h2 class="profile-name">归舸</h2>
   <p class="profile-bio">16 岁，打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。</p>
   <div class="profile-links">
@@ -73,7 +72,7 @@
         </div>
       </header>
       <figure class="article-cover">
-        <img src="../assets/valorant/cover-sage.jpg" alt="把电脑版 Folia 拧到手机上：一天的移植记录" loading="lazy">
+        <img src="../assets/valorant/cover-sage.jpg" alt="把电脑版 Folia 拧到手机上：一天的移植记录" loading="lazy" decoding="async">
       </figure>
       
       <div class="article-body"><p>今天干的事说白了就一件：<strong>让手机上的 Folia 变成真正的电脑版</strong>。不是「差不多」，是带队列拼贴那种。</p>
@@ -143,9 +142,11 @@
     <span>访问 <b id="stat-site-pv" class="stat-pending">…</b></span>
   </div>
 </footer>
-<div class="search-modal" id="search-modal" hidden>
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
   <div class="search-box">
-    <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
+  <h2 id="search-title" class="sr-only">搜索文章</h2>
+  <label class="sr-only" for="search-input">搜索标题、摘要、标签</label>
+  <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
     <div id="search-results"></div>
   </div>
 </div>

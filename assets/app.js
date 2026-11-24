@@ -131,6 +131,7 @@
   const openBtn = document.getElementById("search-open");
   const input = document.getElementById("search-input");
   const results = document.getElementById("search-results");
+  let searchReturnFocus = null;
   let index = null;
   let searchReturnFocus = null;
   // 相对路径：根目录、posts/ 子目录、file:// 预览都能取到索引
@@ -161,10 +162,17 @@
   function render(items) {
     if (!results) return;
     if (!items.length) {
-      results.innerHTML =
-        '<p class="search-empty">没有找到相关内容<small>换个词，或按 ESC 关闭</small></p>';
+      results.innerHTML = '<p class="search-empty">没有找到相关内容</p>';
       return;
     }
+    const escape = (value) =>
+      String(value || "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      }[char]));
     results.innerHTML = items
       .slice(0, 12)
       .map(
@@ -200,9 +208,10 @@
     setTimeout(() => input && input.focus(), 30);
   }
   function closeSearch() {
-    if (!modal || modal.hidden) return;
-    modal.hidden = true;
-    if (searchReturnFocus && searchReturnFocus.focus) searchReturnFocus.focus();
+    if (modal) modal.hidden = true;
+    if (searchReturnFocus && typeof searchReturnFocus.focus === "function") {
+      searchReturnFocus.focus();
+    }
   }
 
   if (openBtn) openBtn.addEventListener("click", openSearch);

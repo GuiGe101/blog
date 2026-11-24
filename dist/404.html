@@ -6,11 +6,11 @@
 <title>页面不存在 · 归舸</title>
 <meta name="description" content="记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。">
 <meta name="author" content="归舸">
-<link rel="canonical" href="https://zixuann.top/">
+<link rel="canonical" href="https://zixuann.top/404.html">
 <meta property="og:title" content="页面不存在 · 归舸">
 <meta property="og:description" content="记录生活、技术、灵感与未命名的片段。技术、生活、思考三条主线。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://zixuann.top/">
+<meta property="og:url" content="https://zixuann.top/404.html">
 <meta property="og:image" content="https://zixuann.top/assets/valorant/hero-jett.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="归舸" href="feed.xml">
@@ -33,15 +33,15 @@
 <a class="skip-link" href="#main">跳到正文</a>
 <div class="progress" id="progress"></div>
 <header class="site-nav">
-  <a class="brand" href="index.html"><span class="brand-mark"><img src="assets/avatar.jpg" alt=""></span>归舸</a>
-  <nav class="nav-links"><a href="index.html">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html">关于</a></nav>
+  <a class="brand" href="index.html"><span class="brand-mark"><img src="assets/avatar.jpg" alt="归舸的头像" decoding="async"></span>归舸</a>
+  <nav class="nav-links" aria-label="主导航"><a href="index.html">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html">关于</a></nav>
   <div class="nav-actions">
     <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
   </div>
 </header>
-<div class="mobile-nav" id="mobile-nav" hidden><a href="index.html">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html">关于</a></div>
+<nav class="mobile-nav" id="mobile-nav" aria-label="移动端主导航" hidden><a href="index.html">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html">关于</a></nav>
 
 <div class="page single"><div class="card pad center">
   <h1>404</h1><p>你走进了未命名的片段。</p>
@@ -56,9 +56,11 @@
     <span>访问 <b id="stat-site-pv" class="stat-pending">…</b></span>
   </div>
 </footer>
-<div class="search-modal" id="search-modal" hidden>
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
   <div class="search-box">
-    <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
+  <h2 id="search-title" class="sr-only">搜索文章</h2>
+  <label class="sr-only" for="search-input">搜索标题、摘要、标签</label>
+  <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
     <div id="search-results"></div>
   </div>
 </div>

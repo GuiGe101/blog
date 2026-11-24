@@ -33,15 +33,15 @@
 <a class="skip-link" href="#main">跳到正文</a>
 <div class="progress" id="progress"></div>
 <header class="site-nav">
-  <a class="brand" href="index.html"><span class="brand-mark"><img src="assets/avatar.jpg" alt=""></span>归舸</a>
-  <nav class="nav-links"><a href="index.html" class="active">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html">关于</a></nav>
+  <a class="brand" href="index.html"><span class="brand-mark"><img src="assets/avatar.jpg" alt="归舸的头像" decoding="async"></span>归舸</a>
+  <nav class="nav-links" aria-label="主导航"><a href="index.html" class="active" aria-current="page">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html">关于</a></nav>
   <div class="nav-actions">
     <button class="icon-btn" id="search-open" title="搜索" aria-label="搜索"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     <button class="icon-btn" id="theme-toggle" title="明暗切换" aria-label="明暗切换"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
     <button class="icon-btn menu-btn" id="menu-toggle" title="菜单" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
   </div>
 </header>
-<div class="mobile-nav" id="mobile-nav" hidden><a href="index.html" class="active">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html">关于</a></div>
+<nav class="mobile-nav" id="mobile-nav" aria-label="移动端主导航" hidden><a href="index.html" class="active" aria-current="page">主页</a><a href="archive.html">归档</a><a href="categories.html">分类</a><a href="tags.html">标签</a><a href="projects.html">项目</a><a href="about.html">关于</a></nav>
 
 <div class="hero">
   <div class="hero-shade"></div>
@@ -50,7 +50,7 @@
     <h1 class="hero-title">归舸的大窝</h1>
     <p class="hero-sub">打瓦、想东想西——慢慢记下来</p>
     <div class="hero-stats">
-      <span>访问 <b id="stat-site-pv-hero" class="stat-pending">…</b></span>
+      <span>访问 <b id="stat-site-pv-hero">…</b></span>
       <span>文章 <b>6</b></span>
       <span>自 2026-10-06</span>
     </div>
@@ -64,8 +64,7 @@
 
 <div class="page">
   <aside class="left-col"><section class="card profile">
-  <div class="term-line">~/guige $ <b>whoami</b></div>
-  <div class="profile-avatar"><img src="assets/avatar.jpg" alt="归舸的头像" loading="lazy"></div>
+  <div class="profile-avatar"><img src="assets/avatar.jpg" alt="归舸的头像" loading="lazy" decoding="async"></div>
   <h2 class="profile-name">归舸</h2>
   <p class="profile-bio">16 岁，打无畏契约、偶尔想东想西。这里慢慢同步生活、技术和灵感。</p>
   <div class="profile-links">
@@ -89,7 +88,7 @@
     <div class="post-tags"><span>#随笔</span><span>#劳动小结</span></div>
   </div>
   <a class="post-cover" href="posts/2026-10-18-day-recap.html">
-    <img src="assets/avatar.jpg" alt="" loading="lazy">
+    <img src="assets/avatar.jpg" alt="这几天的零碎：改名、头像、运行天数，还有一次 git 事故" loading="lazy" decoding="async">
   </a>
 </article><article class="post-card featured">
   <div>
@@ -105,13 +104,13 @@
     <div class="post-tags"><span>#技术</span><span>#Folia</span><span>#Android</span><span>#劳动小结</span></div>
   </div>
   <a class="post-cover" href="posts/2026-10-12-folia-android-port.html">
-    <img src="assets/valorant/cover-sage.jpg" alt="" loading="lazy">
+    <img src="assets/valorant/cover-sage.jpg" alt="把电脑版 Folia 拧到手机上：一天的移植记录" loading="lazy" decoding="async">
   </a>
 </article>
     <h2 class="section-title">最新</h2>
     <article class="post-card">
   <div>
-    
+    <div class="badges"></div>
     <h2 class="post-title"><a href="posts/2026-11-05-small-fragments.html">今天拿了个五杀，但段位还是青铜</a></h2>
     <div class="post-meta">
       <span>2026-11-05</span>
@@ -123,11 +122,11 @@
     <div class="post-tags"><span>#随笔</span><span>#生活</span><span>#游戏</span></div>
   </div>
   <a class="post-cover" href="posts/2026-11-05-small-fragments.html">
-    <img src="assets/valorant/cover-worklog-dog.jpg" alt="" loading="lazy">
+    <img src="assets/valorant/cover-worklog-dog.jpg" alt="今天拿了个五杀，但段位还是青铜" loading="lazy" decoding="async">
   </a>
-</article><article class="post-card">
+</article><article class="card post-card">
   <div>
-    
+    <div class="badges"></div>
     <h2 class="post-title"><a href="posts/2026-10-07-work-log.html">今日劳动小结：把博客从零拧到现在</a></h2>
     <div class="post-meta">
       <span>2026-10-07</span>
@@ -139,7 +138,7 @@
     <div class="post-tags"><span>#随笔</span><span>#劳动小结</span></div>
   </div>
   <a class="post-cover" href="posts/2026-10-07-work-log.html">
-    <img src="assets/valorant/cover-worklog-dog.jpg" alt="" loading="lazy">
+    <img src="assets/valorant/cover-worklog-dog.jpg" alt="今日劳动小结：把博客从零拧到现在" loading="lazy" decoding="async">
   </a>
 </article><article class="post-card">
   <div>
@@ -155,7 +154,7 @@
     <div class="post-tags"><span>#随笔</span><span>#域名</span></div>
   </div>
   <a class="post-cover" href="posts/2026-10-07-domain-cert.html">
-    <img src="assets/domain-cert.png" alt="" loading="lazy">
+    <img src="assets/domain-cert.png" alt="这个窝，有证了" loading="lazy" decoding="async">
   </a>
 </article><article class="post-card">
   <div>
@@ -171,14 +170,14 @@
     <div class="post-tags"><span>#随笔</span><span>#首页</span></div>
   </div>
   <a class="post-cover" href="posts/2026-10-06-hello.html">
-    <img src="assets/valorant/cover-sage.jpg" alt="" loading="lazy">
+    <img src="assets/valorant/cover-sage.jpg" alt="归舸的大窝" loading="lazy" decoding="async">
   </a>
 </article>
   </section>
   <aside class="side-col">
     <section class="card">
   <h3 class="side-title">站点统计</h3>
-  <div class="stat-row"><span>文章</span><b>6</b></div><div class="stat-row"><span>分类</span><b>2</b></div><div class="stat-row"><span>标签</span><b>9</b></div><div class="stat-row"><span>总字数</span><b>13977</b></div><div class="stat-row"><span>运行天数</span><b id="run-days" data-start="2026-10-06">…</b></div><div class="stat-row"><span>最后活动</span><b>2026-11-05</b></div>
+  <div class="stat-row"><span>文章</span><b>6</b></div><div class="stat-row"><span>分类</span><b>2</b></div><div class="stat-row"><span>标签</span><b>9</b></div><div class="stat-row"><span>总字数</span><b>13957</b></div><div class="stat-row"><span>运行天数</span><b id="run-days" data-start="2026-10-06">…</b></div><div class="stat-row"><span>最后活动</span><b>2026-11-05</b></div>
   <div class="side-note">访问统计由 Abacus 提供，刷新页面数字会跳。</div>
 </section>
     <section class="card"><h3 class="side-title">标签</h3><div class="tagbar"><a class="tag-chip" href="tags.html#随笔">#随笔<b>5</b></a><a class="tag-chip" href="tags.html#劳动小结">#劳动小结<b>3</b></a><a class="tag-chip" href="tags.html#生活">#生活<b>1</b></a><a class="tag-chip" href="tags.html#游戏">#游戏<b>1</b></a><a class="tag-chip" href="tags.html#技术">#技术<b>1</b></a><a class="tag-chip" href="tags.html#Folia">#Folia<b>1</b></a><a class="tag-chip" href="tags.html#Android">#Android<b>1</b></a><a class="tag-chip" href="tags.html#域名">#域名<b>1</b></a><a class="tag-chip" href="tags.html#首页">#首页<b>1</b></a></div></section>
@@ -193,9 +192,11 @@
     <span>访问 <b id="stat-site-pv" class="stat-pending">…</b></span>
   </div>
 </footer>
-<div class="search-modal" id="search-modal" hidden>
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
   <div class="search-box">
-    <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
+  <h2 id="search-title" class="sr-only">搜索文章</h2>
+  <label class="sr-only" for="search-input">搜索标题、摘要、标签</label>
+  <input id="search-input" type="search" placeholder="搜索标题、摘要、标签…" autocomplete="off">
     <div id="search-results"></div>
   </div>
 </div>
