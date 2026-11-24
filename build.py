@@ -860,6 +860,7 @@ def build() -> None:
 
     # 预览副本到会话目录（勿写回源码根目录）
     if PREVIEW_DIR.resolve() not in {ROOT.resolve(), DIST.resolve()}:
+        PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
         for item in DIST.iterdir():
             dest = PREVIEW_DIR / item.name
             if item.is_dir():
