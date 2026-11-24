@@ -109,7 +109,7 @@ def md_to_html(text: str, *, image_prefix: str = "") -> str:
             level = len(hm.group(1))
             title = hm.group(2).strip()
             hid = re.sub(r"[^\w一-鿿-]+", "-", title).strip("-").lower() or f"h{level}"
-            out.append(f'<h{level} id="{hid}">{inline(title, asset_prefix)}</h{level}>')
+            out.append(f'<h{level} id="{hid}">{inline(title)}</h{level}>')
             i += 1
             continue
         if line.startswith(">"):
@@ -518,7 +518,7 @@ def load_posts() -> list[dict]:
                 "featured": meta.get("featured", "").lower() in {"1", "true", "yes", "y"},
                 "series": meta.get("series", ""),
                 "series_order": int(meta.get("series_order", "0") or 0),
-                "html": md_to_html(body, asset_prefix="../"),
+                "html": md_to_html(body),
                 "source": body,
                 "words": words,
                 "minutes": int(meta.get("minutes", "") or 0) or reading_minutes(words),

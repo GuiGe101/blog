@@ -15,6 +15,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="application/rss+xml" title="归舸" href="../feed.xml">
 <link rel="icon" href="../assets/avatar.jpg" type="image/jpeg">
+<link rel="preload" href="../assets/fonts/lxgw-wenkai-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <link rel="stylesheet" href="../assets/style.css">
 <script>
   (function () {
@@ -28,6 +30,7 @@
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main">跳到正文</a>
 <div class="progress" id="progress"></div>
 <header class="site-nav">
   <a class="brand" href="../index.html"><span class="brand-mark"><img src="../assets/avatar.jpg" alt="归舸的头像" decoding="async"></span>归舸</a>
@@ -53,6 +56,7 @@
   </div>
 </section></aside>
   <article class="article-shell">
+    <details class="toc-mobile"><summary>目录 / TOC</summary><nav class="toc"><div class="toc-title">目录</div><a class="toc-h2" href="#五杀和青铜">五杀和青铜</a><a class="toc-h2" href="#还在等小狐狸上线">还在等小狐狸上线</a><a class="toc-h2" href="#有人愿意一起打游戏">有人愿意一起打游戏</a><a class="toc-h2" href="#今天就先记这些">今天就先记这些</a></nav></details>
     <div class="article-card">
       <header class="article-header">
         <div class="badges">
@@ -64,7 +68,7 @@
           <span>2026-11-05</span>
           <span>2 分钟</span>
           <span>605 字</span>
-          <span>阅读 <b id="stat-page-pv" data-key="2026-11-05-small-fragments">…</b></span>
+          <span>阅读 <b id="stat-page-pv" class="stat-pending" data-key="2026-11-05-small-fragments">…</b></span>
         </div>
       </header>
       <figure class="article-cover">
@@ -101,6 +105,7 @@
   <p class="echo-note">欢迎留言。昵称 + QQ 邮箱即可，不需要 GitHub。</p>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css">
   <div id="waline"></div>
+  <p class="echo-fallback" id="echo-fallback" hidden>评论服务暂时连不上。稍后刷新再试。</p>
   <script type="module">
     import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.js';
     init({
@@ -122,8 +127,8 @@
   <div class="footer-meta">
     <a href="../feed.xml">RSS</a>
     <a href="../sitemap.xml">Sitemap</a>
-    <span>访客 <b id="stat-site-uv">…</b></span>
-    <span>访问 <b id="stat-site-pv">…</b></span>
+    <span>访客 <b id="stat-site-uv" class="stat-pending">…</b></span>
+    <span>访问 <b id="stat-site-pv" class="stat-pending">…</b></span>
   </div>
 </footer>
 <div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
@@ -141,21 +146,30 @@
   var API = "https://abacus.jasoncameron.dev";
   function set(id, v) {
     var n = document.getElementById(id);
-    if (n && v != null) n.textContent = v;
+    if (n && v != null) {
+      n.textContent = v;
+      n.classList.remove("stat-pending");
+    }
+  }
+  function offline(id) {
+    var n = document.getElementById(id);
+    if (!n) return;
+    n.textContent = "—";
+    n.classList.remove("stat-pending");
+    n.classList.add("stat-offline");
+    n.title = "计数服务暂时连不上";
+    var meta = document.querySelector(".footer-meta");
+    if (meta && !meta.querySelector(".stat-note")) {
+      var s = document.createElement("span");
+      s.className = "stat-note";
+      s.textContent = "计数离线";
+      meta.appendChild(s);
+    }
   }
   function jsonp(url) {
-    return new Promise(function (resolve) {
-      var name = "abacus_cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-      window[name] = function (data) { resolve(data); cleanup(); };
-      var s = document.createElement("script");
-      s.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + name;
-      s.onerror = function () { resolve(null); cleanup(); };
-      function cleanup() {
-        try { delete window[name]; } catch (e) { window[name] = undefined; }
-        if (s.parentNode) s.parentNode.removeChild(s);
-      }
-      document.head.appendChild(s);
-    });
+    return fetch(url, { signal: AbortSignal.timeout(6000) })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
   }
   function hit(key) { return jsonp(API + "/hit/" + NS + "/" + key); }
   function get(key) { return jsonp(API + "/get/" + NS + "/" + key); }
@@ -163,11 +177,11 @@
   var pageEl = document.getElementById("stat-page-pv");
   if (pageEl) {
     var pageKey = pageEl.getAttribute("data-key") || location.pathname.replace(/\W+/g, "-");
-    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); });
+    hit("page-" + pageKey).then(function (d) { if (d) set("stat-page-pv", d.value); else offline("stat-page-pv"); });
   }
 
   hit("site-pv").then(function (d) {
-    if (!d) return;
+    if (!d) { offline("stat-site-pv"); offline("stat-site-pv-hero"); return; }
     set("stat-site-pv", d.value);
     set("stat-site-pv-hero", d.value);
   });
@@ -177,7 +191,7 @@
   try { seen = localStorage.getItem(uvSeenKey) === "1"; } catch (e) {}
   var uvCall = seen ? get("site-uv") : hit("site-uv");
   if (!seen) { try { localStorage.setItem(uvSeenKey, "1"); } catch (e) {} }
-  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); });
+  uvCall.then(function (d) { if (d) set("stat-site-uv", d.value); else offline("stat-site-uv"); });
 })();
 </script>
 </body>

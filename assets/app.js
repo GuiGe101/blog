@@ -133,7 +133,6 @@
   const results = document.getElementById("search-results");
   let searchReturnFocus = null;
   let index = null;
-  let searchReturnFocus = null;
   // 相对路径：根目录、posts/ 子目录、file:// 预览都能取到索引
   const indexUrl = document.currentScript
     ? new URL("../search-index.json", document.currentScript.src).href
